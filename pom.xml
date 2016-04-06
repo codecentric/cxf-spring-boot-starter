@@ -147,14 +147,14 @@
 				<version>2.3</version>
 				<configuration>
 					<!-- See https://jax-ws-commons.java.net/jaxws-maven-plugin/wsimport-mojo.html -->
-					<wsdlDirectory>src/main/resources/service-api-definition/</wsdlDirectory>
-					<sourceDestDir>target/generated-sources/wsdlimport/service-api-classes</sourceDestDir>
+					<wsdlDirectory>src/main/resources/wsdl/</wsdlDirectory>
+					<sourceDestDir>target/generated-sources/wsdlimport</sourceDestDir>
 					<!-- For accessing the imported schema, see https://netbeans.org/bugzilla/show_bug.cgi?id=241570 -->
 					<vmArgs>
 			            <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
 			        </vmArgs>
 			        <!-- the binding.xml in the given directory is found automatically, because the directory is scanned for '.xml'-Files -->
-			       	<bindingDirectory>src/main/resources/service-api-definition</bindingDirectory>
+			       	<bindingDirectory>src/main/resources/wsdl</bindingDirectory>
 			       	<!-- Arguments for JAXB2-Generator behind JAX-WS-Frontend -->
 			       	<args>
 			            <arg>-extension</arg>
@@ -190,7 +190,7 @@
 		            </goals>
 		            <configuration>
 		              <sources>
-		                <source>target/generated-sources/wsdlimport/service-api-classes</source>
+		                <source>target/generated-sources/wsdlimport</source>
 		              </sources>
 		            </configuration>
 		          </execution>
