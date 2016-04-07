@@ -15,13 +15,14 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 ### Documentation
 
-* Create a Spring Boot maven project. Take a look at this example, it’s pretty much just using spring-boot-starter-parent as a parent und adding the Spring Boot build plugin. Then add the dependency to spring-boot-starter-cxf:
+* Create a Spring Boot maven project. It’s pretty much just using this spring-boot-starter as a parent:
 ```
-<dependency>
-        <groupId>de.codecentric</groupId>
-        <artifactId>spring-boot-starter-cxf</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-</dependency>
+<parent>
+		<groupId>de.codecentric</groupId>
+	    <artifactId>spring-boot-starter-cxf</artifactId>
+	    <version>1.0.0-SNAPSHOT</version>
+		<relativePath/> <!-- lookup parent from repository -->
+</parent>
 ```
 
 * place your .wsdl-File (and all the imported XSDs) into src/main/resources/wsdl
