@@ -10,7 +10,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>cxf-spring-boot-starter</name>
 	<description>Boot starter for SOAP-Webservices with Apache CXF using JAX-WS &amp; JAXB with Annotations only</description>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<url>https://github.com/jonashackt/cxf-spring-boot-starter</url>
 	<licenses>
 		<license>
@@ -139,63 +139,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-	        <!-- Generate Java-Classes inkl. JAXB-Bindings from WSDL & imported XSD -->
-	        <!-- See Doku at https://jax-ws-commons.java.net/jaxws-maven-plugin/usage.html -->
-			<plugin>
-				<groupId>org.jvnet.jax-ws-commons</groupId>
-				<artifactId>jaxws-maven-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<!-- See https://jax-ws-commons.java.net/jaxws-maven-plugin/wsimport-mojo.html -->
-					<wsdlDirectory>src/main/resources/wsdl/</wsdlDirectory>
-					<sourceDestDir>target/generated-sources/wsdlimport</sourceDestDir>
-					<!-- For accessing the imported schema, see https://netbeans.org/bugzilla/show_bug.cgi?id=241570 -->
-					<vmArgs>
-			            <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
-			        </vmArgs>
-			        <!-- the binding.xml in the given directory is found automatically, because the directory is scanned for '.xml'-Files -->
-			       	<bindingDirectory>src/main/resources/wsdl</bindingDirectory>
-			       	<!-- Arguments for JAXB2-Generator behind JAX-WS-Frontend -->
-			       	<args>
-			            <arg>-extension</arg>
-			            <!-- Thats a tricky parameter: The first '-B' is for passing the following argument to JAXB2-Generator
-			                 the second is needed to generate the human readable Namespace-Prefixes -->
-			            <arg>-B-Xnamespace-prefix</arg>
-			        </args>
-				</configuration>
-				<dependencies>
-			    	<dependency>
-			            <groupId>org.jvnet.jaxb2_commons</groupId>
-			            <artifactId>jaxb2-namespace-prefix</artifactId>
-			            <version>1.1</version>
-			        </dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<goals>
-							<goal>wsimport</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>build-helper-maven-plugin</artifactId>
-		        <executions>
-		          <execution>
-		            <id>add-source</id>
-		            <phase>generate-sources</phase>
-		            <goals>
-		              <goal>add-source</goal>
-		            </goals>
-		            <configuration>
-		              <sources>
-		                <source>target/generated-sources/wsdlimport</source>
-		              </sources>
-		            </configuration>
-		          </execution>
-		        </executions>
-			</plugin>
+	        
 			<plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -228,42 +172,6 @@
                 <version>${build-plugin.coveralls.version}</version>
             </plugin>
 		</plugins>
-        <pluginManagement>
-        	<!-- Really ugly - neede to solve Maven Eclipse Plugin m2e issue... Argh! -->
-        	<plugins>
-        		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        		<plugin>
-        			<groupId>org.eclipse.m2e</groupId>
-        			<artifactId>lifecycle-mapping</artifactId>
-        			<version>1.0.0</version>
-        			<configuration>
-        				<lifecycleMappingMetadata>
-        					<pluginExecutions>
-        						<pluginExecution>
-        							<pluginExecutionFilter>
-        								<groupId>
-        									org.jvnet.jax-ws-commons
-        								</groupId>
-        								<artifactId>
-        									jaxws-maven-plugin
-        								</artifactId>
-        								<versionRange>
-        									[2.3,)
-        								</versionRange>
-        								<goals>
-        									<goal>wsimport</goal>
-        								</goals>
-        							</pluginExecutionFilter>
-        							<action>
-        								<execute/>
-        							</action>
-        						</pluginExecution>
-        					</pluginExecutions>
-        				</lifecycleMappingMetadata>
-        			</configuration>
-        		</plugin>
-        	</plugins>
-        </pluginManagement>
     </build>
     
      <repositories>
