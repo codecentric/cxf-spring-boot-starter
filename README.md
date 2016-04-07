@@ -1,8 +1,8 @@
 SOAP-Webservices powered by Spring Boot & Apache CXF
 =============================
-[![Build Status](https://travis-ci.org/jonashackt/spring-boot-starter-cxf.svg?branch=master)](https://travis-ci.org/jonashackt/spring-boot-starter-cxf)
-[![Coverage Status](https://coveralls.io/repos/github/jonashackt/spring-boot-starter-cxf/badge.svg?branch=master)](https://coveralls.io/github/jonashackt/spring-boot-starter-cxf?branch=master)
-[![Dependency Status](https://www.versioneye.com/user/projects/570520ddfcd19a004543fb14/badge.svg?style=flat)](https://www.versioneye.com/user/projects/570520ddfcd19a004543fb14)
+[![Build Status](https://travis-ci.org/jonashackt/cxf-spring-boot-starter.svg?branch=master)](https://travis-ci.org/jonashackt/cxf-spring-boot-starter)
+[![Coverage Status](https://coveralls.io/repos/github/jonashackt/cxf-spring-boot-starter/badge.svg?branch=master)](https://coveralls.io/github/jonashackt/cxf-spring-boot-starter?branch=master)
+[![Dependency Status](https://www.versioneye.com/user/projects/57061cdbfcd19a00415b0511/badge.svg?style=flat)](https://www.versioneye.com/user/projects/57061cdbfcd19a00415b0511)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 

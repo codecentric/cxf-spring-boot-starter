@@ -6,12 +6,12 @@
 		<version>7</version>
 	</parent>
 	<groupId>de.codecentric</groupId>
-	<artifactId>spring-boot-starter-cxf</artifactId>
+	<artifactId>cxf-spring-boot-starter</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>spring-boot-starter-cxf</name>
+	<name>cxf-spring-boot-starter</name>
 	<description>Boot starter for SOAP-Webservices with Apache CXF using JAX-WS &amp; JAXB with Annotations only</description>
-	<packaging>jar</packaging>
-	<url>https://github.com/jonashackt/spring-boot-starter-cxf</url>
+	<packaging>pom</packaging>
+	<url>https://github.com/jonashackt/cxf-spring-boot-starter</url>
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
@@ -28,9 +28,9 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git://github.com/jonashackt/spring-boot-starter-cxf.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/jonashackt/spring-boot-starter-cxf.git</developerConnection>
-		<url>https://github.com/jonashackt/spring-boot-starter-cxf</url>
+		<connection>scm:git:git://github.com/jonashackt/cxf-spring-boot-starter.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/jonashackt/cxf-spring-boot-starter.git</developerConnection>
+		<url>https://github.com/jonashackt/cxf-spring-boot-starter</url>
 	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
