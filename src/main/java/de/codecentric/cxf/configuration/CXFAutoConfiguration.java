@@ -1,5 +1,7 @@
 package de.codecentric.cxf.configuration;
 
+import java.util.Map;
+
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.transport.servlet.CXFServlet;
@@ -16,10 +18,19 @@ public class CXFAutoConfiguration {
     @Value("${soap.service.base.url:/soap-api/*}")
     private String baseUrl;
     
+    @Value("${cxf.servicelist.title:CXF SpringBoot Starter - service list}")
+    private String serviceListTitle;
+    
     @Bean
     public ServletRegistrationBean dispatcherServlet() {
         CXFServlet cxfServlet = new CXFServlet();
-        return new ServletRegistrationBean(cxfServlet, baseUrl);
+        
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(cxfServlet, baseUrl);
+        // Add custom Title to CXF´s ServiceList
+        Map<String, String> initParameters = servletRegistrationBean.getInitParameters();
+        initParameters.put("service-list-title", serviceListTitle);
+        
+        return servletRegistrationBean;
     }
     
     // If you don´t want to import the cxf.xml-Springbean-Config you have to setUp this Bus for yourself
