@@ -35,7 +35,7 @@ public final class XmlUtils {
 			Document soapMessage = parseFileStream2Document(fileStream);
 			unmarshalledObject = getUnmarshalledObjectFromSoapMessage(soapMessage, jaxbClass);			
 		} catch (Exception exception) {
-			throw new BootStarterCxfException("Problem beim unmarshalling des JAXBObjects " + jaxbClass.getSimpleName() + " aus der SoapMessage.", exception);
+			throw new BootStarterCxfException("Problem unmarshalling the JAXBObject " + jaxbClass.getSimpleName() + " from the SoapMessage.", exception);
 		}			
 		return unmarshalledObject;
 	}
@@ -52,7 +52,7 @@ public final class XmlUtils {
 			JAXBElement<T> jaxbElement = unmarshallNode(nodeFromSoapMessage, jaxbClass);
 			unmarshalledObject = jaxbElement.getValue();
 		} catch (Exception exception) {
-			throw new BootStarterCxfException("Die SoapMessage enthaelt keine Representation des JAXBObjects " + jaxbClass.getSimpleName(), exception);
+			throw new BootStarterCxfException("The SoapMessage doesn´t contain a representation of the JAXBObject " + jaxbClass.getSimpleName(), exception);
 		}
 		return unmarshalledObject;
 	}
@@ -65,7 +65,7 @@ public final class XmlUtils {
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			jaxbElement = unmarshaller.unmarshal(new DOMSource(node), jaxbClassName);
 		} catch (Exception exception) {
-			throw new BootStarterCxfException("Problem beim Unmarshalling der Node in das JAXBElement: " + exception.getMessage(), exception);
+			throw new BootStarterCxfException("Problem unmarshalling the node into JAXBElement: " + exception.getMessage(), exception);
 		}		
 		return jaxbElement;
 	}	
@@ -127,7 +127,7 @@ public final class XmlUtils {
 		try {
 	        parsedDoc = setUpDocumentBuilder().parse(contentAsStream);
 		} catch (Exception exception) {
-			throw new BootStarterCxfException("Problem beim Parsen des InputStream in ein Document: " + exception.getMessage(), exception);
+			throw new BootStarterCxfException("Problem parsing InputStream into Document: " + exception.getMessage(), exception);
 		}
 		return parsedDoc;
 	}
@@ -139,7 +139,7 @@ public final class XmlUtils {
 			documentBuilderFactory.setNamespaceAware(true);
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException parserConfigurationException) {
-			throw new BootStarterCxfException("Problem beim Erstellen des DocumentBuilders: " + parserConfigurationException.getMessage(), parserConfigurationException);
+			throw new BootStarterCxfException("Problem creating DocumentBuilder: " + parserConfigurationException.getMessage(), parserConfigurationException);
 		}
 		return documentBuilder;
 	}
@@ -151,7 +151,7 @@ public final class XmlUtils {
 			jaxbDoc = createNewDocument();        	
 			marshaller.marshal(jaxbElement, jaxbDoc);			
 		} catch (Exception exception) {
-			throw new BootStarterCxfException("Problem beim marshallen des JAXBElements in ein Document: " + exception.getMessage(), exception);
+			throw new BootStarterCxfException("Problem marshalling the JAXBElement into the Document: " + exception.getMessage(), exception);
 		}
         return jaxbDoc;
 	}

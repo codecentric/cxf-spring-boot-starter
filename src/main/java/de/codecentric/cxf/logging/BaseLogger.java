@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 
+import de.codecentric.cxf.common.FaultConst;
+
 public class BaseLogger {
     
 	private Logger delegateLogger;
@@ -60,7 +62,21 @@ public class BaseLogger {
 	}
 
 	
-	
+
+	/*
+     * Errors - 9xx
+     */
+    public void errorAccuredInBackendProcessing(Throwable cause) {
+        logError("901", "An Error accured in backend-processing: {}", cause.getMessage());
+    }
+    
+    public void failedToBuildWeatherServiceCompliantSoapFaultDetails(Throwable cause) {
+        logError("902", "Failed to build Weather-compliant SoapFault-details: {}\nStacktrace: {}", cause.getMessage(), cause.getStackTrace());
+    }   
+    
+    public void schemaValidationError(FaultConst error, String faultMessage) {
+        logDebug("903", error.getMessage() + ": {}", faultMessage);
+    }
 
 	
 	/*
