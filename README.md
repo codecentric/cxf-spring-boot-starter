@@ -26,6 +26,16 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 </parent>
 ```
 
+```
+<dependencies>
+	<dependency>
+		<groupId>de.codecentric</groupId>
+    	<artifactId>cxf-spring-boot-starter</artifactId>
+    	<version>1.0.0-SNAPSHOT</version>
+	</dependency>
+</dependencies>
+```
+
 * place your .wsdl-File (and all the imported XSDs) into src/main/resources/wsdl
 * run mvn generate-sources to generate all necessary Java-Classes from your WSDL/XSD 
 * create a application.properties and set the BaseURL of your Webservices via soap.service.base.url="/yourUrlHere"
@@ -48,5 +58,5 @@ Activate via Property logging.soap.messages=true in application.properties.
 # Contribution
 
 If you want to know more or even contribute to this Spring Boot Starter, maybe you need some information like:
-*[SpringBoot Docs - Creating your own auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html}
-*[Boot your own Infrastructure - JavaMagazin](https://public.centerdevice.de/a10fb484-49a8-4a70-ada9-5eeda8c69465)
+* [SpringBoot Docs - Creating your own auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html)
+* [Boot your own Infrastructure - JavaMagazin](https://public.centerdevice.de/a10fb484-49a8-4a70-ada9-5eeda8c69465)
