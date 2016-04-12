@@ -14,7 +14,10 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("classpath:spring-boot-starter-cxf.properties")
-@Import(XmlValidationConfiguration.class)
+@Import({
+    XmlValidationConfiguration.class,
+    SoapMessageLoggerConfiguration.class
+})
 public class CxfAutoConfiguration {
 
     @Value("${soap.service.base.url:/soap-api}")

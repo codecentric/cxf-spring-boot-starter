@@ -28,15 +28,22 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 * place your .wsdl-File (and all the imported XSDs) into src/main/resources/wsdl
 * run mvn generate-sources to generate all necessary Java-Classes from your WSDL/XSD 
+* create a application.properties and set the BaseURL of your Webservices via soap.service.base.url="/yourUrlHere"
+
+### SOAP-Message-Logging
+
+Activate via Property logging.soap.messages=true in application.properties.
 
 ### XML Schema Validation 
 
-* Implement the Interface [CustomFaultDetailBuilder](https://github.com/jonashackt/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/xmlvalidation/CustomFaultDetailBuilder.java) and return the JAX-B generated Object, that represents your WebService´ Fault-Details (be careful to take the right one, often the term 'Exception' is used twice...)
+* Implement the Interface [CustomFaultDetailBuilder](https://github.com/jonashackt/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/xmlvalidation/CustomFaultDetailBuilder.java) as Spring
+[@Component](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/stereotype/Component.html) and return the JAX-B generated Object, that represents your WebService´ Fault-Details (be careful to take the right one, often the term 'Exception' is used twice...)
 * Configure your Implementation as @Bean - only then, XML Schema Validation will be activated
 
 # Todos:
 
 * ASCII-Doc
+* logstash-Configuration
 
 # Contribution
 
