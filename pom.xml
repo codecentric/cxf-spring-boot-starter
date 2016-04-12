@@ -33,6 +33,8 @@
 		<url>https://github.com/jonashackt/cxf-spring-boot-starter</url>
 	</scm>
 	<properties>
+		<java.version>1.8</java.version>
+		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring.boot.version>1.3.3.RELEASE</spring.boot.version>
