@@ -119,6 +119,13 @@
 			<version>${commons-io.version}</version>
 		</dependency>
 
+		<!-- SoapRawClient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>fluent-hc</artifactId>
+			<version>${fluent-hc.version}</version>
+		</dependency>
+
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -126,13 +133,7 @@
 			<version>${spring.boot.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>fluent-hc</artifactId>
-			<version>${fluent-hc.version}</version>
-			<scope>test</scope>
-		</dependency>
-
+		
    </dependencies>
 	
      <build>

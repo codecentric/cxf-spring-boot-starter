@@ -1,2 +1,2 @@
 # AutoConfigurations
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=de.codecentric.cxf.configuration.CXFAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=de.codecentric.cxf.configuration.CxfAutoConfiguration

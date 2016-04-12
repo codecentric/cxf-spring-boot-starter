@@ -15,11 +15,11 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:spring-boot-starter-cxf.properties")
 @Import(XmlValidationConfiguration.class)
-public class CXFAutoConfiguration {
+public class CxfAutoConfiguration {
 
-    @Value("${soap.service.base.url:/soap-api/*}")
+    @Value("${soap.service.base.url:/soap-api}")
     private String baseUrl;
-    
+
     @Value("${cxf.servicelist.title:CXF SpringBoot Starter - service list}")
     private String serviceListTitle;
     
@@ -27,7 +27,7 @@ public class CXFAutoConfiguration {
     public ServletRegistrationBean dispatcherServlet() {
         CXFServlet cxfServlet = new CXFServlet();
         
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(cxfServlet, baseUrl);
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(cxfServlet, baseUrl + "/*");
         // Add custom Title to CXF´s ServiceList
         Map<String, String> initParameters = servletRegistrationBean.getInitParameters();
         initParameters.put("service-list-title", serviceListTitle);
@@ -40,6 +40,14 @@ public class CXFAutoConfiguration {
     @Bean(name = Bus.DEFAULT_BUS_ID)
     public SpringBus springBus() {
         return new SpringBus();
+    }
+    
+    
+    /**
+     * @return the base-URL, where the WebServices are configured (eihter via property or default-value)
+     */
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
 }

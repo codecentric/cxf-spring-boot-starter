@@ -31,7 +31,7 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 ### XML Schema Validation 
 
-* Implement the Interface CustomFaultDetailBuilder and return the JAX-B generated Object, that represents your WebService´ Fault-Details (be careful to take the right one, often the term 'Exception' is used twice...)
+* Implement the Interface [CustomFaultDetailBuilder](https://github.com/jonashackt/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/xmlvalidation/CustomFaultDetailBuilder.java) and return the JAX-B generated Object, that represents your WebService´ Fault-Details (be careful to take the right one, often the term 'Exception' is used twice...)
 * Configure your Implementation as @Bean - only then, XML Schema Validation will be activated
 
 # Todos:

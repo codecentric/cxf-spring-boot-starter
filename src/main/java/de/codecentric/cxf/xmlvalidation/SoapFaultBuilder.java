@@ -27,10 +27,10 @@ public class SoapFaultBuilder {
 		message.setContent(Exception.class, exceptionFault);
 	}
 	
-	private Element createFaultDetailWithCustomException(String originalFaultMessage,  FaultConst faultContent) {
+	private Element createFaultDetailWithCustomException(String originalFaultMessage, FaultConst faultContent) {
 		Element weatherExceptionElementAppended = null;
 		try {
-		    Object faultDetail = customFaultDetailBuilder.createCustomFaultDetail(originalFaultMessage);
+		    Object faultDetail = customFaultDetailBuilder.createCustomFaultDetail(originalFaultMessage, faultContent);
 			Document faultDetailAsDoc = XmlUtils.marhallJaxbElement(faultDetail);
 			// As the Root-Element is deleted while adding the CustomFault to the Fault-Details, we have to use a Workaround:
 	    	// we append it to a new Element, which then gets deleted again
