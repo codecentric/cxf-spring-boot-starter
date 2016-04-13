@@ -14,7 +14,7 @@ import de.codecentric.cxf.logging.BaseLogger;
 @Component
 public class SoapFaultBuilder {
 
-	@Autowired
+	@Autowired(required=false)
 	private CustomFaultDetailBuilder customFaultDetailBuilder;
 	
 	private static final BaseLogger LOG = BaseLogger.getLogger(SoapFaultBuilder.class);
