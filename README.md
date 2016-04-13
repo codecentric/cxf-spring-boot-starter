@@ -21,7 +21,7 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 ```
 <parent>
 		<groupId>de.codecentric</groupId>
-	    <artifactId>cxf-spring-boot-starter</artifactId>
+	    <artifactId>cxf-spring-boot-starter-parent</artifactId>
 	    <version>1.0.0-SNAPSHOT</version>
 </parent>
 ```
