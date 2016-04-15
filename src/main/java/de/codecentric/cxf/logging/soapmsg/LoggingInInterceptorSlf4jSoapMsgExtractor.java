@@ -10,6 +10,14 @@ import de.codecentric.cxf.logging.CxfLoggingSoapActionUtil;
 import de.codecentric.cxf.logging.ElasticsearchField;
 import de.codecentric.cxf.logging.BaseLogger;
 
+/**
+ * This Apache CXF Logging Interceptor extracts the SoapMessage and logs it, so that the {@link BaseLogger} could put
+ * it into the Slf4j MDC (Mapped Diagnostic Context, see <a href="http://logback.qos.ch/manual/mdc.html">http://logback.qos.ch/manual/mdc.html</a>} for more details)
+ * with a Key directly suitable for processing with the ELK-Stack (Elasticsearch, Logstash, Kibana).  
+ * 
+ * @author Jonas Hecht
+ *
+ */
 public class LoggingInInterceptorSlf4jSoapMsgExtractor extends LoggingInInterceptor {
 
     private static final BaseLogger LOG = BaseLogger.getLogger(LoggingInInterceptorSlf4jSoapMsgExtractor.class);

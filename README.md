@@ -10,7 +10,8 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 * Generating all necessary Java-Classes using JAX-B from your WSDL/XSDs (using the complementing parent-pom [cxf-spring-boot-starter-parent](https://github.com/jonashackt/cxf-spring-boot-starter-parent))
 * Booting up Apache CXF within Spring Context with 100% pure Java-Configuration
-* Configure CXF to use slf4j and serve Logging-Interceptors, to log only the SOAP-Messages onto console or directly into ELK, like [docker-elk](https://github.com/jonashackt/docker-elk)
+* Configure CXF to use slf4j and serve Logging-Interceptors, to log only the SOAP-Messages onto console 
+* Extract the SoapMessages for processing in ELK-Stack, like [docker-elk](https://github.com/jonashackt/docker-elk)
 
 
 # Documentation
@@ -42,7 +43,11 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 ### SOAP-Message-Logging
 
-Activate via Property logging.soap.messages=true in application.properties.
+Activate via Property soap.messages.logging=true in application.properties.
+
+### Extract the SoapMessages for processing in ELK-Stack
+
+Activate via Property soap.messages.extract=true in application.properties.
 
 ### XML Schema Validation 
 

@@ -1,7 +1,6 @@
 package de.codecentric.cxf.configuration;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.Filter;
 
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.interceptor.AbstractLoggingInterceptor;
@@ -12,7 +11,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import de.codecentric.cxf.logging.LogCorrelationFilter;
 import de.codecentric.cxf.logging.soapmsg.LoggingInInterceptorXmlOnly;
 import de.codecentric.cxf.logging.soapmsg.LoggingOutInterceptorXmlOnly;
 
@@ -22,7 +20,7 @@ import de.codecentric.cxf.logging.soapmsg.LoggingOutInterceptorXmlOnly;
  * @author Jonas Hecht
  */
 @Configuration
-@ConditionalOnProperty("logging.soap.messages")
+@ConditionalOnProperty("soap.messages.logging")
 public class SoapMessageLoggerConfiguration {
 
 	@Autowired
@@ -31,29 +29,23 @@ public class SoapMessageLoggerConfiguration {
 	@PostConstruct
 	public void activateLoggingFeature() {
 		// Log SoapMessages to Logfile
-    	springBus.getInInterceptors().add(logInInterceptor());
-    	springBus.getInFaultInterceptors().add(logInInterceptor());
+    	springBus.getInInterceptors().add(logInInterceptorSoapMsgLogger());
+    	springBus.getInFaultInterceptors().add(logInInterceptorSoapMsgLogger());
     	springBus.getOutInterceptors().add(logOutInterceptor());
     	springBus.getOutFaultInterceptors().add(logOutInterceptor());
 	}
 
 	@Bean
-	public AbstractLoggingInterceptor logInInterceptor() {
-	    LoggingInInterceptor logInInterceptor = new LoggingInInterceptorXmlOnly(); // LoggingInInterceptorSlf4jSoapMsgExtractor();
+	public AbstractLoggingInterceptor logInInterceptorSoapMsgLogger() {
+	    LoggingInInterceptor logInInterceptor = new LoggingInInterceptorXmlOnly();
 	    logInInterceptor.setPrettyLogging(true);
 		return logInInterceptor; 
 	}
 	
 	@Bean
 	public AbstractLoggingInterceptor logOutInterceptor() {
-		LoggingOutInterceptor logOutInterceptor = new LoggingOutInterceptorXmlOnly(); // LoggingOutInterceptorSlf4jSoapMsgExtractor();
+		LoggingOutInterceptor logOutInterceptor = new LoggingOutInterceptorXmlOnly();
 		logOutInterceptor.setPrettyLogging(true);
 		return logOutInterceptor; 
-	}
-	
-	// Register Filter for Correlating Logmessages from the same Service-Consumer
-	@Bean
-	public Filter filter() {
-	    return new LogCorrelationFilter();
 	}
 }
