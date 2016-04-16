@@ -14,12 +14,18 @@ import org.springframework.stereotype.Component;
 import de.codecentric.cxf.common.BootStarterCxfException;
 import de.codecentric.cxf.common.XmlUtils;
 
+/**
+ * Simple SOAP-Client for testing SOAP-APIs, how they would behave without XML schema compliant requests,
+ * that couldn´t be marshalled to the JAX-B Objects. 
+ * 
+ * @author Jonas Hecht
+ *
+ */
 @Component
 public class SoapRawClient {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SoapRawClient.class);
 	private String soapAction;
-	
 	private String soapServiceUrl;
 	
 	public <T> SoapRawClient(String soapServiceUrl, Class<T> jaxWsServiceInterfaceClass) throws BootStarterCxfException {

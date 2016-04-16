@@ -3,6 +3,12 @@ package de.codecentric.cxf.logging;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Tries to extract methodname from SOAP webservice based on the SOAPAction HTTP-Header. Only works with SOAP 1.1, cause in 1.2 this Header is gone.
+ * 
+ * @author Jonas Hecht
+ *
+ */
 public final class CxfLoggingSoapActionUtil {
 
     // (?<=SOAPAction=\["urn:)[a-zA-Z]+(?=\"]) 

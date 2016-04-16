@@ -11,6 +11,13 @@ import de.codecentric.cxf.common.FaultConst;
 import de.codecentric.cxf.common.XmlUtils;
 import de.codecentric.cxf.logging.BaseLogger;
 
+/**
+ * Builds a custom SoapFault based upon a JAX-B generated custom Exception-Object, when {@link CustomFaultDetailBuilder} is implemented
+ * and configured.
+ * 
+ * @author Jonas Hecht
+ *
+ */
 @Component
 public class SoapFaultBuilder {
 

@@ -31,6 +31,8 @@ import org.slf4j.MDC;
  * which possibly reuses the same thread.
  * For that requirement a Servlet-Filter comes in handy, because it´s ability in giving a starting
  * point before CXF and a finally-block after it. 
+ * 
+ * @author Jonas Hecht
  */
 public class LogCorrelationFilter implements Filter {
 

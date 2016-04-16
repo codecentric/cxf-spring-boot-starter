@@ -15,7 +15,8 @@ import de.codecentric.cxf.logging.soapmsg.LoggingInInterceptorSlf4jSoapMsgExtrac
 import de.codecentric.cxf.logging.soapmsg.LoggingOutInterceptorSlf4jSoapMsgExtractor;
 
 /**
- * Logging of SoapMessages to either Console and/or Logstash. To activate Logging, set property logging.soap.messages=true.
+ * Extraction of SoapMessages, so they can be further processed, e.g. via Logstash to push to elasticsearch.
+ * Activate with property soap.messages.extract=true.
  * 
  * @author Jonas Hecht
  */

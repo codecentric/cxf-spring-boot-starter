@@ -24,6 +24,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+/**
+ * Utilities to work with JAX-B and SOAP/XML.
+ * 
+ * @author Jonas Hecht
+ *
+ */
 public final class XmlUtils {
 
 	// private Constructor for Utility-Class

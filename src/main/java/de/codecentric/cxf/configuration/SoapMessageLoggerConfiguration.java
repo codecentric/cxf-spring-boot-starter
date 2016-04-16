@@ -15,7 +15,7 @@ import de.codecentric.cxf.logging.soapmsg.LoggingInInterceptorXmlOnly;
 import de.codecentric.cxf.logging.soapmsg.LoggingOutInterceptorXmlOnly;
 
 /**
- * Logging of SoapMessages to either Console and/or Logstash. To activate Logging, set property logging.soap.messages=true.
+ * Logging of SoapMessages to e.g. Console. To activate, set property soap.messages.logging=true.
  * 
  * @author Jonas Hecht
  */
