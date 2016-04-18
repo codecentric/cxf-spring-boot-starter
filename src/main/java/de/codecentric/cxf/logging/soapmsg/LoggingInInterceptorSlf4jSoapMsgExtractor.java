@@ -28,6 +28,9 @@ public class LoggingInInterceptorSlf4jSoapMsgExtractor extends LoggingInIntercep
         // we just want to Push the SOAP-Message to Logback -> Logstash -> Elasticsearch -> Kibana
     }
     
+    /* (non-Javadoc)
+     * @see org.apache.cxf.interceptor.LoggingInInterceptor#formatLoggingMessage(org.apache.cxf.interceptor.LoggingMessage)
+     */
     @Override
     protected String formatLoggingMessage(LoggingMessage loggingMessage) {
         String headers = loggingMessage.getHeader().toString();

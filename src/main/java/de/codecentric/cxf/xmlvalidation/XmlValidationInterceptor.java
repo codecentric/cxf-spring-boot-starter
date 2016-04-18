@@ -14,6 +14,14 @@ import com.ctc.wstx.exc.WstxUnexpectedCharException;
 import de.codecentric.cxf.common.FaultConst;
 import de.codecentric.cxf.logging.BaseLogger;
 
+/**
+ * Apache CXF Interceptor, which is processed early in the Interceptor-Chain, that tries to analyze and handle all XML schema valdiation
+ * errors that could occur somewhere in Apache CXF´s SOAP-Processing. Refers to the {@link SoapFaultBuilder} to build a custom Soap-Fault,
+ * when {@link CustomFaultDetailBuilder} is implemented and configured.
+ * 
+ * @author Jonas Hecht
+ *
+ */
 public class XmlValidationInterceptor extends AbstractSoapInterceptor {
 
 	private static final BaseLogger LOG = BaseLogger.getLogger(XmlValidationInterceptor.class);
