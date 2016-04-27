@@ -8,7 +8,7 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 # Features include:
 
-* Generating all necessary Java-Classes using JAX-B from your WSDL/XSDs (using the complementing parent-pom [cxf-spring-boot-starter-parent](https://github.com/jonashackt/cxf-spring-boot-starter-parent))
+* Generating all necessary Java-Classes using JAX-B from your WSDL/XSDs (using the complementing Maven plugin [cxf-spring-boot-starter-maven-plugin]
 * Booting up Apache CXF within Spring Context with 100% pure Java-Configuration
 * Configure CXF to use slf4j and serve Logging-Interceptors, to log only the SOAP-Messages onto console 
 * Extract the SoapMessages for processing in ELK-Stack, like [docker-elk](https://github.com/jonashackt/docker-elk)
