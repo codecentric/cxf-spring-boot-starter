@@ -25,7 +25,7 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 	<dependency>
 		<groupId>de.codecentric</groupId>
     	<artifactId>cxf-spring-boot-starter</artifactId>
-    	<version>1.0.0-SNAPSHOT</version>
+    	<version>1.0.3-SNAPSHOT</version>
 	</dependency>
 </dependencies>
 ```
@@ -37,7 +37,14 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
         <plugin>
             <groupId>de.codecentric</groupId>
             <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.3-SNAPSHOT</version>
+            <executions>
+				<execution>
+					<goals>
+						<goal>generate</goal>
+					</goals>
+				</execution>
+			</executions>
         </plugin>
     </plugins>
 </build>

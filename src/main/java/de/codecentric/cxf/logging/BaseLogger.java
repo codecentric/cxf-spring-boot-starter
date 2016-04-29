@@ -25,28 +25,34 @@ public class BaseLogger {
 	 */
 	/**
 	 * Puts the String it into the Slf4j MDC (Mapped Diagnostic Context, see <a href="http://logback.qos.ch/manual/mdc.html">http://logback.qos.ch/manual/mdc.html</a>} for more details)
-	 * with the Key {@link ElasticsearchField.SOAP_MESSAGE_INBOUND} you can find in your Elasticsearch, when processed via logstash. 
-	 */    
-	public void logInboundSoapMessage(String headers) {
+	 * with the Key {@link ElasticsearchField#SOAP_MESSAGE_INBOUND} you can find in your Elasticsearch, when processed via logstash. 
+     *
+	 * @param inboundSoapMessage
+	 */
+	public void logInboundSoapMessage(String inboundSoapMessage) {
 	    // see https://github.com/logstash/logstash-logback-encoder/tree/logstash-logback-encoder-4.5#event-specific-custom-fields
 	    // net.logstash.logback.marker.Markers.append() enables to directly push a field into elasticsearch, only for one message
-	    delegateLogger.info(append(ElasticsearchField.SOAP_MESSAGE_INBOUND.getName(), headers),
+	    delegateLogger.info(append(ElasticsearchField.SOAP_MESSAGE_INBOUND.getName(), inboundSoapMessage),
                 "===[> Inbound-SoapMessage ===[>");
     }
     
 	/**
      * Puts the String it into the Slf4j MDC (Mapped Diagnostic Context, see <a href="http://logback.qos.ch/manual/mdc.html">http://logback.qos.ch/manual/mdc.html</a>} for more details)
-     * with the Key {@link ElasticsearchField.SOAP_MESSAGE_OUTBOUND} you can find in your Elasticsearch, when processed via logstash. 
+     * with the Key {@link ElasticsearchField#SOAP_MESSAGE_OUTBOUND} you can find in your Elasticsearch, when processed via logstash.
+     * 
+     * @param outboundSoapMessage
      */
-    public void logOutboundSoapMessage(String headers) {
-        delegateLogger.info(append(ElasticsearchField.SOAP_MESSAGE_OUTBOUND.getName(), headers),
+    public void logOutboundSoapMessage(String outboundSoapMessage) {
+        delegateLogger.info(append(ElasticsearchField.SOAP_MESSAGE_OUTBOUND.getName(), outboundSoapMessage),
                 "<]=== Outbound-SoapMessage <]===");
     }
 	
     /**
      * Puts the String it into the Slf4j MDC (Mapped Diagnostic Context, see <a href="http://logback.qos.ch/manual/mdc.html">http://logback.qos.ch/manual/mdc.html</a>} for more details)
-     * with the Key {@link ElasticsearchField.HTTP_HEADER_INBOUND} you can find in your Elasticsearch, when processed via logstash. 
-     */
+     * with the Key {@link ElasticsearchField#HTTP_HEADER_INBOUND} you can find in your Elasticsearch, when processed via logstash. 
+     *
+	 * @param headers
+	 */
 	public void logHttpHeader(String headers) {
 		delegateLogger.info(append(ElasticsearchField.HTTP_HEADER_INBOUND.getName(), headers),
 		        "001 >>> Header in Inbound-HTTP-Message see Elasticsearch-Field '{}'",

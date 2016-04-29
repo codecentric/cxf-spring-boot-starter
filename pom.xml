@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -7,11 +8,11 @@
 	</parent>
 	<groupId>de.codecentric</groupId>
 	<artifactId>cxf-spring-boot-starter</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<name>cxf-spring-boot-starter</name>
 	<description>Boot starter for SOAP-Webservices with Apache CXF using JAX-WS &amp; JAXB with Annotations only</description>
 	<packaging>jar</packaging>
-	<url>https://github.com/jonashackt/cxf-spring-boot-starter</url>
+	<url>https://github.com/codecentric/cxf-spring-boot-starter</url>
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
@@ -24,19 +25,28 @@
 			<name>Jonas Hecht</name>
 			<email>jonas.hecht@codecentric.de</email>
 			<organization>codecentric AG</organization>
+			<organizationUrl>http://www.codecentric.de</organizationUrl>
 		</developer>
 	</developers>
-
 	<scm>
-		<connection>scm:git:git://github.com/jonashackt/cxf-spring-boot-starter.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/jonashackt/cxf-spring-boot-starter.git</developerConnection>
-		<url>https://github.com/jonashackt/cxf-spring-boot-starter</url>
+		<connection>scm:git:git://github.com/codecentric/cxf-spring-boot-starter.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/codecentric/cxf-spring-boot-starter.git</developerConnection>
+		<url>git@github.com:/codecentric/cxf-spring-boot-starter.git</url>
 	</scm>
+	<distributionManagement>
+	   <repository>
+	     <id>oss.sonatype.org</id>
+	     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+	   </repository>
+	   <snapshotRepository>
+	     <id>oss.sonatype.org</id>
+	     <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+	   </snapshotRepository>
+	</distributionManagement>
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring.boot.version>1.3.3.RELEASE</spring.boot.version>
@@ -44,35 +54,38 @@
 		<fluent-hc.version>4.5.2</fluent-hc.version>
 		<camunda.version>7.4.0</camunda.version>
 		<logstash-logback-encoder.version>4.6</logstash-logback-encoder.version>
-		<commons-io.version>2.5</commons-io.version>
-
+		<commons-io.version>2.4</commons-io.version>
 		<!-- Analysis Tools for CI -->
 		<build-plugin.jacoco.version>0.7.6.201602180812</build-plugin.jacoco.version>
 		<build-plugin.coveralls.version>4.1.0</build-plugin.coveralls.version>
 		<!-- Exclude generated JAXB-Java-Classes from Sonar-Analysis -->
 		<sonar.exclusions>**/target/generated-sources/wsdlimport/**</sonar.exclusions>
 	</properties>
-
-   
-   <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.boot.version}</version>
-        </dependency>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-			<version>${spring.boot.version}</version>
 		</dependency>
-
 		<!-- Ease development - e.g. with autorestart, see https://spring.io/blog/2015/06/17/devtools-in-spring-boot-1-3 -->
-	    <dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-devtools</artifactId>
-	        <version>${spring.boot.version}</version>
-	    </dependency>
-		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
 		<!-- Apache CXF -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -84,113 +97,186 @@
 			<artifactId>cxf-rt-transports-http</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
-
 		<!-- camunda DMN Engine -->
 		<dependency>
-	      <groupId>org.camunda.bpm.dmn</groupId>
-	      <artifactId>camunda-engine-dmn-bom</artifactId>
-	      <version>${camunda.version}</version>
-	      <type>pom</type>
-	      <scope>import</scope>
-	    </dependency>
-		
-		<dependency>
-		  <groupId>org.camunda.bpm.dmn</groupId>
-		  <artifactId>camunda-engine-dmn</artifactId>
-		  <version>${camunda.version}</version>
+			<groupId>org.camunda.bpm.dmn</groupId>
+			<artifactId>camunda-engine-dmn-bom</artifactId>
+			<version>${camunda.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.camunda.bpm.dmn</groupId>
+			<artifactId>camunda-engine-dmn</artifactId>
+			<version>${camunda.version}</version>
+		</dependency>
 		<!-- Logging with ELK -->
 		<dependency>
-		  <groupId>net.logstash.logback</groupId>
-		  <artifactId>logstash-logback-encoder</artifactId>
-		  <version>${logstash-logback-encoder.version}</version>
-		  <!-- Exclude older version of logback-core for conflicting with newer in spring-boot, see https://github.com/logstash/logstash-logback-encoder/issues/153 -->
-		  <exclusions>
-            	<exclusion>
-            		<artifactId>logback-core</artifactId>
-            		<groupId>ch.qos.logback</groupId>
-            	</exclusion>
-            </exclusions>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>${logstash-logback-encoder.version}</version>
+			<!-- Exclude older version of logback-core for conflicting with newer in spring-boot, see https://github.com/logstash/logstash-logback-encoder/issues/153 -->
+			<exclusions>
+				<exclusion>
+					<artifactId>logback-core</artifactId>
+					<groupId>ch.qos.logback</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
-		<!-- Fileconverting for PDF-reading -->		
+		<!-- Fileconverting for PDF-reading -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io.version}</version>
 		</dependency>
-
 		<!-- SoapRawClient -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>fluent-hc</artifactId>
 			<version>${fluent-hc.version}</version>
 		</dependency>
-
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>${spring.boot.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
-   </dependencies>
-	
-     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-	        
+	</dependencies>
+	<build>
+		<plugins>
 			<plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${build-plugin.jacoco.version}</version>
-                <executions>
-                    <!-- Prepares the property pointing to the JaCoCo
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${build-plugin.jacoco.version}</version>
+				<executions>
+					<!-- Prepares the property pointing to the JaCoCo
                     runtime agent which is passed as VM argument when Maven the Surefire plugin
                     is executed. -->
-                    <execution>
-                        <id>pre-unit-test</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-
-                    <!-- Ensures that the code coverage report for
+					<execution>
+						<id>pre-unit-test</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- Ensures that the code coverage report for
                     unit tests is created after unit tests have been run. -->
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-             <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>${build-plugin.coveralls.version}</version>
-            </plugin>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>${build-plugin.coveralls.version}</version>
+			</plugin>
 		</plugins>
-    </build>
-    
-     <repositories>
-        <repository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>https://repo.spring.io/libs-release</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-releases</id>
-            <url>https://repo.spring.io/libs-release</url>
-        </pluginRepository>
-    </pluginRepositories>
-  
+	</build>
+	
+	<profiles>
+		<!-- plugins needed to deploy to Maven Central -->
+		<profile>
+			<id>central-deploy</id>
+			<build>
+				<plugins>
+					<plugin>
+				        <artifactId>maven-gpg-plugin</artifactId>
+				        <version>1.6</version>
+				        <executions>
+				          <execution>
+				            <id>sign-artifacts</id>
+				            <phase>verify</phase>
+				            <goals>
+				              <goal>sign</goal>
+				            </goals>
+				          </execution>
+				        </executions>
+				    </plugin>
+				    <plugin>
+				        <groupId>org.codehaus.mojo</groupId>
+				        <artifactId>versions-maven-plugin</artifactId>
+				        <version>2.2</version>
+				        <configuration>
+				          <generateBackupPoms>false</generateBackupPoms>
+				        </configuration>
+				    </plugin>
+				    <plugin>
+				        <artifactId>maven-deploy-plugin</artifactId>
+				        <configuration>
+				          <skip>true</skip>
+				        </configuration>
+				    </plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.3</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+				        <groupId>org.sonatype.plugins</groupId>
+				        <artifactId>nexus-staging-maven-plugin</artifactId>
+				        <version>1.6.7</version>
+				        <extensions>true</extensions>
+				        <configuration>
+				          <serverId>oss.sonatype.org</serverId>
+				          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+				          <description>${project.version}</description>
+				        </configuration>
+				        <executions>
+				          <execution>
+				            <id>deploy-to-sonatype</id>
+				            <phase>deploy</phase>
+				            <goals>
+				              <goal>deploy</goal>
+				              <goal>release</goal>
+				            </goals>
+				          </execution>
+				        </executions>
+				    </plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	<repositories>
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/libs-release</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<url>https://repo.spring.io/libs-release</url>
+		</pluginRepository>
+	</pluginRepositories>
 </project>
