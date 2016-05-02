@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>de.codecentric</groupId>
 	<artifactId>cxf-spring-boot-starter</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.5-SNAPSHOT</version>
 	<name>cxf-spring-boot-starter</name>
 	<description>Boot starter for SOAP-Webservices with Apache CXF using JAX-WS &amp; JAXB with Annotations only</description>
 	<packaging>jar</packaging>
@@ -148,6 +148,21 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- Used for testing purposes. The plugin should allways have the same version number
+			     like this starter -->
+			<plugin>
+				<groupId>de.codecentric</groupId>
+				<artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>

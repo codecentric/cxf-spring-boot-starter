@@ -76,6 +76,7 @@ Activate via Property soap.messages.extract=true in application.properties.
 * ASCII-Doc
 * logstash-Configuration
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
+* kill the need for @ComponentScan("de.codecentric.cxf")
 
 # Contribution
 
