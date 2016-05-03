@@ -54,7 +54,7 @@
 		<cxf.version>3.1.6</cxf.version>
 		<fluent-hc.version>4.5.2</fluent-hc.version>
 		<camunda.version>7.4.0</camunda.version>
-		<logstash-logback-encoder.version>4.6</logstash-logback-encoder.version>
+		<logstash-logback-encoder.version>4.7</logstash-logback-encoder.version>
 		<commons-io.version>2.4</commons-io.version>
 		<!-- Analysis Tools for CI -->
 		<build-plugin.jacoco.version>0.7.6.201602180812</build-plugin.jacoco.version>
