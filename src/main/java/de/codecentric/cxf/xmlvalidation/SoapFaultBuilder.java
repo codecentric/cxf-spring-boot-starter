@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import de.codecentric.cxf.common.FaultConst;
+import de.codecentric.cxf.common.FaultType;
 import de.codecentric.cxf.common.XmlUtils;
 import de.codecentric.cxf.logging.BaseLogger;
 
@@ -21,32 +21,42 @@ import de.codecentric.cxf.logging.BaseLogger;
 @Component
 public class SoapFaultBuilder {
 
+    private static final String UNKNOWN_ERROR = "Unknown Error accured. Please contact support.";
+    
 	@Autowired(required=false)
 	private CustomFaultDetailBuilder customFaultDetailBuilder;
 	
 	private static final BaseLogger LOG = BaseLogger.getLogger(SoapFaultBuilder.class);
 	
-	public void buildCustomFaultAndSet2SoapMessage(SoapMessage message, FaultConst faultContent) {
+	public void buildCustomFaultAndSet2SoapMessage(SoapMessage message, FaultType faultContent) {
 		Fault exceptionFault = (Fault) message.getContent(Exception.class);
-		String originalFaultMessage = exceptionFault.getMessage();
+		// Preserve original FaultMessage for later need
+		String originalFaultMessage = getMessageValueIfThere(exceptionFault);
 		exceptionFault.setMessage(faultContent.getMessage());
 		exceptionFault.setDetail(createFaultDetailWithCustomException(originalFaultMessage, faultContent));
 		message.setContent(Exception.class, exceptionFault);
 	}
+
+    private String getMessageValueIfThere(Fault exceptionFault) {
+        if(exceptionFault.getMessage() != null) {
+            return exceptionFault.getMessage();
+        }
+        return UNKNOWN_ERROR;
+    }
 	
-	private Element createFaultDetailWithCustomException(String originalFaultMessage, FaultConst faultContent) {
-		Element weatherExceptionElementAppended = null;
+	private Element createFaultDetailWithCustomException(String originalFaultMessage, FaultType faultContent) {
+		Element exceptionElementAppended = null;
 		try {
 		    Object faultDetail = customFaultDetailBuilder.createCustomFaultDetail(originalFaultMessage, faultContent);
 			Document faultDetailAsDoc = XmlUtils.marhallJaxbElement(faultDetail);
 			// As the Root-Element is deleted while adding the CustomFault to the Fault-Details, we have to use a Workaround:
 	    	// we append it to a new Element, which then gets deleted again
-	    	weatherExceptionElementAppended = XmlUtils.appendAsChildElement2NewElement(faultDetailAsDoc);
+	    	exceptionElementAppended = XmlUtils.appendAsChildElement2NewElement(faultDetailAsDoc);
 		} catch (Exception exception) {
 			LOG.failedToBuildWeatherServiceCompliantSoapFaultDetails(exception);
 			// We don´t want an Exception thrown here
 		}
-		return weatherExceptionElementAppended;
+		return exceptionElementAppended;
 	}
 
 }

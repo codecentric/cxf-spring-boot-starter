@@ -26,7 +26,7 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 	<dependency>
 		<groupId>de.codecentric</groupId>
     	<artifactId>cxf-spring-boot-starter</artifactId>
-    	<version>1.0.4.RELEASE</version>
+    	<version>1.0.5.RELEASE</version>
 	</dependency>
 </dependencies>
 ```
@@ -38,7 +38,7 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
         <plugin>
             <groupId>de.codecentric</groupId>
             <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
-            <version>1.0.4.RELEASE</version>
+            <version>1.0.5.RELEASE</version>
             <executions>
 				<execution>
 					<goals>
@@ -55,7 +55,24 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 * place your .wsdl-File (and all the imported XSDs) into src/main/resources/wsdl
 * run mvn generate-sources to generate all necessary Java-Classes from your WSDL/XSD 
-* create a application.properties and set the BaseURL of your Webservices via soap.service.base.url="/yourUrlHere"
+* create a application.properties and optionally set the BaseURL of your Webservices via soap.service.base.url=/yourUrlHere
+
+### Create a WebService Client
+
+* If you instantiate a JaxWsProxyFactoryBean, you need to set an Adress containing your configured (or the standard) soap.service.base.url. To get the correct path, just autowire the CxfAutoConfiguration like:
+
+``` 
+@Autowired
+private CxfAutoConfiguration cxfAutoConfiguration;
+```
+
+and obtain the base.url by calling
+
+```
+cxfAutoConfiguration.getBaseUrl()
+```
+
+
 
 ### SOAP-Message-Logging
 

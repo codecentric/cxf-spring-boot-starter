@@ -11,7 +11,7 @@ import org.apache.cxf.phase.Phase;
 import com.ctc.wstx.exc.WstxException;
 import com.ctc.wstx.exc.WstxUnexpectedCharException;
 
-import de.codecentric.cxf.common.FaultConst;
+import de.codecentric.cxf.common.FaultType;
 import de.codecentric.cxf.logging.BaseLogger;
 
 /**
@@ -38,15 +38,21 @@ public class XmlValidationInterceptor extends AbstractSoapInterceptor {
 	    String faultMessage = fault.getMessage();
 
 	    if (containsFaultIndicatingNotSchemeCompliantXml(faultCause, faultMessage)) { 
-	    	LOG.schemaValidationError(FaultConst.SCHEME_VALIDATION_ERROR, faultMessage);
-	    	soapFaultBuilder.buildCustomFaultAndSet2SoapMessage(soapMessage, FaultConst.SCHEME_VALIDATION_ERROR);
+	    	LOG.schemaValidationError(FaultType.SCHEME_VALIDATION_ERROR, faultMessage);
+	    	soapFaultBuilder.buildCustomFaultAndSet2SoapMessage(soapMessage, FaultType.SCHEME_VALIDATION_ERROR);
 	    } else if (containsFaultIndicatingSyntacticallyIncorrectXml(faultCause)) {
-	    	LOG.schemaValidationError(FaultConst.SYNTACTICALLY_INCORRECT_XML_ERROR, faultMessage);
-	    	soapFaultBuilder.buildCustomFaultAndSet2SoapMessage(soapMessage, FaultConst.SYNTACTICALLY_INCORRECT_XML_ERROR);	        
+	    	LOG.schemaValidationError(FaultType.SYNTACTICALLY_INCORRECT_XML_ERROR, faultMessage);
+	    	soapFaultBuilder.buildCustomFaultAndSet2SoapMessage(soapMessage, FaultType.SYNTACTICALLY_INCORRECT_XML_ERROR);	        
+	    } else if(someOtherErrorOccured(faultCause)) {
+	        // Some other Error occured, we don´t know. But we want to react with a Custom Error-Message
+	        LOG.errorOccuredInBackendProcessing(faultCause);
+	        soapFaultBuilder.buildCustomFaultAndSet2SoapMessage(soapMessage, FaultType.BACKEND_PROCESSING_FAILED);
 	    }
 	}
 
-	private boolean containsFaultIndicatingNotSchemeCompliantXml(Throwable faultCause, String faultMessage) {
+	
+
+    private boolean containsFaultIndicatingNotSchemeCompliantXml(Throwable faultCause, String faultMessage) {
 		if(faultCause instanceof UnmarshalException
 	    	// 1.) If the root-Element of the SoapBody is syntactically correct, but not scheme-compliant,
 			// 		there is no UnmarshalException and we have to look for
@@ -67,6 +73,11 @@ public class XmlValidationInterceptor extends AbstractSoapInterceptor {
 		}
 		return false;
 	}
+	
+	private boolean someOtherErrorOccured(Throwable faultCause) {
+        // Catch all other (un-)checked Exceptions, to handle with Custom Error-Message
+        return isNotNull(faultCause);
+    }
 	
 	private boolean isNotNull(Object object) {
 		return object != null;

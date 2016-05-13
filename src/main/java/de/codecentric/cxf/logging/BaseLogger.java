@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.MessageFormatter;
 
-import de.codecentric.cxf.common.FaultConst;
+import de.codecentric.cxf.common.FaultType;
 
 public class BaseLogger {
     
@@ -83,7 +83,7 @@ public class BaseLogger {
 	/*
      * Errors - 9xx
      */
-    public void errorAccuredInBackendProcessing(Throwable cause) {
+    public void errorOccuredInBackendProcessing(Throwable cause) {
         logError("901", "An Error accured in backend-processing: {}", cause.getMessage());
     }
     
@@ -91,7 +91,7 @@ public class BaseLogger {
         logError("902", "Failed to build Weather-compliant SoapFault-details: {}\nStacktrace: {}", cause.getMessage(), cause.getStackTrace());
     }   
     
-    public void schemaValidationError(FaultConst error, String faultMessage) {
+    public void schemaValidationError(FaultType error, String faultMessage) {
         logDebug("903", error.getMessage() + ": {}", faultMessage);
     }
 

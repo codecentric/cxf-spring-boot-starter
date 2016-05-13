@@ -2,7 +2,7 @@ package de.codecentric.cxf.xmlvalidation;
 
 import org.springframework.context.annotation.Bean;
 
-import de.codecentric.cxf.common.FaultConst;
+import de.codecentric.cxf.common.FaultType;
 
 /**
  * Implement this Interface and configure a Spring {@link Bean} to activate extended XML schema validation and Soap-Fault behavior.
@@ -12,5 +12,5 @@ import de.codecentric.cxf.common.FaultConst;
  */
 public interface CustomFaultDetailBuilder {
 
-    public Object createCustomFaultDetail(String originalFaultMessage, FaultConst faultContent);
+    public Object createCustomFaultDetail(String originalFaultMessage, FaultType faultContent);
 }

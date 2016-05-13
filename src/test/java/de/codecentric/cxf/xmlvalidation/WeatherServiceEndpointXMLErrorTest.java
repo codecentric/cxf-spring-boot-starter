@@ -15,7 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import de.codecentric.cxf.common.BootStarterCxfException;
-import de.codecentric.cxf.common.FaultConst;
+import de.codecentric.cxf.common.FaultType;
 import de.codecentric.cxf.soaprawclient.SoapRawClient;
 import de.codecentric.cxf.soaprawclient.SoapRawClientResponse;
 
@@ -77,7 +77,7 @@ public class WeatherServiceEndpointXMLErrorTest {
 	}
 	
 	private void checkXMLErrorNotSchemeCompliant(Resource testFile) throws BootStarterCxfException, IOException {
-		checkXMLError(testFile, FaultConst.SCHEME_VALIDATION_ERROR);
+		checkXMLError(testFile, FaultType.SCHEME_VALIDATION_ERROR);
 	}	
 	
 	/*
@@ -111,10 +111,10 @@ public class WeatherServiceEndpointXMLErrorTest {
 	
 	
 	private void checkXMLErrorSyntacticallyIncorrect(Resource testFile) throws BootStarterCxfException, IOException {
-		checkXMLError(testFile, FaultConst.SYNTACTICALLY_INCORRECT_XML_ERROR);
+		checkXMLError(testFile, FaultType.SYNTACTICALLY_INCORRECT_XML_ERROR);
 	}
 	
-	private void checkXMLError(Resource testFile, FaultConst faultContent) throws BootStarterCxfException, IOException {
+	private void checkXMLError(Resource testFile, FaultType faultContent) throws BootStarterCxfException, IOException {
 		// Given
 		// Resource testFile
 		

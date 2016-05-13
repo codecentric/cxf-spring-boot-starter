@@ -16,6 +16,14 @@ import org.springframework.context.annotation.PropertySource;
 
 import de.codecentric.cxf.logging.LogCorrelationFilter;
 
+/**
+ * While booting up the CXF-Framework and Servlets, we don´t override the Bean "dispatcherServlet" here - because,
+ * if you want to use a second Servlet (e.g. because you need some REST-Endpoint via the @RestController Annotation),
+ * you just could use it. Otherwise, those Servlets would override themselfs. 
+ * 
+ * @author jonashecht
+ *
+ */
 @Configuration
 @PropertySource("classpath:spring-boot-starter-cxf.properties")
 @Import({
@@ -30,11 +38,6 @@ public class CxfAutoConfiguration {
     @Value("${cxf.servicelist.title:CXF SpringBoot Starter - service list}")
     private String serviceListTitle;
     
-    /*
-     * We don´t override the Bean "dispatcherServlet" here - because, if you want to use a second Servlet (e.g. because
-     * you need some REST-Endpoint via the @RestController Annotation), you just could use it. Otherwise, those Servlets
-     * would override themselfs.
-     */
     @Bean
     public ServletRegistrationBean cxfDispatcherServlet() {
         CXFServlet cxfServlet = new CXFServlet();
