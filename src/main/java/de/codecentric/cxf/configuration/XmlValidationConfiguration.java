@@ -10,21 +10,21 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import de.codecentric.cxf.xmlvalidation.CustomFaultDetailBuilder;
+import de.codecentric.cxf.xmlvalidation.CustomFaultBuilder;
 import de.codecentric.cxf.xmlvalidation.SoapFaultBuilder;
 import de.codecentric.cxf.xmlvalidation.XmlValidationInterceptor;
 
 /**
  * Configure extended XML-Schema validation incl. customizing of the responding SoapFaults.
  * Could be activated by configuring your own FaultDetailBuilder as a {@link Bean},
- * which must implement {@link CustomFaultDetailBuilder}. Additionally, a {@link Bean}
+ * which must implement {@link CustomFaultBuilder}. Additionally, a {@link Bean}
  * of Type {@link Endpoint} which configures a {@link EndpointImpl} is needed.
  * 
  * @author Jonas Hecht
  *
  */
 @Configuration
-@ConditionalOnBean(CustomFaultDetailBuilder.class)
+@ConditionalOnBean(CustomFaultBuilder.class)
 public class XmlValidationConfiguration {
 
     @Autowired

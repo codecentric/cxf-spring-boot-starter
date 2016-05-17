@@ -124,7 +124,7 @@ public class WeatherServiceEndpointXMLErrorTest {
 		// Then
 		assertNotNull(soapRawResponse);
 		assertEquals("500 Internal Server Error expected", 500, soapRawResponse.getHttpStatusCode());
-        assertEquals(faultContent.getMessage(), soapRawResponse.getFaultstringValue());
+        assertEquals(WeatherFaultBuilder.CUSTOM_FAULT_MESSAGE, soapRawResponse.getFaultstringValue());
         
         de.codecentric.namespace.weatherservice.exception.WeatherException weatherException = soapRawResponse.getUnmarshalledObjectFromSoapMessage(de.codecentric.namespace.weatherservice.exception.WeatherException.class);		
 		assertNotNull("<soap:Fault><detail> has to contain a de.codecentric.namespace.weatherservice.exception.WeatherException",  weatherException);

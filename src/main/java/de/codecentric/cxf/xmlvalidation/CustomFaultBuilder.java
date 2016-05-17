@@ -10,7 +10,9 @@ import de.codecentric.cxf.common.FaultType;
  * @author Jonas Hecht
  *
  */
-public interface CustomFaultDetailBuilder {
+public interface CustomFaultBuilder {
 
-    public Object createCustomFaultDetail(String originalFaultMessage, FaultType faultContent);
+    public String createCustomFaultMessage(FaultType faultType);
+
+    public Object createCustomFaultDetail(String originalFaultMessage, FaultType faultType);
 }

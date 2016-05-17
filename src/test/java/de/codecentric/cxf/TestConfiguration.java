@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import de.codecentric.cxf.xmlvalidation.CustomFaultDetailBuilder;
-import de.codecentric.cxf.xmlvalidation.WeatherFaultDetailBuilder;
+import de.codecentric.cxf.xmlvalidation.CustomFaultBuilder;
+import de.codecentric.cxf.xmlvalidation.WeatherFaultBuilder;
 import de.codecentric.namespace.weatherservice.Weather;
 import de.codecentric.namespace.weatherservice.WeatherService;
 
@@ -49,8 +49,8 @@ public class TestConfiguration {
     
     // Activating XML-Schema validation with custom Fault
     @Bean
-    public CustomFaultDetailBuilder customFaultDetailBuilder() {
-        return new WeatherFaultDetailBuilder();
+    public CustomFaultBuilder weatherFaultBuilder() {
+        return new WeatherFaultBuilder();
     }
 
 }

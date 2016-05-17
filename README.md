@@ -96,8 +96,10 @@ The standard behavior of Apache CXF with XML validation errors (non schema compl
 </soap:Envelope>
 ```
 Many SOAP based standards demand a custom SOAP-Fault, that should be delivered in case of XML validation errors. To Implement that behavior, you have to:
-* Implement the Interface [CustomFaultDetailBuilder](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/xmlvalidation/CustomFaultDetailBuilder.java) as Spring
-[@Component](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/stereotype/Component.html) and return the JAX-B generated Object, that represents your WebService´ Fault-Details (be careful to take the right one, often the term 'Exception' is used twice...)
+* Implement the Interface [CustomFaultBuilder](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/xmlvalidation/CustomFaultBuilder.java) as Spring
+[@Component](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/stereotype/Component.html)
+* Override Method createCustomFaultMessage(FaultType faultContent) an give back appropriate Messages you want to see in faultstring: <soap:Fault><faultstring>YOUR CUSTOM MESSAGE HERE</faultstring>
+* Override Method createCustomFaultDetail(String originalFaultMessage, FaultType faultContent) and return the JAX-B generated Object, that represents your WebService´ Fault-Details (be really careful to take the right one!!, often the term 'Exception' is used twice... - e.g. with the [BiPro]-Services)
 * Configure your Implementation as @Bean - only then, XML Schema Validation will be activated
 
 # Todos:
@@ -115,5 +117,6 @@ If you want to know more or even contribute to this Spring Boot Starter, maybe y
 
 
 [cxf-spring-boot-starter-maven-plugin]:https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin
+[BiPro]:https://bipro.net
 
 
