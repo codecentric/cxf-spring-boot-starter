@@ -108,6 +108,7 @@ Many SOAP based standards demand a custom SOAP-Fault, that should be delivered i
 * logstash-Configuration
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
 * kill the need for @ComponentScan("de.codecentric.cxf")
+* make deps optional
 
 # Contribution
 
