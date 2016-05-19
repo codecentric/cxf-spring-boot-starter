@@ -53,9 +53,9 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 
 
-* place your .wsdl-File (and all the imported XSDs) into src/main/resources/wsdl
-* run mvn generate-sources to generate all necessary Java-Classes from your WSDL/XSD 
-* create a application.properties and optionally set the BaseURL of your Webservices via soap.service.base.url=/yourUrlHere
+* place your .wsdl-File (and all the imported XSDs) into __src/main/resources/wsdl__ (or optionally set WSDL path, see [cxf-spring-boot-starter-maven-plugin: set wsdl directory] )
+* run __mvn generate-sources__ to generate all necessary Java-Classes from your WSDL/XSD 
+* create a application.properties and optionally set the BaseURL of your Webservices via __soap.service.base.url=/yourUrlHere__
 
 ### Create a WebService Client
 
@@ -76,11 +76,50 @@ cxfAutoConfiguration.getBaseUrl()
 
 ### SOAP-Message-Logging
 
-Activate via Property soap.messages.logging=true in application.properties.
+Activate via Property __soap.messages.logging=true__ in application.properties.
 
 ### Extract the SoapMessages for processing in ELK-Stack
 
-Activate via Property soap.messages.extract=true in application.properties.
+* Activate via Property __soap.messages.extract=true__ in application.properties
+* Add a logback-spring.xml file and configure the [logstash-forwarder] (which is delivered with this spring-boot-starter), like:
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <logger name="org.springframework" level="WARN"/>
+    <!-- more logging config here -->
+    
+    
+    <!-- Logstash-Configuration -->
+	<!-- For details see https://github.com/logstash/logstash-logback-encoder/tree/logstash-logback-encoder-4.5 -->
+	<appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+		<!-- You may want to configure a default instance, this could be done like
+		<destination>${LOGANALYSIS_HOST:-192.168.99.100}:5000</destination> as discribed here:
+		http://logback.qos.ch/manual/configuration.html#defaultValuesForVariables
+		Set the SystemProperty with
+		env LOGANALYSIS_HOST={{ loganalysis.host }}
+		e.g. in a service.upstart.conf.j2, when using Ansible and deploying to Ubuntu -->
+		<destination>192.168.99.100:5000</destination>
+		<!-- encoder is required -->
+	    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+		   	<includeCallerData>true</includeCallerData>
+		   	<customFields>{"service_name":"WeatherService_1.0"}</customFields>
+		   	<fieldNames>
+		   		<message>log-msg</message>
+		   	</fieldNames>
+	   	</encoder>
+	   	<keepAliveDuration>5 minutes</keepAliveDuration>
+	</appender>
+	
+	<root level="INFO">
+	    <appender-ref ref="logstash" />
+	</root>
+</configuration>
+```
+
+* Now some fields will become available in your kibana dashboard (in other words in your elasticsearch index), e.g. soap-message-inbound contains the Inbound Message
+* see all of them here [ElasticsearchField.java](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/logging/ElasticsearchField.java)
 
 ### XML Schema Validation 
 
@@ -105,10 +144,10 @@ Many SOAP based standards demand a custom SOAP-Fault, that should be delivered i
 # Todos:
 
 * ASCII-Doc
-* logstash-Configuration
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
 * kill the need for @ComponentScan("de.codecentric.cxf")
 * make deps optional
+* replace [logstash-forwarder] with [filebeat](https://github.com/elastic/beats/tree/master/filebeat)
 
 # Contribution
 
@@ -117,7 +156,10 @@ If you want to know more or even contribute to this Spring Boot Starter, maybe y
 * [Boot your own Infrastructure - JavaMagazin](https://public.centerdevice.de/a10fb484-49a8-4a70-ada9-5eeda8c69465)
 
 
+
+[cxf-spring-boot-starter-maven-plugin: set wsdl directory]:(https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin#set-wsdl-directory-optional)
 [cxf-spring-boot-starter-maven-plugin]:https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin
 [BiPro]:https://bipro.net
+[logstash-forwarder]:https://github.com/elastic/logstash-forwarder
 
 
