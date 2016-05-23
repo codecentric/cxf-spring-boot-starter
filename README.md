@@ -19,7 +19,7 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 ### Initial Setup
 
-* Create a Spring Boot maven project. It’s pretty much just using spring-boot-starter-parent as a parent und adding the Spring Boot build plugin. Then add cxf-spring-boot-starter as dependency and the [cxf-spring-boot-starter-maven-plugin] as build-plugin (see the example [cxf-boot-simple](https://github.com/jonashackt/cxf-boot-simple)):
+* Create a Spring Boot maven project. It’s pretty much just using spring-boot-starter-parent as a parent und adding the Spring Boot build plugin. Then add cxf-spring-boot-starter as dependency and the [cxf-spring-boot-starter-maven-plugin] as build-plugin (see the example [cxf-boot-simple]):
 
 ```
 <dependencies>
@@ -38,7 +38,7 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
         <plugin>
             <groupId>de.codecentric</groupId>
             <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
-            <version>1.0.5.RELEASE</version>
+            <version>1.0.7.RELEASE</version>
             <executions>
 				<execution>
 					<goals>
@@ -53,32 +53,37 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 
 
-* place your .wsdl-File (and all the imported XSDs) into __src/main/resources/wsdl__ (or optionally set WSDL path, see [cxf-spring-boot-starter-maven-plugin: set wsdl directory] )
+* place your .wsdl-File (and all the imported XSDs) into a folder somewhere under __src/main/resources__ (see [cxf-spring-boot-starter-maven-plugin] for details)
 * run __mvn generate-sources__ to generate all necessary Java-Classes from your WSDL/XSD 
-* create a application.properties and optionally set the BaseURL of your Webservices via __soap.service.base.url=/yourUrlHere__
 
-### Create a WebService Client
 
-* If you instantiate a JaxWsProxyFactoryBean, you need to set an Adress containing your configured (or the standard) soap.service.base.url. To get the correct path, just autowire the CxfAutoConfiguration like:
+# Additional Configuration Options
 
-``` 
-@Autowired
-private CxfAutoConfiguration cxfAutoConfiguration;
-```
+### Customize URL, where your SOAP services are published
 
-and obtain the base.url by calling
+* create a application.properties and set the BaseURL of your Webservices via __soap.service.base.url=/yourUrlHere__
 
-```
-cxfAutoConfiguration.getBaseUrl()
-```
 
+### Customize title of generated CXF-site
+
+* place a __cxf.servicelist.title=Your custom title here__ in application.properties
 
 
 ### SOAP-Message-Logging
 
+SOAP-Messages will be logged only and printed onto STOUT/Console for fast analysis in development.
+
 Activate via Property __soap.messages.logging=true__ in application.properties.
 
 ### Extract the SoapMessages for processing in ELK-Stack
+
+The cxf-spring-boot-starter brings some nice features, you can use with an ELK-Stack to monitor your SOAP-Service-Calls:
+
+* Extract SOAP-Service-Method for Loganalysis (based on WSDL 1.1 spec, 1.2 not supported for now - because this is read from the HTTP-Header field SoapAction, which isn´ mandatory in 1.2 any more)
+* Dead simple Calltime-Logging
+* Correlate all Log-Messages (Selfmade + ApacheCXFs SOAP-Messages) within the Scope of one Service-Consumer`s Call in Kibana via logback´s [MDC], placed in a Servlet-Filter
+
+##### HowTo use
 
 * Activate via Property __soap.messages.extract=true__ in application.properties
 * Add a logback-spring.xml file and configure the [logstash-forwarder] (which is delivered with this spring-boot-starter), like:
@@ -141,6 +146,24 @@ Many SOAP based standards demand a custom SOAP-Fault, that should be delivered i
 * Override Method createCustomFaultDetail(String originalFaultMessage, FaultType faultContent) and return the JAX-B generated Object, that represents your WebService´ Fault-Details (be really careful to take the right one!!, often the term 'Exception' is used twice... - e.g. with the [BiPro]-Services)
 * Configure your Implementation as @Bean - only then, XML Schema Validation will be activated
 
+
+### Create a WebService Client
+
+* If you instantiate a JaxWsProxyFactoryBean, you need to set an Adress containing your configured (or the standard) soap.service.base.url. To get the correct path, just autowire the CxfAutoConfiguration like:
+
+``` 
+@Autowired
+private CxfAutoConfiguration cxfAutoConfiguration;
+```
+
+and obtain the base.url by calling
+
+```
+cxfAutoConfiguration.getBaseUrl()
+```
+
+
+
 # Todos:
 
 * ASCII-Doc
@@ -161,5 +184,7 @@ If you want to know more or even contribute to this Spring Boot Starter, maybe y
 [cxf-spring-boot-starter-maven-plugin]:https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin
 [BiPro]:https://bipro.net
 [logstash-forwarder]:https://github.com/elastic/logstash-forwarder
+[MDC]:http://logback.qos.ch/manual/mdc.html
+[cxf-boot-simple]:https://github.com/codecentric/spring-samples/tree/master/cxf-boot-simple
 
 

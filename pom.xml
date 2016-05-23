@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>de.codecentric</groupId>
 	<artifactId>cxf-spring-boot-starter</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<name>cxf-spring-boot-starter</name>
 	<description>Boot starter for SOAP-Webservices with Apache CXF using JAX-WS &amp; JAXB with Annotations only</description>
 	<packaging>jar</packaging>
@@ -44,13 +44,13 @@
 	   </snapshotRepository>
 	</distributionManagement>
 	<properties>
-		<cxf-spring-boot-starter-maven-plugin.version>1.0.5.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
+		<cxf-spring-boot-starter-maven-plugin.version>1.0.7.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
 		<java.version>1.8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<spring.boot.version>1.3.3.RELEASE</spring.boot.version>
+		<spring.boot.version>1.3.5.RELEASE</spring.boot.version>
 		<cxf.version>3.1.6</cxf.version>
 		<fluent-hc.version>4.5.2</fluent-hc.version>
 		<camunda.version>7.4.0</camunda.version>
@@ -149,8 +149,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<!-- Used for testing purposes. The plugin should allways have the same version number
-			     like this starter -->
+			<!-- Used for testing purposes. -->
 			<plugin>
 				<groupId>de.codecentric</groupId>
 				<artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
