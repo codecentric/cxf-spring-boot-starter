@@ -171,6 +171,7 @@ cxfAutoConfiguration.getBaseUrl()
 * kill the need for @ComponentScan("de.codecentric.cxf")
 * make deps optional
 * replace [logstash-forwarder] with [filebeat](https://github.com/elastic/beats/tree/master/filebeat)
+* Support for WS-Security-Token (e.g. used in [BiPro]
 
 # Contribution
 
