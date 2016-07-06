@@ -38,7 +38,7 @@ public class SoapMessageLoggerConfiguration {
 	@Bean
 	public AbstractLoggingInterceptor logInInterceptorSoapMsgLogger() {
 	    LoggingInInterceptor logInInterceptor = new LoggingInInterceptorXmlOnly();
-	    logInInterceptor.setPrettyLogging(true);
+		// The In-Messages are pretty without setting it, when setting it Apache CXF throws empty lines into the In-Messages
 		return logInInterceptor; 
 	}
 	

@@ -20,7 +20,7 @@ public class LoggingInInterceptorXmlOnly extends LoggingInInterceptor {
         StringBuilder buffer = new StringBuilder();
         // Only write the Payload (SOAP-Xml) to Logger
         if (loggingMessage.getPayload().length() > 0) {
-            buffer.append("0000 >>> Inbound Message:\n");
+            buffer.append("000 >>> Inbound Message:\n");
             buffer.append(loggingMessage.getPayload());
         }        
         return buffer.toString();

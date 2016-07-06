@@ -166,11 +166,11 @@ cxfAutoConfiguration.getBaseUrl()
 
 # Todos:
 
+* Support to use soap.messages.logging and soap.messages.extract at the same time
 * ASCII-Doc
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
 * kill the need for @ComponentScan("de.codecentric.cxf")
 * make deps optional
-* replace [logstash-forwarder] with [filebeat](https://github.com/elastic/beats/tree/master/filebeat)
 * Support for WS-Security-Token (e.g. used in [BiPro]
 
 # Contribution
