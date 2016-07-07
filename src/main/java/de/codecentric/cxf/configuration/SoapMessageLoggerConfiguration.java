@@ -9,6 +9,7 @@ import org.apache.cxf.interceptor.AbstractLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -38,13 +39,14 @@ public class SoapMessageLoggerConfiguration {
 
     @Bean
     @ConditionalOnProperty("soap.messages.extract")
+    @ConditionalOnResource(resources = "classpath:logback-spring.xml")
     public String extractionActivatedLogger() {
         ((SoapMessageLoggingInInterceptor) logInInterceptorSoapMsgLogger()).extractSoapMessage(true);
         ((SoapMessageLoggingOutInterceptor) logOutInterceptorSoapMsgLogger()).extractSoapMessage(true);
         return "unused - this is just to activate Extraction of SoapMessages via SpringBoot";
     }
 
-		
+
 	@PostConstruct
 	public void activateLoggingFeature() {
 		// Log SoapMessages to Logfile

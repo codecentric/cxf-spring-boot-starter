@@ -91,7 +91,7 @@ The cxf-spring-boot-starter brings some nice features, you can use with an ELK-S
 ##### HowTo use
 
 * Activate via Property __soap.messages.extract=true__ in application.properties
-* Add a logback-spring.xml file and configure the [logstash-logback-encoder] (which is delivered with this spring-boot-starter), like:
+* Add a __logback-spring.xml__ file to __src/main/resources__ (otherwise the feature will not be activated) and configure the [logstash-logback-encoder] (which is delivered with this spring-boot-starter), like:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -171,10 +171,10 @@ cxfAutoConfiguration.getBaseUrl()
 # Dones:
 
 * Support to use soap.messages.logging and soap.messages.extract at the same time
+* Only activate SoapMessage extraction, if logback-spring.xml is present
 
 # Todos:
 
-* Only activate SoapMessage extraction, if logback-spring.xml is present
 * ASCII-Doc
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
 * kill the need for @ComponentScan("de.codecentric.cxf")
