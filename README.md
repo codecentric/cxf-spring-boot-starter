@@ -26,7 +26,7 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 	<dependency>
 		<groupId>de.codecentric</groupId>
     	<artifactId>cxf-spring-boot-starter</artifactId>
-    	<version>1.0.5.RELEASE</version>
+    	<version>1.0.6.RELEASE</version>
 	</dependency>
 </dependencies>
 ```
@@ -163,10 +163,12 @@ cxfAutoConfiguration.getBaseUrl()
 ```
 
 
+# Dones:
+
+* Support to use soap.messages.logging and soap.messages.extract at the same time
 
 # Todos:
 
-* Support to use soap.messages.logging and soap.messages.extract at the same time
 * ASCII-Doc
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
 * kill the need for @ComponentScan("de.codecentric.cxf")

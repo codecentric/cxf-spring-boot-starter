@@ -32,8 +32,7 @@ public class BaseLogger {
 	public void logInboundSoapMessage(String inboundSoapMessage) {
 	    // see https://github.com/logstash/logstash-logback-encoder/tree/logstash-logback-encoder-4.5#event-specific-custom-fields
 	    // net.logstash.logback.marker.Markers.append() enables to directly push a field into elasticsearch, only for one message
-	    delegateLogger.info(append(ElasticsearchField.SOAP_MESSAGE_INBOUND.getName(), inboundSoapMessage),
-                "===[> Inbound-SoapMessage ===[>");
+        log2Elasticsearch(ElasticsearchField.SOAP_MESSAGE_INBOUND, inboundSoapMessage, "===[> Inbound-SoapMessage ===[> stored in ElasticsearchField '{}'");
     }
     
 	/**
@@ -43,10 +42,9 @@ public class BaseLogger {
      * @param outboundSoapMessage
      */
     public void logOutboundSoapMessage(String outboundSoapMessage) {
-        delegateLogger.info(append(ElasticsearchField.SOAP_MESSAGE_OUTBOUND.getName(), outboundSoapMessage),
-                "<]=== Outbound-SoapMessage <]===");
+        log2Elasticsearch(ElasticsearchField.SOAP_MESSAGE_OUTBOUND, outboundSoapMessage, "<]=== Outbound-SoapMessage <]=== stored in ElasticsearchField '{}'");
     }
-	
+
     /**
      * Puts the String it into the Slf4j MDC (Mapped Diagnostic Context, see <a href="http://logback.qos.ch/manual/mdc.html">http://logback.qos.ch/manual/mdc.html</a>} for more details)
      * with the Key {@link ElasticsearchField#HTTP_HEADER_INBOUND} you can find in your Elasticsearch, when processed via logstash. 
@@ -54,9 +52,7 @@ public class BaseLogger {
 	 * @param headers
 	 */
 	public void logHttpHeader(String headers) {
-		delegateLogger.info(append(ElasticsearchField.HTTP_HEADER_INBOUND.getName(), headers),
-		        "001 >>> Header in Inbound-HTTP-Message see Elasticsearch-Field '{}'",
-		        ElasticsearchField.HTTP_HEADER_INBOUND.getName());
+		log2Elasticsearch(ElasticsearchField.HTTP_HEADER_INBOUND, headers, "001 >>> Header in Inbound-HTTP-Message stored in Elasticsearch-Field '{}'");
 	}
 	
 	public void successfullyCalledServeEndpointWithMethod(String calledServiceMethod) {
@@ -99,6 +95,10 @@ public class BaseLogger {
 	/*
 	 * Logger-Methods - only private, to use just inside this class
 	 */
+    private void log2Elasticsearch(ElasticsearchField elasticsearchField, String elasticsearchFieldValue, String logTemplate) {
+        delegateLogger.info(append(elasticsearchField.getName(), elasticsearchFieldValue), logTemplate, elasticsearchField.getName());
+    }
+
 	private String logDebugAndBuildExceptionMessage(String id, String messageTemplate, Object... parameters) {
 		logDebug(id, messageTemplate, parameters);
 		return exceptionMessage(id, messageTemplate, parameters);
