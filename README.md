@@ -77,6 +77,11 @@ Activate via Property __soap.messages.logging=true__ in application.properties.
 
 ### Extract the SoapMessages for processing in ELK-Stack
 
+> If you want to use this Logging feature to extract the SoapMessages for processing in ELK-Stack, as a Workaround for now you have to stick to __Spring Boot 1.3.3.RELEASE__, due to [problems](https://github.com/logstash/logstash-logback-encoder/issues/160) in the [logstash-logback-encoder], which is itself a bug in [logback 1.1.7](http://jira.qos.ch/browse/LOGBACK-1164), which again is delivered with SpringBoot. This is only, till the SpringBoot guys [update to logback 1.1.8](https://github.com/spring-projects/spring-boot/issues/6214) - but this is not released [yet](https://mvnrepository.com/artifact/ch.qos.logback/logback-core).
+If you want to use newer SpringBoot versions, you could try to override the logback-version with a 
+```<logback.version>1.1.6</logback.version>``` in your Maven´s properties-tag.
+
+
 The cxf-spring-boot-starter brings some nice features, you can use with an ELK-Stack to monitor your SOAP-Service-Calls:
 
 * Extract SOAP-Service-Method for Loganalysis (based on WSDL 1.1 spec, 1.2 not supported for now - because this is read from the HTTP-Header field SoapAction, which isn´ mandatory in 1.2 any more)
@@ -86,7 +91,7 @@ The cxf-spring-boot-starter brings some nice features, you can use with an ELK-S
 ##### HowTo use
 
 * Activate via Property __soap.messages.extract=true__ in application.properties
-* Add a logback-spring.xml file and configure the [logstash-forwarder] (which is delivered with this spring-boot-starter), like:
+* Add a logback-spring.xml file and configure the [logstash-logback-encoder] (which is delivered with this spring-boot-starter), like:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -169,6 +174,7 @@ cxfAutoConfiguration.getBaseUrl()
 
 # Todos:
 
+* Only activate SoapMessage extraction, if logback-spring.xml is present
 * ASCII-Doc
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
 * kill the need for @ComponentScan("de.codecentric.cxf")
@@ -186,7 +192,7 @@ If you want to know more or even contribute to this Spring Boot Starter, maybe y
 [cxf-spring-boot-starter-maven-plugin: set wsdl directory]:(https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin#set-wsdl-directory-optional)
 [cxf-spring-boot-starter-maven-plugin]:https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin
 [BiPro]:https://bipro.net
-[logstash-forwarder]:https://github.com/elastic/logstash-forwarder
+[logstash-logback-encoder]:https://github.com/logstash/logstash-logback-encoder
 [MDC]:http://logback.qos.ch/manual/mdc.html
 [cxf-boot-simple]:https://github.com/codecentric/spring-samples/tree/master/cxf-boot-simple
 
