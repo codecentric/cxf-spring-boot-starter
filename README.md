@@ -51,7 +51,16 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 </build>
 ```
 
+> only temporarily!
 
+* due to logback / logstash-logback-encoder issue downgrade Spring Boot logback dependency (see [Extract the SoapMessages for processing in ELK-Stack](#extract-the-soapmessages-for-processing-in-elk-stack))
+
+```
+ <properties>
+    <!-- Overriding SpringBoot 1.3.4ff´s logback 1.1.7, because of http://jira.qos.ch/browse/LOGBACK-1164 which is only fixed in the unreleased 1.1.8  -->
+    <logback.version>1.1.6</logback.version>
+</properties>
+```
 
 * place your .wsdl-File (and all the imported XSDs) into a folder somewhere under __src/main/resources__ (see [cxf-spring-boot-starter-maven-plugin] for details)
 * run __mvn generate-sources__ to generate all necessary Java-Classes from your WSDL/XSD 
