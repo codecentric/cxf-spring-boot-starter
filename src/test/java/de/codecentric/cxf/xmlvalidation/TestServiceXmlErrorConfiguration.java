@@ -23,7 +23,7 @@ public class TestServiceXmlErrorConfiguration {
     
     private String buildUrl() {
         // return something like http://localhost:8084/soap-api/WeatherSoapService
-        return "http://localhost:8080" + cxfAutoConfiguration.getBaseUrl() + TestConfiguration.PUBLISH_URL_ENDING;
+        return "http://localhost:8087" + cxfAutoConfiguration.getBaseUrl() + TestConfiguration.PUBLISH_URL_ENDING;
     }
     
     @Autowired
