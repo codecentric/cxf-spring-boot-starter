@@ -187,13 +187,13 @@ cxfAutoConfiguration.getBaseUrl()
 
 * ASCII-Doc
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
-* make deps optional
 * Support for WS-Security-Token (e.g. used in [BiPro]
 
 # Contribution
 
 If you want to know more or even contribute to this Spring Boot Starter, maybe you need some information like:
 * [SpringBoot Docs - Creating your own auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html)
+* [The Missing piece - how @Conditional is also needed for your own custom spring boot starter](https://www.packtpub.com/books/content/writing-custom-spring-boot-starters)
 * [Boot your own Infrastructure - JavaMagazin](https://public.centerdevice.de/a10fb484-49a8-4a70-ada9-5eeda8c69465)
 
 
