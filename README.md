@@ -19,14 +19,15 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 ### Initial Setup
 
-* Create a Spring Boot maven project. It’s pretty much just using spring-boot-starter-parent as a parent und adding the Spring Boot build plugin. Then add cxf-spring-boot-starter as dependency and the [cxf-spring-boot-starter-maven-plugin] as build-plugin (see the example [cxf-boot-simple]):
+* Create a Spring Boot maven project. Use the spring-boot-starter-parent as a parent und add the Spring Boot build plugin.
+* Then append cxf-spring-boot-starter as dependency and the [cxf-spring-boot-starter-maven-plugin] as build-plugin (see the example [cxf-boot-simple]):
 
 ```
 <dependencies>
 	<dependency>
 		<groupId>de.codecentric</groupId>
     	<artifactId>cxf-spring-boot-starter</artifactId>
-    	<version>1.0.6.RELEASE</version>
+    	<version>1.0.7.RELEASE</version>
 	</dependency>
 </dependencies>
 ```
@@ -64,7 +65,39 @@ SOAP-Webservices powered by Spring Boot & Apache CXF
 
 * place your .wsdl-File (and all the imported XSDs) into a folder somewhere under __src/main/resources__ (see [cxf-spring-boot-starter-maven-plugin] for details)
 * run __mvn generate-sources__ to generate all necessary Java-Classes from your WSDL/XSD 
+* Create a Configuration-Class (annotated with [Spring´s @Configuration](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/Configuration.html)) that uses the prefconfigured SpringBus and your generated JAX-WS class files to instantiate the CXF Endpoint, something like:
 
+```
+@Configuration
+public class YourConfigurationClass {
+
+    public static final String PUBLISH_URL_ENDING = "/YourServiceName_ServiceVersion";
+    
+    @Autowired
+    private SpringBus springBus;
+    
+    @Bean
+    public YourServiceInterface yourServiceInterfaceName() {
+        return new YourServiceEndpointImpl();
+    }
+    
+    @Bean
+    public Endpoint endpoint() {
+        EndpointImpl endpoint = new EndpointImpl(springBus, yourServiceInterfaceName());
+        endpoint.setServiceName(yourServiceClient().getServiceName());
+        endpoint.setWsdlLocation(yourServiceClient().getWSDLDocumentLocation().toString());
+        endpoint.publish(PUBLISH_URL_ENDING);
+        return endpoint;
+    }
+    
+    @Bean
+    public YourServiceClient yourServiceClient() {
+        return new YourServiceClient();
+    }
+}
+```
+
+An example is the [@Configuration](https://github.com/codecentric/spring-samples/blob/master/cxf-boot-simple/src/main/java/de/codecentric/soap/configuration/CxfBootSimpleConfiguration.java) class inside the [cxf-boot-simple] project. 
 
 # Additional Configuration Options
 
