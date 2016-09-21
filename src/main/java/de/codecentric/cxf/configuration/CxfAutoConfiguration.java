@@ -8,6 +8,7 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ import de.codecentric.cxf.logging.LogCorrelationFilter;
  *
  */
 @Configuration
+@ConditionalOnClass(CXFServlet.class)
 @PropertySource("classpath:spring-boot-starter-cxf.properties")
 @Import({
     XmlValidationConfiguration.class,

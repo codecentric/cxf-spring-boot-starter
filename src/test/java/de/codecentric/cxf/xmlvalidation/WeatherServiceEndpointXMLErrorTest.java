@@ -1,30 +1,27 @@
 package de.codecentric.cxf.xmlvalidation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.Resource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
+import de.codecentric.cxf.TestApplication;
 import de.codecentric.cxf.common.BootStarterCxfException;
 import de.codecentric.cxf.common.FaultType;
 import de.codecentric.cxf.soaprawclient.SoapRawClient;
 import de.codecentric.cxf.soaprawclient.SoapRawClientResponse;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-		classes=TestServiceXmlErrorConfiguration.class,
+		classes=TestApplication.class,
 		webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
 		properties = { "server.port:8087"})
 public class WeatherServiceEndpointXMLErrorTest {

@@ -15,7 +15,6 @@ import de.codecentric.namespace.weatherservice.Weather;
 import de.codecentric.namespace.weatherservice.WeatherService;
 
 @Configuration
-@ComponentScan("de.codecentric.cxf")
 public class TestConfiguration {
 
     public static final String PUBLISH_URL_ENDING = "/WeatherService_1.0";

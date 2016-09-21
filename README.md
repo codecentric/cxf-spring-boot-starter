@@ -181,12 +181,12 @@ cxfAutoConfiguration.getBaseUrl()
 
 * Support to use soap.messages.logging and soap.messages.extract at the same time
 * Only activate SoapMessage extraction, if logback-spring.xml is present
+* killed the need for @ComponentScan("de.codecentric.cxf")
 
 # Todos:
 
 * ASCII-Doc
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
-* kill the need for @ComponentScan("de.codecentric.cxf")
 * make deps optional
 * Support for WS-Security-Token (e.g. used in [BiPro]
 
