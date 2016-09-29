@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>de.codecentric</groupId>
 	<artifactId>cxf-spring-boot-starter</artifactId>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.8-SNAPSHOT</version>
 	<name>cxf-spring-boot-starter</name>
 	<description>Boot starter for SOAP-Webservices with Apache CXF using JAX-WS &amp; JAXB with Annotations only</description>
 	<packaging>jar</packaging>
@@ -50,7 +50,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<spring.boot.version>1.4.0.RELEASE</spring.boot.version>
+		<spring.boot.version>1.4.1.RELEASE</spring.boot.version>
 		<cxf.version>3.1.7</cxf.version>
 		<fluent-hc.version>4.5.2</fluent-hc.version>
 		<camunda.version>7.5.0</camunda.version>
@@ -61,7 +61,7 @@
         <logback.version>1.1.6</logback.version>
 		<!-- Analysis Tools for CI -->
 		<build-plugin.jacoco.version>0.7.7.201606060606</build-plugin.jacoco.version>
-		<build-plugin.coveralls.version>4.2.0</build-plugin.coveralls.version>
+		<build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
 		<!-- Exclude generated JAXB-Java-Classes from Sonar-Analysis -->
 		<sonar.exclusions>**/target/generated-sources/wsdlimport/**</sonar.exclusions>
 	</properties>
