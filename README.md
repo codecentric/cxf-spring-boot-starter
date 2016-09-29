@@ -11,8 +11,10 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 
 * Generating all necessary Java-Classes using JAX-B from your WSDL/XSDs (using the complementing Maven plugin [cxf-spring-boot-starter-maven-plugin]
 * Booting up Apache CXF within Spring Context with 100% pure Java-Configuration
-* Configure CXF to use slf4j and serve Logging-Interceptors, to log only the SOAP-Messages onto console 
+* Customize SOAP service URL and the title of the CXF generated Service site
+* Configure CXF to use slf4j and serve Logging-Interceptors, to log only the SOAP-Messages onto console
 * Extract the SoapMessages for processing in ELK-Stack, like [docker-elk](https://github.com/jonashackt/docker-elk)
+* Tailor your own custom SOAP faults, that comply with the exceptions defined inside your XML schema
 
 
 # Documentation
