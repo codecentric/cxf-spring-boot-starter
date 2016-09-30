@@ -15,6 +15,7 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 * Configure CXF to use slf4j and serve Logging-Interceptors, to log only the SOAP-Messages onto console
 * Extract the SoapMessages for processing in ELK-Stack, like [docker-elk](https://github.com/jonashackt/docker-elk)
 * Tailor your own custom SOAP faults, that comply with the exceptions defined inside your XML schema
+* SOAP Testing-Framework: With XmlUtils to easy your work with JAX-B class handling & a SOAP Raw Client to Test malformed XML against your Endpoints
 
 
 # Documentation
@@ -175,7 +176,7 @@ The cxf-spring-boot-starter brings some nice features, you can use with an ELK-S
 * Now some fields will become available in your kibana dashboard (in other words in your elasticsearch index), e.g. soap-message-inbound contains the Inbound Message
 * see all of them here [ElasticsearchField.java](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/logging/ElasticsearchField.java)
 
-### XML Schema Validation 
+### Custom SOAP faults for XML Schema Validation Errors 
 
 The standard behavior of Apache CXF with XML validation errors (non schema compliant XML or incorrect XML itself) is to return a SOAP fault including the corresponding exception in CXF:
 ```
@@ -196,7 +197,9 @@ Many SOAP based standards demand a custom SOAP-Fault, that should be delivered i
 * Configure your Implementation as @Bean - only then, XML Schema Validation will be activated
 
 
-### Create a WebService Client
+### Testing SOAP web services
+
+##### Create a WebService Client
 
 * If you instantiate a JaxWsProxyFactoryBean, you need to set an Adress containing your configured (or the standard) soap.service.base.url. To get the correct path, just autowire the CxfAutoConfiguration like:
 
@@ -211,6 +214,39 @@ and obtain the base.url by calling
 cxfAutoConfiguration.getBaseUrl()
 ```
 
+##### Integrate real XML test files into your Unit-, Integration- or SingleSystemIntegrationTests
+
+As described [in this blogpost](https://blog.codecentric.de/en/2016/06/spring-boot-apache-cxf-testing-soap-webservices/) the best gut feeling one could get while writing SOAP Tests, is the usage of real XML test files. To easily marshall these into your Java classes with JAX-B, this starter brings a utility class [de.codecentric.cxf.common.XmlUtils](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/common/XmlUtils.java) with lots of useful methods like __readSoapMessageFromStreamAndUnmarshallBody2Object(java.io.InputStream fileStream, Class<T> jaxbClass)__. Then you could do things inside your testcases like:
+
+```
+@Value(value="classpath:requests/GetCityForecastByZIPTest.xml")
+private org.springframework.core.io.Resource GetCityForecastByZIPTestXml;
+    
+@Test
+public void getCityForecastByZIP() throws WeatherException, BootStarterCxfException, IOException {
+    GetCityForecastByZIP getCityForecastByZIP = XmlUtils.readSoapMessageFromStreamAndUnmarshallBody2Object(GetCityForecastByZIPTestXml.getInputStream(), GetCityForecastByZIP.class);
+...
+}
+```
+
+##### SOAP Raw client
+
+Enables automatic testing of malformed XML Requests (e.g. for Testing your Custom SOAP faults) with the [de.codecentric.cxf.soaprawclient.SoapRawClient](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/soaprawclient/SoapRawClient.java). To use it in your Testcases, initialize the SoapRawClient inside a @Configuration annotated Class like this:
+
+```
+@Bean
+public SoapRawClient soapRawClient() throws BootStarterCxfException {
+    return new SoapRawClient(buildUrl(), YourServiceInterface.class);
+}
+
+public String buildUrl() {
+    // return something like http://localhost:8084/soap-api/WeatherSoapService
+    return "http://localhost:8084" + cxfAutoConfiguration.getBaseUrl() + CxfBootSimpleConfiguration.PUBLISH_URL_ENDING;
+}
+
+@Autowired
+private CxfAutoConfiguration cxfAutoConfiguration;
+```
 
 # Dones:
 
