@@ -21,7 +21,7 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 
 ### Initial Setup
 
-* Create a Spring Boot maven project. Use the spring-boot-starter-parent as a parent und add the Spring Boot build plugin.
+* Create a Spring Boot maven project. Use the __spring-boot-starter-parent__ as a parent, add the __spring-boot-starter-web__ as dependency and the __spring-boot-maven-plugin__ as a build plugin (you could speed that up, if you use the [Spring Initializr](https://start.spring.io/)).
 * Then append cxf-spring-boot-starter as dependency and the [cxf-spring-boot-starter-maven-plugin] as build-plugin (see the example [cxf-boot-simple]):
 
 ```
