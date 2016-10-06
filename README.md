@@ -116,14 +116,14 @@ An example is the [@Configuration](https://github.com/codecentric/spring-samples
 
 ### SOAP-Message-Logging
 
-SOAP-Messages will be logged only and printed onto STOUT/Console for fast analysis in development.
+Activate SOAP-Message-Logging just via Property __soap.messages.logging=true__ in application.properties (no more configuration on the Endpoint needed) 
 
-Activate via Property __soap.messages.logging=true__ in application.properties.
+SOAP-Messages will be logged only and printed onto STOUT/Console for fast analysis in development.
 
 ### Extract the SoapMessages for processing in ELK-Stack
 
-> If you want to use this Logging feature to extract the SoapMessages for processing in ELK-Stack, as a Workaround for now you have to stick to __Spring Boot 1.3.3.RELEASE__, due to [problems](https://github.com/logstash/logstash-logback-encoder/issues/160) in the [logstash-logback-encoder], which is itself a bug in [logback 1.1.7](http://jira.qos.ch/browse/LOGBACK-1164), which again is delivered with SpringBoot. This is only, till the SpringBoot guys [update to logback 1.1.8](https://github.com/spring-projects/spring-boot/issues/6214) - but this is not released [yet](https://mvnrepository.com/artifact/ch.qos.logback/logback-core).
-If you want to use newer SpringBoot versions, you could try to override the logback-version with a 
+> If you want to use this Logging feature to extract the SoapMessages for processing in ELK-Stack, there are two possible ways: stick to __Spring Boot 1.3.3.RELEASE__, due to [problems](https://github.com/logstash/logstash-logback-encoder/issues/160) in the [logstash-logback-encoder], which is itself a bug in [logback 1.1.7](http://jira.qos.ch/browse/LOGBACK-1164), which again is delivered with SpringBoot. This is only, till the SpringBoot guys [update to logback 1.1.8](https://github.com/spring-projects/spring-boot/issues/6214) - but this is not released [yet](https://mvnrepository.com/artifact/ch.qos.logback/logback-core).
+Or as an alternative way - and if you want to use __newer SpringBoot versions__ - you could override the logback-version with a 
 ```<logback.version>1.1.6</logback.version>``` in your Maven´s properties-tag.
 
 
@@ -259,6 +259,7 @@ private CxfAutoConfiguration cxfAutoConfiguration;
 * ASCII-Doc
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
 * Support for WS-Security-Token (e.g. used in [BiPro]
+* Discribe already supported Client-Mode for JAX-WS-Services that are not hostet, but used 
 
 # Contribution
 
