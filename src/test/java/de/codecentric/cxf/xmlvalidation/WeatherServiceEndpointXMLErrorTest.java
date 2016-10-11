@@ -76,7 +76,7 @@ public class WeatherServiceEndpointXMLErrorTest {
 	}
 	
 	private void checkXMLErrorNotSchemeCompliant(Resource testFile) throws BootStarterCxfException, IOException {
-		checkXMLError(testFile, FaultType.SCHEME_VALIDATION_ERROR);
+		checkXMLError(testFile, TestableCustomIds.NON_XML_COMPLIANT);
 	}	
 	
 	/*
@@ -110,10 +110,10 @@ public class WeatherServiceEndpointXMLErrorTest {
 	
 	
 	private void checkXMLErrorSyntacticallyIncorrect(Resource testFile) throws BootStarterCxfException, IOException {
-		checkXMLError(testFile, FaultType.SYNTACTICALLY_INCORRECT_XML_ERROR);
+		checkXMLError(testFile, TestableCustomIds.COMPLETE_USELESS_XML);
 	}
 	
-	private void checkXMLError(Resource testFile, FaultType faultContent) throws BootStarterCxfException, IOException {
+	private void checkXMLError(Resource testFile, TestableCustomIds customId) throws BootStarterCxfException, IOException {
 		// Given
 		// Resource testFile
 		
@@ -123,12 +123,12 @@ public class WeatherServiceEndpointXMLErrorTest {
 		// Then
 		assertNotNull(soapRawResponse);
 		assertEquals("500 Internal Server Error expected", 500, soapRawResponse.getHttpStatusCode());
-        assertEquals(WeatherFaultBuilder.CUSTOM_FAULT_MESSAGE, soapRawResponse.getFaultstringValue());
+        assertEquals(customId.getMessage(), soapRawResponse.getFaultstringValue());
         
         de.codecentric.namespace.weatherservice.exception.WeatherException weatherException = soapRawResponse.getUnmarshalledObjectFromSoapMessage(de.codecentric.namespace.weatherservice.exception.WeatherException.class);		
 		assertNotNull("<soap:Fault><detail> has to contain a de.codecentric.namespace.weatherservice.exception.WeatherException",  weatherException);
 		
 		assertEquals("ExtremeRandomNumber", weatherException.getUuid());
-		assertEquals("The correct BusinessId is missing in WeatherException according to XML-scheme.", faultContent.getId(), weatherException.getBusinessErrorId());
+		assertEquals("The correct BusinessId is missing in WeatherException according to XML-scheme.", customId.getId(), weatherException.getBusinessErrorId());
 	}
 }
