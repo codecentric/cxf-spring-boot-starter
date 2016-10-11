@@ -15,7 +15,7 @@ public class WeatherFaultBuilder implements CustomFaultBuilder {
 		if(FaultType.SCHEME_VALIDATION_ERROR.equals(faultType)) {
 			return TestableCustomIds.NON_XML_COMPLIANT.getMessage();
 		}
-		if(FaultType.SYNTACTICALLY_INCORRECT_XML_ERROR.equals(faultType)) {
+		else if(FaultType.SYNTACTICALLY_INCORRECT_XML_ERROR.equals(faultType)) {
 			return TestableCustomIds.COMPLETE_USELESS_XML.getMessage();
 		}
 		else {
