@@ -19,6 +19,8 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 
 # Documentation
 
+There´s also an blog post describing this project: [Spring Boot & Apache CXF – SOAP on steroids fueled by cxf-spring-boot-starter](https://blog.codecentric.de/en/2016/10/spring-boot-apache-cxf-spring-boot-starter/)
+
 ### Initial Setup
 
 * Create a Spring Boot maven project. Use the __spring-boot-starter-parent__ as a parent and the __spring-boot-maven-plugin__ as a build plugin (you could speed that up, if you use the [Spring Initializr](https://start.spring.io/)).
