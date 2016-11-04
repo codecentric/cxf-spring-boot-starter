@@ -261,6 +261,7 @@ private CxfAutoConfiguration cxfAutoConfiguration;
 * REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
 * Support for WS-Security-Token (e.g. used in [BiPro]
 * Discribe already supported Client-Mode for JAX-WS-Services that are not hostet, but used 
+* Complete Automation of Endpoint Initialization: Auto-Detect javax.jws.WebService annotated, through to jaxws-maven-plugin generated Class Files representing your SEI and Auto-Initializing them, if found
 
 # Contribution
 
