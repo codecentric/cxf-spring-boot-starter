@@ -73,14 +73,14 @@ public class CxfAutoConfiguration {
     }
 
     @Bean
-    public Object seiImplentation() throws BootStarterCxfException {
+    public Object seiImplementation() throws BootStarterCxfException {
         Class serviceEndpointInterface = WebServiceAutoDetector.searchServiceEndpointInterface();
         return WebServiceAutoDetector.searchAndInstantiateSeiImplementation(serviceEndpointInterface);
     }
 
     @Bean
     public Endpoint endpoint() throws BootStarterCxfException {
-        EndpointImpl endpoint = new EndpointImpl(springBus(), seiImplentation());
+        EndpointImpl endpoint = new EndpointImpl(springBus(), seiImplementation());
         // CXF JAX-WS implementation relies on the correct ServiceName as QName-Object with
         // the name-Attribute´s text <wsdl:service name="Weather"> and the targetNamespace
         // "http://www.codecentric.de/namespace/weatherservice/"

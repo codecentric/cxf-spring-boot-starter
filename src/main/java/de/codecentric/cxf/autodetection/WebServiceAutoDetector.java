@@ -1,6 +1,7 @@
 package de.codecentric.cxf.autodetection;
 
 import de.codecentric.cxf.common.BootStarterCxfException;
+import de.codecentric.cxf.diagnostics.SeiImplementingClassNotFoundException;
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 import io.github.lukehutch.fastclasspathscanner.scanner.ScanResult;
 import org.slf4j.Logger;
@@ -11,16 +12,25 @@ import javax.xml.ws.Service;
 import javax.xml.ws.WebServiceClient;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 
 public class WebServiceAutoDetector {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebServiceAutoDetector.class);
 
+    private static final String NO_CLASS_FOUND = "NO class found";
+
     @SuppressWarnings("unchecked")
     public static <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
-
-        Class<T> implementingClass = scanForClassWhichImplementsInterface(seiName);
+        Class<T> implementingClass = null;
+        try {
+            implementingClass = scanForClassWhichImplementsInterface(seiName);
+        } catch (BootStarterCxfException exception) {
+            SeiImplementingClassNotFoundException seiNotFound = new SeiImplementingClassNotFoundException("No SEI implementing class found");
+            seiNotFound.setNotFoundClassName(seiName.getName());
+            throw seiNotFound;
+        }
         return instantiateFromClass(implementingClass);
     }
 
@@ -58,12 +68,20 @@ public class WebServiceAutoDetector {
     }
 
 
-    private static <T> String scanForClassNameWithAnnotation(Class<T> annotation) {
-        return initScannerAndScan().getNamesOfClassesWithAnnotation(annotation).get(0);
+    private static <T> String scanForClassNameWithAnnotation(Class<T> annotation) throws BootStarterCxfException {
+        List<String> namesOfClassesWithAnnotation = initScannerAndScan().getNamesOfClassesWithAnnotation(annotation);
+        if(namesOfClassesWithAnnotation.isEmpty()) {
+            throw new BootStarterCxfException(NO_CLASS_FOUND);
+        }
+        return namesOfClassesWithAnnotation.get(0);
     }
 
-    private static <T> String scanForClassNameWhichImplements(Class<T> interfaze) {
-        return initScannerAndScan().getNamesOfClassesImplementing(interfaze).get(0);
+    private static <T> String scanForClassNameWhichImplements(Class<T> interfaze) throws BootStarterCxfException {
+        List<String> namesOfClassesImplementing = initScannerAndScan().getNamesOfClassesImplementing(interfaze);
+        if(namesOfClassesImplementing.isEmpty()) {
+            throw new BootStarterCxfException(NO_CLASS_FOUND);
+        }
+        return namesOfClassesImplementing.get(0);
     }
 
     private static ScanResult initScannerAndScan() {

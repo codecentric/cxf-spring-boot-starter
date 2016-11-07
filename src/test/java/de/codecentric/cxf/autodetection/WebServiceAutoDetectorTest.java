@@ -48,4 +48,9 @@ public class WebServiceAutoDetectorTest {
         assertThat(serviceNameQName.getLocalPart(), is(equalTo("Weather")));
     }
 
+    @Test
+    public void shouldReactWithCustomStartupFailureMessagePresentedInConsoleIfSeiImplementingClassIsMissing() {
+
+    }
+
 }
