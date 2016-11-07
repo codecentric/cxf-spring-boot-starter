@@ -3,9 +3,14 @@ package de.codecentric.cxf.configuration;
 import java.util.Map;
 
 import javax.servlet.Filter;
+import javax.xml.ws.Endpoint;
+import javax.xml.ws.Service;
 
+import de.codecentric.cxf.autodetection.WebServiceAutoDetector;
+import de.codecentric.cxf.common.BootStarterCxfException;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
+import org.apache.cxf.jaxws.EndpointImpl;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -39,6 +44,8 @@ public class CxfAutoConfiguration {
 
     @Value("${cxf.servicelist.title:CXF SpringBoot Starter - service list}")
     private String serviceListTitle;
+
+    private static final String PUBLISH_URL_ENDING = "/WeatherService_1.0";
     
     @Bean
     public ServletRegistrationBean cxfDispatcherServlet() {
@@ -58,13 +65,45 @@ public class CxfAutoConfiguration {
     public SpringBus springBus() {
         return new SpringBus();
     }
-    
+
+    @Bean
+    public Object seiImplentation() throws BootStarterCxfException {
+        Class serviceEndpointInterface = WebServiceAutoDetector.searchServiceEndpointInterface();
+        return WebServiceAutoDetector.searchAndInstantiateSeiImplementation(serviceEndpointInterface);
+    }
+
+    @Bean
+    public Endpoint endpoint() throws BootStarterCxfException {
+        EndpointImpl endpoint = new EndpointImpl(springBus(), seiImplentation());
+        // CXF JAX-WS implementation relies on the correct ServiceName as QName-Object with
+        // the name-Attribute´s text <wsdl:service name="Weather"> and the targetNamespace
+        // "http://www.codecentric.de/namespace/weatherservice/"
+        // Also the WSDLLocation must be set
+        endpoint.setServiceName(webServiceClient().getServiceName());
+        endpoint.setWsdlLocation(webServiceClient().getWSDLDocumentLocation().toString());
+        //TODO: Endpoint URL aus WSDL auslesen!
+        endpoint.publish(PUBLISH_URL_ENDING);
+        return endpoint;
+    }
+
+    @Bean
+    public Service webServiceClient() throws BootStarterCxfException {
+        // Needed for correct ServiceName & WSDLLocation to publish contract first incl. original WSDL
+        return WebServiceAutoDetector.searchAndInstantiateWebServiceClient();
+    }
     
     /**
      * @return the base-URL, where the WebServices are configured (eihter via property or default-value)
      */
     public String getBaseUrl() {
         return baseUrl;
+    }
+
+    /**
+     * @return the concrete Service URL-ending, where the WebService is configured according to your WSDL
+     */
+    public String getServiceUrlEnding() {
+        return PUBLISH_URL_ENDING;
     }
     
     // Register Filter for Correlating Logmessages from the same Service-Consumer

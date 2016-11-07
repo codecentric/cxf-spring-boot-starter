@@ -47,4 +47,5 @@ public class WebServiceAutoDetectorTest {
         QName serviceNameQName = webServiceClient.getServiceName();
         assertThat(serviceNameQName.getLocalPart(), is(equalTo("Weather")));
     }
+
 }
