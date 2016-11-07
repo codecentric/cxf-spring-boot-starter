@@ -27,59 +27,50 @@ public class WebServiceAutoDetector {
         return instantiateFromClass(implementingClass);
     }
 
-    private static Class scanForClassWhichImplementsInterface(Class interfaceName) throws BootStarterCxfException {
-
-        try {
-            // see https://github.com/lukehutch/fast-classpath-scanner/wiki/1.-Usage#mechanism-2
-            FastClasspathScanner fastClasspathScanner = new FastClasspathScanner();
-
-            ScanResult scanResult = fastClasspathScanner.scan();
-
-            List<String> namesOfClassesWithAnnotation = scanResult.getNamesOfClassesImplementing(interfaceName);
-
-            String className = namesOfClassesWithAnnotation.get(0);
-
-            LOG.debug("Class found: {}", className);
-
-            return Class.forName(className);
-
-        } catch (ClassNotFoundException exception) {
-            throw new BootStarterCxfException("WebServiceClient Class not found", exception);
-        }
-    }
-
-    public static Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
-
-        Class webServiceClientClass = scanForClassWithAnnotation(WebServiceClient.class);
-        return instantiateFromClass(webServiceClientClass);
-    }
-
     public static Class searchServiceEndpointInterface() throws BootStarterCxfException {
 
         return scanForClassWithAnnotation(WebService.class);
     }
 
+    public static Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
+        Class webServiceClientClass = scanForClassWithAnnotation(WebServiceClient.class);
+        return instantiateFromClass(webServiceClientClass);
+    }
+
+    private static Class scanForClassWhichImplementsInterface(Class interfaceName) throws BootStarterCxfException {
+        try {
+            String className = scanForClassNameWhichImplements(interfaceName);
+            LOG.debug("Class found: {}", className);
+            return Class.forName(className);
+
+        } catch (ClassNotFoundException exception) {
+            throw new BootStarterCxfException("WebServiceClient Class not found", exception);
+        }
+    }
 
     private static Class scanForClassWithAnnotation(Class annotationName) throws BootStarterCxfException {
-
         try {
-            // see https://github.com/lukehutch/fast-classpath-scanner/wiki/1.-Usage#mechanism-2
-            FastClasspathScanner fastClasspathScanner = new FastClasspathScanner();
-
-            ScanResult scanResult = fastClasspathScanner.scan();
-
-            List<String> namesOfClassesWithAnnotation = scanResult.getNamesOfClassesWithAnnotation(annotationName);
-
-            String className = namesOfClassesWithAnnotation.get(0);
-
+            String className = scanForClassNameWithAnnotation(annotationName);
             LOG.debug("Class found: {}", className);
-
             return Class.forName(className);
 
         } catch (ClassNotFoundException exception) {
             throw new BootStarterCxfException("WebServiceClient Class not found", exception);
         }
 
+    }
+
+
+    private static String scanForClassNameWithAnnotation(Class annotationName) {
+        return initScannerAndScan().getNamesOfClassesWithAnnotation(annotationName).get(0);
+    }
+
+    private static String scanForClassNameWhichImplements(Class interfaceName) {
+        return initScannerAndScan().getNamesOfClassesImplementing(interfaceName).get(0);
+    }
+
+    private static ScanResult initScannerAndScan() {
+        return new FastClasspathScanner().scan();
     }
 
     private static <T> T instantiateFromClass(Class clazz) throws BootStarterCxfException {
