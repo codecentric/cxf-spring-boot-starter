@@ -1,6 +1,7 @@
 package de.codecentric.cxf.autodetection;
 
 import de.codecentric.cxf.common.BootStarterCxfException;
+import de.codecentric.namespace.weatherservice.WeatherService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,15 +19,26 @@ import static org.hamcrest.core.IsNull.notNullValue;
 public class WebServiceAutoDetectorTest {
 
     @Test
-    public void isWebServiceSuccessfullyDetected() throws BootStarterCxfException {
+    public void isServiceEndpointInterfaceSuccessfullyDetected() throws BootStarterCxfException {
 
-        String interfaceName = WebServiceAutoDetector.searchServiceEndpointInterfaceName();
+        Class serviceEndpointInterface = WebServiceAutoDetector.searchServiceEndpointInterface();
 
-        assertThat(interfaceName, is(equalTo("WeatherService")));
+        assertThat(serviceEndpointInterface, is(notNullValue()));
+        assertThat(serviceEndpointInterface.getSimpleName(), is(equalTo("WeatherService")));
     }
 
     @Test
-    public void isWebServiceClientSuccessfullyDetected() throws BootStarterCxfException {
+    public void isServiceEndpointInterfaceImplementationSuccessfullyFoundAndInstantiated() throws NoSuchFieldException, BootStarterCxfException {
+        Class serviceEndpointInterface = WebServiceAutoDetector.searchServiceEndpointInterface();
+
+        WeatherService weatherServiceEndpointImpl = WebServiceAutoDetector.searchAndInstantiateSeiImplementation(serviceEndpointInterface);
+
+        assertThat(weatherServiceEndpointImpl, is(notNullValue()));
+        assertThat(weatherServiceEndpointImpl.getClass().getSimpleName(), is(equalTo("TestServiceEndpoint")));
+    }
+
+    @Test
+    public void isWebServiceClientSuccessfullyFoundAndInstantiated() throws BootStarterCxfException {
 
         Service webServiceClient = WebServiceAutoDetector.searchAndInstantiateWebServiceClient();
 
