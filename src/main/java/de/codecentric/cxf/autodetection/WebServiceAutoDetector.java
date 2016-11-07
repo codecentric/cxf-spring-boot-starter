@@ -11,35 +11,32 @@ import javax.xml.ws.Service;
 import javax.xml.ws.WebServiceClient;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.interfaceName;
 
 
 public class WebServiceAutoDetector {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebServiceAutoDetector.class);
 
+    @SuppressWarnings("unchecked")
     public static <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
 
-        Class implementingClass = scanForClassWhichImplementsInterface(seiName);
-
+        Class<T> implementingClass = scanForClassWhichImplementsInterface(seiName);
         return instantiateFromClass(implementingClass);
     }
 
     public static Class searchServiceEndpointInterface() throws BootStarterCxfException {
-
         return scanForClassWithAnnotation(WebService.class);
     }
 
+    @SuppressWarnings("unchecked")
     public static Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
-        Class webServiceClientClass = scanForClassWithAnnotation(WebServiceClient.class);
+        Class<Service> webServiceClientClass = scanForClassWithAnnotation(WebServiceClient.class);
         return instantiateFromClass(webServiceClientClass);
     }
 
-    private static Class scanForClassWhichImplementsInterface(Class interfaceName) throws BootStarterCxfException {
+    private static <T> Class scanForClassWhichImplementsInterface(Class<T> interfaze) throws BootStarterCxfException {
         try {
-            String className = scanForClassNameWhichImplements(interfaceName);
+            String className = scanForClassNameWhichImplements(interfaze);
             LOG.debug("Class found: {}", className);
             return Class.forName(className);
 
@@ -48,7 +45,7 @@ public class WebServiceAutoDetector {
         }
     }
 
-    private static Class scanForClassWithAnnotation(Class annotationName) throws BootStarterCxfException {
+    private static <T> Class scanForClassWithAnnotation(Class<T> annotationName) throws BootStarterCxfException {
         try {
             String className = scanForClassNameWithAnnotation(annotationName);
             LOG.debug("Class found: {}", className);
@@ -61,24 +58,23 @@ public class WebServiceAutoDetector {
     }
 
 
-    private static String scanForClassNameWithAnnotation(Class annotationName) {
-        return initScannerAndScan().getNamesOfClassesWithAnnotation(annotationName).get(0);
+    private static <T> String scanForClassNameWithAnnotation(Class<T> annotation) {
+        return initScannerAndScan().getNamesOfClassesWithAnnotation(annotation).get(0);
     }
 
-    private static String scanForClassNameWhichImplements(Class interfaceName) {
-        return initScannerAndScan().getNamesOfClassesImplementing(interfaceName).get(0);
+    private static <T> String scanForClassNameWhichImplements(Class<T> interfaze) {
+        return initScannerAndScan().getNamesOfClassesImplementing(interfaze).get(0);
     }
 
     private static ScanResult initScannerAndScan() {
         return new FastClasspathScanner().scan();
     }
 
-    private static <T> T instantiateFromClass(Class clazz) throws BootStarterCxfException {
+    private static <T> T instantiateFromClass(Class<T> clazz) throws BootStarterCxfException {
 
         try {
-            Constructor<?> constructor = clazz.getConstructor();
-            Object instance = constructor.newInstance();
-            return (T) instance;
+            Constructor<T> constructor = clazz.getConstructor();
+            return constructor.newInstance();
 
         } catch (NoSuchMethodException |
                 IllegalAccessException |
