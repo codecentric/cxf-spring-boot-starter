@@ -3,7 +3,10 @@ package de.codecentric.cxf.autodetection;
 import de.codecentric.cxf.common.BootStarterCxfException;
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 import io.github.lukehutch.fastclasspathscanner.scanner.ScanResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.jws.WebService;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebServiceClient;
 import java.lang.reflect.Constructor;
@@ -13,38 +16,58 @@ import java.util.List;
 
 public class WebServiceAutoDetector {
 
-    public static Service searchWebServiceClient() throws BootStarterCxfException {
+    private static final Logger LOG = LoggerFactory.getLogger(WebServiceAutoDetector.class);
+
+    public static Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
+
+        Class webServiceClientClass = scanForClassWithExtendJavaxXmlWsService(WebServiceClient.class);
+        return instantiateFromClass(webServiceClientClass);
+    }
+
+    public static String searchServiceEndpointInterfaceName() throws BootStarterCxfException {
+
+        return scanForClassWithExtendJavaxXmlWsService(WebService.class).getSimpleName();
+    }
+
+
+    private static Class scanForClassWithExtendJavaxXmlWsService(Class annotationNameToSearchUsingClass) throws BootStarterCxfException {
 
         try {
-            Class webServiceClientClass = scanForClassWithExtendJavaxXmlWsService();
+            // see https://github.com/lukehutch/fast-classpath-scanner/wiki/1.-Usage#mechanism-2
+            FastClasspathScanner fastClasspathScanner = new FastClasspathScanner();
 
-            Constructor<?> constructor = webServiceClientClass.getConstructor();
+            ScanResult scanResult = fastClasspathScanner.scan();
 
-            Object webServiceClient = constructor.newInstance();
+            List<String> namesOfClassesWithAnnotation = scanResult.getNamesOfClassesWithAnnotation(annotationNameToSearchUsingClass);
 
-            return (Service) webServiceClient;
+            String className = namesOfClassesWithAnnotation.get(0);
 
-        } catch (ClassNotFoundException |
-                NoSuchMethodException |
-                IllegalAccessException |
-                InstantiationException |
-                InvocationTargetException exception) {
+            LOG.debug("Class found: {}", className);
+
+            return Class.forName(className);
+
+        } catch (ClassNotFoundException exception) {
             throw new BootStarterCxfException("WebServiceClient Class not found", exception);
         }
 
     }
 
-    private static Class scanForClassWithExtendJavaxXmlWsService() throws ClassNotFoundException {
-        // see https://github.com/lukehutch/fast-classpath-scanner/wiki/1.-Usage#mechanism-2
-        FastClasspathScanner fastClasspathScanner = new FastClasspathScanner();
+    private static <T> T instantiateFromClass(Class clazz) throws BootStarterCxfException {
 
-        ScanResult scanResult = fastClasspathScanner.scan();
+        try {
+            Constructor<?> constructor = clazz.getConstructor();
+            Object instance = constructor.newInstance();
+            return (T) instance;
 
-        List<String> namesOfClassesWithAnnotation = scanResult.getNamesOfClassesWithAnnotation(WebServiceClient.class);
+        } catch (NoSuchMethodException |
+                IllegalAccessException |
+                InstantiationException |
+                InvocationTargetException exception) {
+            throw new BootStarterCxfException("Class couldn´t be instantiated", exception);
+        }
 
-        String webServiceClientClassName = namesOfClassesWithAnnotation.get(0);
-        System.out.println("Class found: " + webServiceClientClassName);
 
-        return Class.forName(webServiceClientClassName);
     }
+
+
 }
