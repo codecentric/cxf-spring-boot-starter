@@ -2,6 +2,7 @@ package de.codecentric.cxf.configuration;
 
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.Service;
@@ -45,13 +46,18 @@ public class CxfAutoConfiguration {
     @Value("${cxf.servicelist.title:CXF SpringBoot Starter - service list}")
     private String serviceListTitle;
 
-    private static final String PUBLISH_URL_ENDING = "/WeatherService_1.0";
-    
+    private String serviceUrlEnding = "";
+
+    @PostConstruct
+    public void setUp() throws BootStarterCxfException {
+        serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
+    }
+
     @Bean
     public ServletRegistrationBean cxfDispatcherServlet() {
         CXFServlet cxfServlet = new CXFServlet();
-        
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(cxfServlet, baseUrl + "/*");
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new CXFServlet(), baseUrl + "/*");
+
         // Add custom Title to CXF´s ServiceList
         Map<String, String> initParameters = servletRegistrationBean.getInitParameters();
         initParameters.put("service-list-title", serviceListTitle);
@@ -81,8 +87,8 @@ public class CxfAutoConfiguration {
         // Also the WSDLLocation must be set
         endpoint.setServiceName(webServiceClient().getServiceName());
         endpoint.setWsdlLocation(webServiceClient().getWSDLDocumentLocation().toString());
-        //TODO: Endpoint URL aus WSDL auslesen!
-        endpoint.publish(PUBLISH_URL_ENDING);
+        // publish the Service under it´s name mentioned in the WSDL inside name attribute (example: <wsdl:service name="Weather">)
+        endpoint.publish(serviceUrlEnding);
         return endpoint;
     }
 
@@ -100,10 +106,11 @@ public class CxfAutoConfiguration {
     }
 
     /**
-     * @return the concrete Service URL-ending, where the WebService is configured according to your WSDL
+     * @return the concrete Service URL-ending, where the WebService is configured according to your WSDL´s Service Name
+     * (e.g. &quot;/Weather&quot; when there is this inside your WSDL: &lt;wsdl:service name=&quot;Weather&quot;&gt;)
      */
     public String getServiceUrlEnding() {
-        return PUBLISH_URL_ENDING;
+        return serviceUrlEnding;
     }
     
     // Register Filter for Correlating Logmessages from the same Service-Consumer
