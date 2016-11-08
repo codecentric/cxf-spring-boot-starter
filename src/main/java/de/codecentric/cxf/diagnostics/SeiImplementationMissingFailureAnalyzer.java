@@ -13,7 +13,7 @@ public class SeiImplementationMissingFailureAnalyzer extends AbstractFailureAnal
     @Override
     protected FailureAnalysis analyze(Throwable rootFailure, SeiImplementingClassNotFoundException cause) {
         return new FailureAnalysis("There was no SEI implementing class found.",
-                String.format("Build a Class that implements your SEI: '%s' and try again!", cause.getNotFoundClassName()), cause);
+                String.format("Build a Class that implements your Service Endpoint Interface (SEI): '%s' and try again!", cause.getNotFoundClassName()), cause);
     }
 
 }
