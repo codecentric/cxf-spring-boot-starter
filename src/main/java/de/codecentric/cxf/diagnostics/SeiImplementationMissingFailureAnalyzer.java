@@ -2,7 +2,6 @@ package de.codecentric.cxf.diagnostics;
 
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
-import org.springframework.util.CollectionUtils;
 
 /**
  * FailureAnalyzer to show custom Failure Message, if a SEI Implementation is missing (which is mandatory for
