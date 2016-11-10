@@ -5,6 +5,9 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 [![Dependency Status](https://www.versioneye.com/user/projects/5720e300fcd19a0051856aa7/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5720e300fcd19a0051856aa7)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
+> !! This document applies to the next version under development.
+>
+> &nbsp; &nbsp; See [here for documentation on the latest released version](https://github.com/codecentric/cxf-spring-boot-starter/tree/1.0.7.RELEASE).
 
 # Features include:
 
@@ -249,19 +252,6 @@ public String buildUrl() {
 private CxfAutoConfiguration cxfAutoConfiguration;
 ```
 
-# Dones:
-
-* Support to use soap.messages.logging and soap.messages.extract at the same time
-* Only activate SoapMessage extraction, if logback-spring.xml is present
-* killed the need for @ComponentScan("de.codecentric.cxf")
-
-
-# Todos:
-
-* ASCII-Doc
-* REST-Healthstatus-Endpoints, that check whether the soap-Services (dynamic?!) are available - using Swagger/Springfox
-* Support for WS-Security-Token (e.g. used in [BiPro]
-* Discribe already supported Client-Mode for JAX-WS-Services that are not hostet, but used 
 
 # Contribution
 
