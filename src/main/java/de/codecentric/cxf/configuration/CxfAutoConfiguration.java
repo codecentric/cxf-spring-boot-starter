@@ -48,12 +48,11 @@ public class CxfAutoConfiguration {
 
     private String serviceUrlEnding = "";
 
-    private WebServiceAutoDetector webServiceAutoDetector;
+    private WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector();;
 
     @PostConstruct
     public void setUp() throws BootStarterCxfException {
         serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
-        webServiceAutoDetector = new WebServiceAutoDetector();
     }
 
     @Bean
