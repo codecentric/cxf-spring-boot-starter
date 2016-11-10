@@ -48,9 +48,12 @@ public class CxfAutoConfiguration {
 
     private String serviceUrlEnding = "";
 
+    private WebServiceAutoDetector webServiceAutoDetector;
+
     @PostConstruct
     public void setUp() throws BootStarterCxfException {
         serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
+        webServiceAutoDetector = new WebServiceAutoDetector();
     }
 
     @Bean
@@ -74,8 +77,8 @@ public class CxfAutoConfiguration {
 
     @Bean
     public Object seiImplementation() throws BootStarterCxfException {
-        Class serviceEndpointInterface = WebServiceAutoDetector.searchServiceEndpointInterface();
-        return WebServiceAutoDetector.searchAndInstantiateSeiImplementation(serviceEndpointInterface);
+        Class serviceEndpointInterface = webServiceAutoDetector.searchServiceEndpointInterface();
+        return webServiceAutoDetector.searchAndInstantiateSeiImplementation(serviceEndpointInterface);
     }
 
     @Bean
@@ -95,7 +98,7 @@ public class CxfAutoConfiguration {
     @Bean
     public Service webServiceClient() throws BootStarterCxfException {
         // Needed for correct ServiceName & WSDLLocation to publish contract first incl. original WSDL
-        return WebServiceAutoDetector.searchAndInstantiateWebServiceClient();
+        return webServiceAutoDetector.searchAndInstantiateWebServiceClient();
     }
     
     /**

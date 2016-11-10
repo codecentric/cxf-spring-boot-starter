@@ -6,7 +6,7 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 /**
  * FailureAnalyzer to show custom Failure Message, if a SEI Implementation is missing (which is mandatory for
  *
- * Created by jonashecht on 07.11.16.
+ * @author jonashackt
  */
 public class SeiImplementationMissingFailureAnalyzer extends AbstractFailureAnalyzer<SeiImplementingClassNotFoundException> {
 

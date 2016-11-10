@@ -6,7 +6,9 @@ import de.codecentric.cxf.common.BootStarterCxfException;
 public class SeiImplementationMissingFailureAnalyzerHelper {
 
     protected static SeiImplementingClassNotFoundException constructException() throws BootStarterCxfException {
-        Class serviceEndpointInterface = WebServiceAutoDetector.searchServiceEndpointInterface();
+        WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector();
+
+        Class serviceEndpointInterface = webServiceAutoDetector.searchServiceEndpointInterface();
 
         SeiImplementingClassNotFoundException seiNotFoundException = new SeiImplementingClassNotFoundException("No SEI implementing class found");
         seiNotFoundException.setNotFoundClassName(serviceEndpointInterface.getName());

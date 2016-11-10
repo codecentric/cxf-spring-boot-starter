@@ -18,14 +18,14 @@ import java.util.List;
 public class WebServiceAutoDetector {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebServiceAutoDetector.class);
-
-    private static final String NO_CLASS_FOUND = "NO class found";
+    private static final String NO_CLASS_FOUND = "No class found";
 
     @SuppressWarnings("unchecked")
-    public static <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
+    public <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
         Class<T> implementingClass = null;
         try {
-            implementingClass = scanForClassWhichImplementsInterface(seiName);
+            implementingClass = scanForClassWhichImplementsAndPickFirst(seiName);
+            LOG.debug("Found SEI implementing class: '{}'", implementingClass.getName());
         } catch (BootStarterCxfException exception) {
             SeiImplementingClassNotFoundException seiNotFound = new SeiImplementingClassNotFoundException("No SEI implementing class found");
             seiNotFound.setNotFoundClassName(seiName.getName());
@@ -34,62 +34,68 @@ public class WebServiceAutoDetector {
         return instantiateFromClass(implementingClass);
     }
 
-    public static Class searchServiceEndpointInterface() throws BootStarterCxfException {
-        return scanForClassWithAnnotation(WebService.class);
+    public Class searchServiceEndpointInterface() throws BootStarterCxfException {
+        Class sei = scanForClassWithAnnotationAndIsAnInterface(WebService.class);
+        LOG.debug("Found Service Endpoint Interface (SEI): '{}'", sei.getName());
+        return sei;
     }
 
     @SuppressWarnings("unchecked")
-    public static Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
-        Class<Service> webServiceClientClass = scanForClassWithAnnotation(WebServiceClient.class);
+    public Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
+        Class<Service> webServiceClientClass = scanForClassWithAnnotationAndPickTheFirstOneFound(WebServiceClient.class);
+        LOG.debug("WebServiceClient class found: '{}'", webServiceClientClass.getName());
         return instantiateFromClass(webServiceClientClass);
     }
 
-    private static <T> Class scanForClassWhichImplementsInterface(Class<T> interfaze) throws BootStarterCxfException {
-        try {
-            String className = scanForClassNameWhichImplements(interfaze);
-            LOG.debug("Class found: {}", className);
-            return Class.forName(className);
+    private <T> Class scanForClassWithAnnotationAndPickTheFirstOneFound(Class<T> annotationName) throws BootStarterCxfException {
+        return classForName(scanForClassNamesWithAnnotation(annotationName).get(0));
+    }
 
-        } catch (ClassNotFoundException exception) {
-            throw new BootStarterCxfException("WebServiceClient Class not found", exception);
+    protected  <T> Class scanForClassWithAnnotationAndIsAnInterface(Class<T> annotationName) throws BootStarterCxfException {
+        List<String> namesOfClassesWithAnnotation = scanForClassNamesWithAnnotation(annotationName);
+
+        if(namesOfClassesWithAnnotation.size() > 1) {
+            return justPickTheClassThatIsAnInterface(namesOfClassesWithAnnotation);
+        } else {
+            return classForName(namesOfClassesWithAnnotation.get(0));
         }
     }
 
-    private static <T> Class scanForClassWithAnnotation(Class<T> annotationName) throws BootStarterCxfException {
-        try {
-            String className = scanForClassNameWithAnnotation(annotationName);
-            LOG.debug("Class found: {}", className);
-            return Class.forName(className);
+    protected <T> List<String> scanForClassNamesWithAnnotation(Class<T> annotationName) throws BootStarterCxfException {
+        List<String> namesOfClassesWithAnnotation = initScannerAndScan().getNamesOfClassesWithAnnotation(annotationName);
 
-        } catch (ClassNotFoundException exception) {
-            throw new BootStarterCxfException("WebServiceClient Class not found", exception);
-        }
-
-    }
-
-
-    private static <T> String scanForClassNameWithAnnotation(Class<T> annotation) throws BootStarterCxfException {
-        List<String> namesOfClassesWithAnnotation = initScannerAndScan().getNamesOfClassesWithAnnotation(annotation);
         if(namesOfClassesWithAnnotation.isEmpty()) {
             throw new BootStarterCxfException(NO_CLASS_FOUND);
         }
-        return namesOfClassesWithAnnotation.get(0);
+        return namesOfClassesWithAnnotation;
     }
 
-    private static <T> String scanForClassNameWhichImplements(Class<T> interfaze) throws BootStarterCxfException {
-        List<String> namesOfClassesImplementing = initScannerAndScan().getNamesOfClassesImplementing(interfaze);
+    protected Class justPickTheClassThatIsAnInterface(List<String> namesOfClassesWithAnnotation) throws BootStarterCxfException {
+        for (String className : namesOfClassesWithAnnotation) {
+            if (isInterface(className)) {
+                return classForName(className);
+            }
+        }
+        throw new BootStarterCxfException(NO_CLASS_FOUND);
+    }
+
+    protected boolean isInterface(String className) throws BootStarterCxfException {
+        return classForName(className).isInterface();
+    }
+
+    private <T> Class scanForClassWhichImplementsAndPickFirst(Class<T> interfaceName) throws BootStarterCxfException {
+        List<String> namesOfClassesImplementing = initScannerAndScan().getNamesOfClassesImplementing(interfaceName);
         if(namesOfClassesImplementing.isEmpty()) {
             throw new BootStarterCxfException(NO_CLASS_FOUND);
         }
-        return namesOfClassesImplementing.get(0);
+        return classForName(namesOfClassesImplementing.get(0));
     }
 
-    private static ScanResult initScannerAndScan() {
+    private ScanResult initScannerAndScan() {
         return new FastClasspathScanner().scan();
     }
 
-    private static <T> T instantiateFromClass(Class<T> clazz) throws BootStarterCxfException {
-
+    private <T> T instantiateFromClass(Class<T> clazz) throws BootStarterCxfException {
         try {
             Constructor<T> constructor = clazz.getConstructor();
             return constructor.newInstance();
@@ -100,10 +106,14 @@ public class WebServiceAutoDetector {
                 InvocationTargetException exception) {
             throw new BootStarterCxfException("Class couldn´t be instantiated", exception);
         }
-
-
     }
 
-
+    protected Class<?> classForName(String className) throws BootStarterCxfException {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException exception) {
+            throw new BootStarterCxfException(NO_CLASS_FOUND, exception);
+        }
+    }
 
 }
