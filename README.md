@@ -11,13 +11,14 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 
 # Features include:
 
-* Generating all necessary Java-Classes using JAX-B from your WSDL/XSDs (using the complementing Maven plugin [cxf-spring-boot-starter-maven-plugin]
-* Booting up Apache CXF within Spring Context with 100% pure Java-Configuration
+* __Generating all necessary Java-Classes__ using JAX-B from your WSDL/XSDs (using the complementing Maven plugin [cxf-spring-boot-starter-maven-plugin]
+* Booting up Apache CXF within Spring Context with __100% pure Java-Configuration__
+* __Complete automation of Endpoint initialization__ - no need to configure Apache CXF Endpoints, that´s all done for you automatically based upon the WSDL and the generated Java-Classes (bringing up a nice [Spring Boot 1.4.x Failure Message](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-spring-application.html#_startup_failure) if you missed something :) )
 * Customize SOAP service URL and the title of the CXF generated Service site
-* Configure CXF to use slf4j and serve Logging-Interceptors, to log only the SOAP-Messages onto console
-* Extract the SoapMessages for processing in ELK-Stack, like [docker-elk](https://github.com/jonashackt/docker-elk)
-* Tailor your own custom SOAP faults, that comply with the exceptions defined inside your XML schema
-* SOAP Testing-Framework: With XmlUtils to easy your work with JAX-B class handling & a SOAP Raw Client to Test malformed XML against your Endpoints
+* __Configures CXF to use slf4j__ and serve Logging-Interceptors, to log only the SOAP-Messages onto console
+* __Extract the SoapMessages__ for processing in __ELK-Stack__, like [docker-elk](https://github.com/jonashackt/docker-elk)
+* Tailor your own __custom SOAP faults__, that comply with the exceptions defined inside your XML schema
+* SOAP Testing-Framework: With __XmlUtils__ to easy your work with JAX-B class handling & a __SOAP Raw Client__ to Test malformed XML against your Endpoints
 
 
 # Documentation
@@ -72,39 +73,10 @@ There´s also an blog post describing this project: [Spring Boot & Apache CXF �
 
 * place your .wsdl-File (and all the imported XSDs) into a folder somewhere under __src/main/resources__ (see [cxf-spring-boot-starter-maven-plugin] for details)
 * run __mvn generate-sources__ to generate all necessary Java-Classes from your WSDL/XSD 
-* Create a Configuration-Class (annotated with [Spring´s @Configuration](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/Configuration.html)) that uses the prefconfigured SpringBus and your generated JAX-WS class files to instantiate the CXF Endpoint, something like:
+* Implement the [javax.jws.WebService](http://docs.oracle.com/javaee/7/api/javax/jws/WebService.html) annotated Interface (your generated __Service Endpoint Interface (SEI)__ ) - it is the starting point for your development and is needed to autoconfigure your Endpoints. See the [WeatherServiceEndpoint](https://github.com/codecentric/spring-samples/blob/master/cxf-boot-simple/src/main/java/de/codecentric/soap/endpoint/WeatherServiceEndpoint.java) class inside the [cxf-boot-simple] project. 
+* That´s it
 
-```
-@Configuration
-public class YourConfigurationClass {
 
-    public static final String PUBLISH_URL_ENDING = "/YourServiceName_ServiceVersion";
-    
-    @Autowired
-    private SpringBus springBus;
-    
-    @Bean
-    public YourServiceInterface yourServiceInterfaceName() {
-        return new YourServiceEndpointImpl();
-    }
-    
-    @Bean
-    public Endpoint endpoint() {
-        EndpointImpl endpoint = new EndpointImpl(springBus, yourServiceInterfaceName());
-        endpoint.setServiceName(yourServiceClient().getServiceName());
-        endpoint.setWsdlLocation(yourServiceClient().getWSDLDocumentLocation().toString());
-        endpoint.publish(PUBLISH_URL_ENDING);
-        return endpoint;
-    }
-    
-    @Bean
-    public YourServiceClient yourServiceClient() {
-        return new YourServiceClient();
-    }
-}
-```
-
-An example is the [@Configuration](https://github.com/codecentric/spring-samples/blob/master/cxf-boot-simple/src/main/java/de/codecentric/soap/configuration/CxfBootSimpleConfiguration.java) class inside the [cxf-boot-simple] project. 
 
 # Additional Configuration Options
 
@@ -127,7 +99,7 @@ SOAP-Messages will be logged only and printed onto STOUT/Console for fast analys
 ### Extract the SoapMessages for processing in ELK-Stack
 
 > If you want to use this Logging feature to extract the SoapMessages for processing in ELK-Stack, there are two possible ways: stick to __Spring Boot 1.3.3.RELEASE__, due to [problems](https://github.com/logstash/logstash-logback-encoder/issues/160) in the [logstash-logback-encoder], which is itself a bug in [logback 1.1.7](http://jira.qos.ch/browse/LOGBACK-1164), which again is delivered with SpringBoot. This is only, till the SpringBoot guys [update to logback 1.1.8](https://github.com/spring-projects/spring-boot/issues/6214) - but this is not released [yet](https://mvnrepository.com/artifact/ch.qos.logback/logback-core).
-Or as an alternative way - and if you want to use __newer SpringBoot versions__ - you could override the logback-version with a 
+Or as an alternative way - and if you want to use __newer SpringBoot versions__ - you have to override the logback-version with a 
 ```<logback.version>1.1.6</logback.version>``` in your Maven´s properties-tag.
 
 
