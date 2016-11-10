@@ -184,10 +184,10 @@ Many SOAP based standards demand a custom SOAP-Fault, that should be delivered i
 private CxfAutoConfiguration cxfAutoConfiguration;
 ```
 
-and obtain the base.url by calling
+and obtain the base.url and the serviceUrlEnding (this one is derived from the wsdl:service name attribute of your WSDL) by calling
 
 ```
-cxfAutoConfiguration.getBaseUrl()
+cxfAutoConfiguration.getBaseAndServiceEndingUrl()
 ```
 
 ##### Integrate real XML test files into your Unit-, Integration- or SingleSystemIntegrationTests
@@ -217,7 +217,7 @@ public SoapRawClient soapRawClient() throws BootStarterCxfException {
 
 public String buildUrl() {
     // return something like http://localhost:8084/soap-api/WeatherSoapService
-    return "http://localhost:8084" + cxfAutoConfiguration.getBaseUrl() + CxfBootSimpleConfiguration.PUBLISH_URL_ENDING;
+    return "http://localhost:8084" + cxfAutoConfiguration.getBaseAndServiceEndingUrl();
 }
 
 @Autowired

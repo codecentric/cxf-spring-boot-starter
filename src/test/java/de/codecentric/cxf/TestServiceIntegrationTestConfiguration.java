@@ -35,7 +35,7 @@ public class TestServiceIntegrationTestConfiguration {
     
     private String buildUrl() {
         // return something like http://localhost:8084/soap-api/WeatherSoapService
-        return "http://localhost:8087" + cxfAutoConfiguration.getBaseUrl() + cxfAutoConfiguration.getServiceUrlEnding();
+        return "http://localhost:8087" + cxfAutoConfiguration.getBaseAndServiceEndingUrl();
     }
     
     @Autowired

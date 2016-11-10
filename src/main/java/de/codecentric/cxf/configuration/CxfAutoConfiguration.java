@@ -114,6 +114,15 @@ public class CxfAutoConfiguration {
     public String getServiceUrlEnding() {
         return serviceUrlEnding;
     }
+
+    /**
+     * @return the base-URL, where the WebServices are configured (eihter via property or default-value) and appended
+     * the concrete Service URL-ending, where the WebService is configured according to your WSDL´s Service Name
+     * (e.g. &quot;/Weather&quot; when there is this inside your WSDL: &lt;wsdl:service name=&quot;Weather&quot;&gt;)
+     */
+    public String getBaseAndServiceEndingUrl() {
+        return baseUrl + serviceUrlEnding;
+    }
     
     // Register Filter for Correlating Logmessages from the same Service-Consumer
     @Bean

@@ -43,7 +43,7 @@ public class WebServiceAutoDetector {
     @SuppressWarnings("unchecked")
     public Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
         Class<Service> webServiceClientClass = scanForClassWithAnnotationAndPickTheFirstOneFound(WebServiceClient.class);
-        LOG.debug("WebServiceClient class found: '{}'", webServiceClientClass.getName());
+        LOG.debug("Found WebServiceClient class: '{}'", webServiceClientClass.getName());
         return instantiateFromClass(webServiceClientClass);
     }
 
