@@ -8,6 +8,7 @@ import javax.xml.ws.Endpoint;
 import javax.xml.ws.Service;
 
 import de.codecentric.cxf.autodetection.WebServiceAutoDetector;
+import de.codecentric.cxf.autodetection.WebServiceScanner;
 import de.codecentric.cxf.common.BootStarterCxfException;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
@@ -48,7 +49,7 @@ public class CxfAutoConfiguration {
 
     private String serviceUrlEnding = "";
 
-    private WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector();;
+    private WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector(new WebServiceScanner());;
 
     @PostConstruct
     public void setUp() throws BootStarterCxfException {

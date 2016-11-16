@@ -1,10 +1,10 @@
 package de.codecentric.cxf.diagnostics;
 
 import de.codecentric.cxf.common.BootStarterCxfException;
+import de.codecentric.namespace.weatherservice.WeatherService;
 import org.junit.Test;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 
-import static de.codecentric.cxf.diagnostics.ClassesForAutodetectionMissingFailureAnalyzerHelper.*;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -13,27 +13,33 @@ public class ClassesForAutodetectionMissingFailureAnalyzersTest {
 
     private SeiImplMissingFailureAnalyzer seiImplMissingFailureAnalyzer = new SeiImplMissingFailureAnalyzer();
     private WebServiceClientMissingFailureAnalyzer webServiceClientMissingFailureAnalyzer = new WebServiceClientMissingFailureAnalyzer();
+    private SeiMissingFailureAnalyzer seiMissingFailureAnalyzer = new SeiMissingFailureAnalyzer();
 
 
     @Test public void
     does_SeiImplMissing_failure_analysis_contain_correct_description() throws BootStarterCxfException {
 
-        SeiImplClassNotFoundException seiNotFoundException = mockSeiImplClassNotFoundException();
+        SeiImplClassNotFoundException seiNotFoundException = SeiImplClassNotFoundException.build().setNotFoundClassName(WeatherService.class.getName());
 
         FailureAnalysis failureAnalysis = seiImplMissingFailureAnalyzer.analyze(seiNotFoundException);
 
-        assertThat(failureAnalysis.getDescription(), containsString("There was no SEI implementing class found"));
+        assertThat(failureAnalysis.getDescription(), containsString(SeiImplClassNotFoundException.MESSAGE));
     }
 
 
     @Test public void
     does_WebServiceClientMissing_failure_analysis_contain_correct_description() throws BootStarterCxfException {
 
-        WebServiceClientNotFoundException webServiceClientNotFoundException = mockWebServiceClientNotFoundException();
+        FailureAnalysis failureAnalysis = webServiceClientMissingFailureAnalyzer.analyze(new WebServiceClientNotFoundException());
 
-        FailureAnalysis failureAnalysis = webServiceClientMissingFailureAnalyzer.analyze(webServiceClientNotFoundException);
+        assertThat(failureAnalysis.getDescription(), containsString(WebServiceClientNotFoundException.MESSAGE));
+    }
 
-        assertThat(failureAnalysis.getDescription(), containsString("There was no class found, that´s annotated with javax.xml.ws.WebServiceClient"));
+    @Test public void
+    does_SeiMissing_failure_analysis_contain_correct_description() {
+        FailureAnalysis failureAnalysis = seiMissingFailureAnalyzer.analyze(new SeiNotFoundException());
+
+        assertThat(failureAnalysis.getDescription(), containsString(SeiNotFoundException.MESSAGE));
     }
 
 

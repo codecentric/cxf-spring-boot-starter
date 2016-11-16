@@ -9,7 +9,9 @@ import de.codecentric.cxf.common.BootStarterCxfException;
  */
 public class WebServiceClientNotFoundException extends BootStarterCxfException {
 
-    public WebServiceClientNotFoundException(String message) {
-        super(message);
+    protected static final String MESSAGE = "There was no class found, that´s annotated with javax.xml.ws.WebServiceClient and implements javax.xml.ws.Service";
+
+    public WebServiceClientNotFoundException() {
+        super(MESSAGE);
     }
 }
