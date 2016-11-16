@@ -2,17 +2,14 @@ package de.codecentric.cxf.autodetection;
 
 import de.codecentric.cxf.TestServiceEndpoint;
 import de.codecentric.cxf.common.BootStarterCxfException;
-import de.codecentric.cxf.diagnostics.SeiImplementingClassNotFoundException;
+import de.codecentric.cxf.diagnostics.SeiImplClassNotFoundException;
+import de.codecentric.cxf.diagnostics.WebServiceClientNotFoundException;
 import de.codecentric.namespace.weatherservice.Weather;
 import de.codecentric.namespace.weatherservice.WeatherService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
@@ -26,8 +23,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -102,16 +97,16 @@ public class WebServiceAutoDetectorTest {
         assertThat(serviceNameQName.getLocalPart(), is(equalTo("Weather")));
     }
 
-    @Test(expected = SeiImplementingClassNotFoundException.class) public void
-    should_react_with_custom_startup_Failure_Message_presented_in_console_if_SEI_implementing_class_is_missing() throws BootStarterCxfException {
-        Class serviceEndpointInterface = webServiceAutoDetector.searchServiceEndpointInterface();
+    @Test(expected = SeiImplClassNotFoundException.class) public void
+    should_react_with_custom_startup_Failure_Message_console_if_SEI_implementing_class_is_missing() throws BootStarterCxfException {
+        Class serviceEndpointInterface = WeatherService.class;
 
-        SeiImplementingClassNotFoundException seiNotFoundException = new SeiImplementingClassNotFoundException("No SEI implementing class found");
-        seiNotFoundException.setNotFoundClassName(serviceEndpointInterface.getName());
+        webServiceAutoDetectorTestable.searchAndInstantiateSeiImplementation(serviceEndpointInterface);
+    }
 
-        throw seiNotFoundException;
-
-
+    @Test(expected = WebServiceClientNotFoundException.class) public void
+    should_react_with_custom_startup_Failure_Message_if_WebServiceClient_annotated_class_is_missing() throws BootStarterCxfException {
+        webServiceAutoDetectorTestable.searchAndInstantiateWebServiceClient();
     }
 
 }

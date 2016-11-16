@@ -7,13 +7,13 @@ import de.codecentric.cxf.common.BootStarterCxfException;
  *
  * @author jonashackt
  */
-public class SeiImplementingClassNotFoundException extends BootStarterCxfException {
+public class SeiImplClassNotFoundException extends BootStarterCxfException {
 
-    private String notFoundClassName;
-
-    public SeiImplementingClassNotFoundException(String message) {
+    public SeiImplClassNotFoundException(String message) {
         super(message);
     }
+
+    private String notFoundClassName;
 
     public String getNotFoundClassName() {
         return notFoundClassName;

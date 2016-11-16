@@ -184,7 +184,7 @@ Many SOAP based standards demand a custom SOAP-Fault, that should be delivered i
 private CxfAutoConfiguration cxfAutoConfiguration;
 ```
 
-and obtain the base.url and the serviceUrlEnding (this one is derived from the wsdl:service name attribute of your WSDL) by calling
+and obtain the __base.url__ and the __serviceUrlEnding__ (this one is derived from the wsdl:service name attribute of your WSDL) by calling
 
 ```
 cxfAutoConfiguration.getBaseAndServiceEndingUrl()
@@ -222,6 +222,18 @@ public String buildUrl() {
 
 @Autowired
 private CxfAutoConfiguration cxfAutoConfiguration;
+```
+
+# Concepts
+
+### How does Complete automation of Endpoint initialization work?
+
+If you start your Spring Boot application and everything went fine, then you should see some of those log messages inside your console:
+
+```
+[...] INFO 83684 --- [ost-startStop-1] d.c.c.a.WebServiceAutoDetector           : Found WebServiceClient class: 'de.codecentric.namespace.weatherservice.Weather'
+[...] INFO 83684 --- [  restartedMain] d.c.c.a.WebServiceAutoDetector           : Found Service Endpoint Interface (SEI): 'de.codecentric.namespace.weatherservice.WeatherService'
+[...] INFO 83684 --- [  restartedMain] d.c.c.a.WebServiceAutoDetector           : Found SEI implementing class: 'de.codecentric.soap.endpoint.WeatherServiceEndpoint'
 ```
 
 

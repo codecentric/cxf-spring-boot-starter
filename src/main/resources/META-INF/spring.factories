@@ -3,4 +3,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=de.codecentric.cx
 
 #FailureAnalyzers
 org.springframework.boot.diagnostics.FailureAnalyzer=\
-de.codecentric.cxf.diagnostics.SeiImplementationMissingFailureAnalyzer
+de.codecentric.cxf.diagnostics.SeiImplMissingFailureAnalyzer
