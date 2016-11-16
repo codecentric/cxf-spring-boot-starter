@@ -112,7 +112,7 @@ public class WebServiceAutoDetectorTest {
     }
 
     protected static List<String> generateListWithSeiAndSeiImplNameWithBothWebServiceAnnotation() {
-        return Arrays.asList(WEATHER_SERVICE_ENDPOINT_INTERFACE.getSimpleName(), WEATHER_SEI_IMPLEMENTING_CLASS.getSimpleName());
+        return Arrays.asList(WEATHER_SERVICE_ENDPOINT_INTERFACE.getName(), WEATHER_SEI_IMPLEMENTING_CLASS.getName());
     }
 
 }
