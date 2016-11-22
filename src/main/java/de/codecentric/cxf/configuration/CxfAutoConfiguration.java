@@ -14,6 +14,8 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.apache.cxf.transport.servlet.CXFServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -41,18 +43,29 @@ import de.codecentric.cxf.logging.LogCorrelationFilter;
 })
 public class CxfAutoConfiguration {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CxfAutoConfiguration.class);
+
     @Value("${soap.service.base.url:/soap-api}")
     private String baseUrl;
 
     @Value("${cxf.servicelist.title:CXF SpringBoot Starter - service list}")
     private String serviceListTitle;
 
-    private String serviceUrlEnding = "";
+    private Object seiImplementation;
+    private Service webServiceClient;
 
-    private WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector(new WebServiceScanner());;
+    private String serviceUrlEnding = "";
 
     @PostConstruct
     public void setUp() throws BootStarterCxfException {
+        // Try to autodetect all necessary classes for Endpoint initialization
+        WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector(new WebServiceScanner());
+
+        Class serviceEndpointInterface = webServiceAutoDetector.searchServiceEndpointInterface();
+        seiImplementation = webServiceAutoDetector.searchAndInstantiateSeiImplementation(serviceEndpointInterface);
+
+        webServiceClient = webServiceAutoDetector.searchAndInstantiateWebServiceClient();
+
         serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
     }
 
@@ -77,12 +90,14 @@ public class CxfAutoConfiguration {
 
     @Bean
     public Object seiImplementation() throws BootStarterCxfException {
-        Class serviceEndpointInterface = webServiceAutoDetector.searchServiceEndpointInterface();
-        return webServiceAutoDetector.searchAndInstantiateSeiImplementation(serviceEndpointInterface);
+        return seiImplementation;
     }
 
     @Bean
     public Endpoint endpoint() throws BootStarterCxfException {
+
+        LOG.info("Autodetection successful. Initializing javax.xml.ws.Endpoint based on " + seiImplementation().getClass().getName());
+
         EndpointImpl endpoint = new EndpointImpl(springBus(), seiImplementation());
         // CXF JAX-WS implementation relies on the correct ServiceName as QName-Object with
         // the name-Attribute´s text <wsdl:service name="Weather"> and the targetNamespace
@@ -91,20 +106,20 @@ public class CxfAutoConfiguration {
         endpoint.setServiceName(webServiceClient().getServiceName());
         endpoint.setWsdlLocation(webServiceClient().getWSDLDocumentLocation().toString());
         // publish the Service under it´s name mentioned in the WSDL inside name attribute (example: <wsdl:service name="Weather">)
-        endpoint.publish(serviceUrlEnding);
+        endpoint.publish(serviceUrlEnding());
         return endpoint;
     }
 
     @Bean
     public Service webServiceClient() throws BootStarterCxfException {
         // Needed for correct ServiceName & WSDLLocation to publish contract first incl. original WSDL
-        return webServiceAutoDetector.searchAndInstantiateWebServiceClient();
+        return webServiceClient;
     }
     
     /**
      * @return the base-URL, where the WebServices are configured (eihter via property or default-value)
      */
-    public String getBaseUrl() {
+    public String baseUrl() {
         return baseUrl;
     }
 
@@ -112,7 +127,7 @@ public class CxfAutoConfiguration {
      * @return the concrete Service URL-ending, where the WebService is configured according to your WSDL´s Service Name
      * (e.g. &quot;/Weather&quot; when there is this inside your WSDL: &lt;wsdl:service name=&quot;Weather&quot;&gt;)
      */
-    public String getServiceUrlEnding() {
+    public String serviceUrlEnding() {
         return serviceUrlEnding;
     }
 
@@ -121,8 +136,8 @@ public class CxfAutoConfiguration {
      * the concrete Service URL-ending, where the WebService is configured according to your WSDL´s Service Name
      * (e.g. &quot;/Weather&quot; when there is this inside your WSDL: &lt;wsdl:service name=&quot;Weather&quot;&gt;)
      */
-    public String getBaseAndServiceEndingUrl() {
-        return baseUrl + serviceUrlEnding;
+    public String baseAndServiceEndingUrl() {
+        return baseUrl() + serviceUrlEnding();
     }
     
     // Register Filter for Correlating Logmessages from the same Service-Consumer
