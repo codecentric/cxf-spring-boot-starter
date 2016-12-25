@@ -53,7 +53,7 @@ public class SoapFaultBuilder {
 	    	// we append it to a new Element, which then gets deleted again
 	    	exceptionElementAppended = XmlUtils.appendAsChildElement2NewElement(faultDetailAsDoc);
 		} catch (Exception exception) {
-			LOG.failedToBuildWeatherServiceCompliantSoapFaultDetails(exception);
+			LOG.failedToBuildServiceCompliantSoapFaultDetails(exception);
 			// We don´t want an Exception thrown here
 		}
 		return exceptionElementAppended;

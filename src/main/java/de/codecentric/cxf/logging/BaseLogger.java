@@ -83,8 +83,8 @@ public class BaseLogger {
         logError("901", "An Error accured in backend-processing: {}", cause.getMessage());
     }
     
-    public void failedToBuildWeatherServiceCompliantSoapFaultDetails(Throwable cause) {
-        logError("902", "Failed to build Weather-compliant SoapFault-details: {}\nStacktrace: {}", cause.getMessage(), cause.getStackTrace());
+    public void failedToBuildServiceCompliantSoapFaultDetails(Throwable cause) {
+        logError("902", "Failed to build service-compliant SoapFault-details: {}\nStacktrace: {}", cause.getMessage(), cause.getStackTrace());
     }   
     
     public void schemaValidationError(FaultType error, String faultMessage) {
