@@ -24,8 +24,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
-import de.codecentric.cxf.logging.LogCorrelationFilter;
-
 /**
  * While booting up the CXF-Framework and Servlets, we don´t override the Bean "dispatcherServlet" here - because,
  * if you want to use a second Servlet (e.g. because you need some REST-Endpoint via the @RestController Annotation),
@@ -140,10 +138,4 @@ public class CxfAutoConfiguration {
         return baseUrl() + serviceUrlEnding();
     }
     
-    // Register Filter for Correlating Logmessages from the same Service-Consumer
-    @Bean
-    public Filter filter() {
-        return new LogCorrelationFilter();
-    }
-
 }
