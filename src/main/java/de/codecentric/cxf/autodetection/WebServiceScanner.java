@@ -19,14 +19,26 @@ public class WebServiceScanner {
     protected static final String NO_CLASS_FOUND = "No class found";
 
     protected <T> Class scanForClassWhichImplementsAndPickFirst(Class<T> interfaceName) throws BootStarterCxfException {
-        Set<BeanDefinition> beans = scanForClasses(new AssignableTypeFilter(interfaceName),"de.codecentric");
-        Optional<BeanDefinition> bean = beans.stream().findFirst();
+        List<String> namesOfClassesWithInterface = new ArrayList<>();
 
-        if (!bean.isPresent()) {
+        Set<BeanDefinition> beans = scanForClasses(new AssignableTypeFilter(interfaceName),"de.codecentric");
+
+        if (beans.isEmpty()) {
             throw new BootStarterCxfException(WebServiceAutoDetector.NO_CLASS_FOUND);
         }
 
-        return classForName(bean.get().getBeanClassName());
+        beans.forEach((BeanDefinition beanDef) -> namesOfClassesWithInterface.add(beanDef.getBeanClassName()));
+
+        return justPickTheClassThatIsNotAnInterface(namesOfClassesWithInterface);
+    }
+
+    protected Class justPickTheClassThatIsNotAnInterface(List<String> namesOfClasses) throws BootStarterCxfException {
+        for (String className : namesOfClasses) {
+            if (!isInterface(className)) {
+                return classForName(className);
+            }
+        }
+        throw new BootStarterCxfException(NO_CLASS_FOUND);
     }
 
     private Set<BeanDefinition> scanForClasses(TypeFilter typeFilter, String basePackage) {
