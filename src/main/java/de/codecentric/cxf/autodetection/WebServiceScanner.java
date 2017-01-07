@@ -1,37 +1,58 @@
 package de.codecentric.cxf.autodetection;
 
 import de.codecentric.cxf.common.BootStarterCxfException;
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
-import io.github.lukehutch.fastclasspathscanner.scanner.ScanResult;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.core.type.filter.TypeFilter;
 
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class WebServiceScanner {
 
     protected static final String NO_CLASS_FOUND = "No class found";
 
     protected <T> Class scanForClassWhichImplementsAndPickFirst(Class<T> interfaceName) throws BootStarterCxfException {
-        List<String> namesOfClassesImplementing = initScannerAndScan().getNamesOfClassesImplementing(interfaceName);
-        if (namesOfClassesImplementing.isEmpty()) {
+        Set<BeanDefinition> beans = scanForClasses(new AssignableTypeFilter(interfaceName),"de.codecentric");
+        Optional<BeanDefinition> bean = beans.stream().findFirst();
+
+        if (!bean.isPresent()) {
             throw new BootStarterCxfException(WebServiceAutoDetector.NO_CLASS_FOUND);
         }
-        return classForName(namesOfClassesImplementing.get(0));
+
+        return classForName(bean.get().getBeanClassName());
     }
 
-    protected <T> Class scanForClassWithAnnotationAndPickTheFirstOneFound(Class<T> annotationName) throws BootStarterCxfException {
+    private Set<BeanDefinition> scanForClasses(TypeFilter typeFilter, String basePackage) {
+        ClassPathScanningCandidateComponentProvider scanningProvider = new InterfaceIncludingClassPathScanningCandidateComponentProvider();
+        scanningProvider.addIncludeFilter(typeFilter);
+        return scanningProvider.findCandidateComponents(basePackage);
+    }
+
+    protected <T extends Annotation> Class scanForClassWithAnnotationAndPickTheFirstOneFound(Class<T> annotationName) throws BootStarterCxfException {
         return classForName(scanForClassNamesWithAnnotation(annotationName).get(0));
     }
 
-    protected <T> List<String> scanForClassNamesWithAnnotation(Class<T> annotationName) throws BootStarterCxfException {
-        List<String> namesOfClassesWithAnnotation = initScannerAndScan().getNamesOfClassesWithAnnotation(annotationName);
+    protected <T extends Annotation> List<String> scanForClassNamesWithAnnotation(Class<T> annotation) throws BootStarterCxfException {
+        List<String> namesOfClassesWithAnnotation = new ArrayList<>();
 
-        if(namesOfClassesWithAnnotation.isEmpty()) {
+        Set<BeanDefinition> beans = scanForClasses(new AnnotationTypeFilter(annotation), "de.codecentric");
+
+        if(beans.isEmpty()) {
             throw new BootStarterCxfException(NO_CLASS_FOUND);
         }
+
+        beans.stream().forEach((BeanDefinition bean) -> namesOfClassesWithAnnotation.add(bean.getBeanClassName()));
         return namesOfClassesWithAnnotation;
     }
 
-    protected  <T> Class scanForClassWithAnnotationAndIsAnInterface(Class<T> annotationName) throws BootStarterCxfException {
+    protected  <T extends Annotation> Class scanForClassWithAnnotationAndIsAnInterface(Class<T> annotationName) throws BootStarterCxfException {
         List<String> namesOfClassesWithAnnotation = scanForClassNamesWithAnnotation(annotationName);
 
         if(namesOfClassesWithAnnotation.size() > 1) {
@@ -54,11 +75,6 @@ public class WebServiceScanner {
         return classForName(className).isInterface();
     }
 
-    private ScanResult initScannerAndScan() {
-        return new FastClasspathScanner().scan();
-    }
-
-
     protected Class<?> classForName(String className) throws BootStarterCxfException {
         try {
             return Class.forName(className);
@@ -66,4 +82,5 @@ public class WebServiceScanner {
             throw new BootStarterCxfException(NO_CLASS_FOUND, exception);
         }
     }
+
 }

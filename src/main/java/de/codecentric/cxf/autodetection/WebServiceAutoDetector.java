@@ -6,6 +6,7 @@ import de.codecentric.cxf.diagnostics.SeiNotFoundException;
 import de.codecentric.cxf.diagnostics.WebServiceClientNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.jws.WebService;
 import javax.xml.ws.Service;
@@ -14,6 +15,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 
+@Component
 public class WebServiceAutoDetector {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebServiceAutoDetector.class);
@@ -27,8 +29,19 @@ public class WebServiceAutoDetector {
         this.webServiceScanner = webServiceScanner;
     }
 
+    /**
+     * Detects & instantiates the SEI-Implementation. Therefore it detects the SEI itself first.
+     *
+     * @param <T>
+     * @return
+     * @throws BootStarterCxfException
+     */
+    public <T> T searchAndInstantiateSeiImplementation() throws BootStarterCxfException {
+        return searchAndInstantiateSeiImplementation(searchServiceEndpointInterface());
+    }
+
     @SuppressWarnings("unchecked")
-    public <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
+    protected  <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
         Class<T> implementingClass = null;
         try {
             implementingClass = webServiceScanner.scanForClassWhichImplementsAndPickFirst(seiName);

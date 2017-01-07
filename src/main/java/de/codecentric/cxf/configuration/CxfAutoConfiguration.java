@@ -1,5 +1,6 @@
 package de.codecentric.cxf.configuration;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -51,21 +52,16 @@ public class CxfAutoConfiguration {
     @Value("${cxf.servicelist.title:CXF SpringBoot Starter - service list}")
     private String serviceListTitle;
 
-    private Object seiImplementation;
-    private Service webServiceClient;
-
     private String serviceUrlEnding = "";
+
+
+    @Bean
+    public WebServiceAutoDetector webServiceAutoDetector() {
+        return new WebServiceAutoDetector(new WebServiceScanner());
+    }
 
     @PostConstruct
     public void setUp() throws BootStarterCxfException {
-        // Try to autodetect all necessary classes for Endpoint initialization
-        WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector(new WebServiceScanner());
-
-        Class serviceEndpointInterface = webServiceAutoDetector.searchServiceEndpointInterface();
-        seiImplementation = webServiceAutoDetector.searchAndInstantiateSeiImplementation(serviceEndpointInterface);
-
-        webServiceClient = webServiceAutoDetector.searchAndInstantiateWebServiceClient();
-
         serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
     }
 
@@ -90,7 +86,7 @@ public class CxfAutoConfiguration {
 
     @Bean
     public Object seiImplementation() throws BootStarterCxfException {
-        return seiImplementation;
+        return webServiceAutoDetector().searchAndInstantiateSeiImplementation();
     }
 
     @Bean
@@ -113,7 +109,7 @@ public class CxfAutoConfiguration {
     @Bean
     public Service webServiceClient() throws BootStarterCxfException {
         // Needed for correct ServiceName & WSDLLocation to publish contract first incl. original WSDL
-        return webServiceClient;
+        return webServiceAutoDetector().searchAndInstantiateWebServiceClient();
     }
     
     /**

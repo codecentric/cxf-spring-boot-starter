@@ -1,21 +1,34 @@
 package de.codecentric.cxf.autodetection;
 
 
+import de.codecentric.cxf.TestServiceEndpoint;
 import de.codecentric.cxf.common.BootStarterCxfException;
+import de.codecentric.namespace.weatherservice.Weather;
 import de.codecentric.namespace.weatherservice.WeatherService;
 import org.junit.Test;
 
 import javax.jws.WebService;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
 import java.util.List;
 
+import static de.codecentric.cxf.autodetection.WebServiceAutoDetector.WEB_SERVICE_CLIENT_ANNOTATION;
 import static de.codecentric.cxf.autodetection.WebServiceAutoDetectorTest.generateListWithSeiAndSeiImplNameWithBothWebServiceAnnotation;
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class WebServiceScannerTest {
+
+    private static final Class WEATHER_SERVICE_ENDPOINT_INTERFACE = WeatherService.class;
+    private static final Class WEATHER_WEBSERVICE_CLIENT = Weather.class;
+    private static final Class WEATHER_SEI_IMPLEMENTING_CLASS = TestServiceEndpoint.class;
+
+    public static final Class<WebService> SEI_ANNOTATION = WebService.class;
 
     private WebServiceScanner webServiceScanner = new WebServiceScanner();
 
@@ -31,6 +44,30 @@ public class WebServiceScannerTest {
         }
 
         assertThat(weather, is(equalTo(WeatherService.class)));
+    }
+
+    @Test public void
+    is_Class_With_Annotation_Which_is_also_an_Interface_Successfully_detected() throws BootStarterCxfException {
+        Class serviceEndpointInterface = webServiceScanner.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION);
+
+        assertThat(serviceEndpointInterface, is(notNullValue()));
+        assertThat(serviceEndpointInterface.getSimpleName(), is(equalTo(WEATHER_SERVICE_ENDPOINT_INTERFACE.getSimpleName())));
+    }
+
+    @Test public void
+    is_Class_which_Implementes_another_Class_successfully_found() throws NoSuchFieldException, BootStarterCxfException {
+        Class weatherServiceEndpointImpl = webServiceScanner.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE);
+
+        assertThat(weatherServiceEndpointImpl, is(notNullValue()));
+        assertThat(weatherServiceEndpointImpl.getSimpleName(), is(equalTo(WEATHER_SEI_IMPLEMENTING_CLASS.getSimpleName())));
+    }
+
+    @Test public void
+    is_Class_with_Annotation_successfully_found() throws BootStarterCxfException {
+        Class webServiceClient = webServiceScanner.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION);
+
+        assertThat(webServiceClient, is(notNullValue()));
+        assertThat(webServiceClient.getSimpleName(), is(equalTo(WEATHER_WEBSERVICE_CLIENT.getSimpleName())));
     }
 
     @Test public void
