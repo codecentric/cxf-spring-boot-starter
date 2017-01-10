@@ -18,10 +18,10 @@ public class WebServiceScanner {
 
     protected static final String NO_CLASS_FOUND = "No class found";
 
-    protected <T> Class scanForClassWhichImplementsAndPickFirst(Class<T> interfaceName) throws BootStarterCxfException {
+    protected <T> Class scanForClassWhichImplementsAndPickFirst(Class<T> interfaceName, String packageName) throws BootStarterCxfException {
         List<String> namesOfClassesWithInterface = new ArrayList<>();
 
-        Set<BeanDefinition> beans = scanForClasses(new AssignableTypeFilter(interfaceName),"de.codecentric");
+        Set<BeanDefinition> beans = scanForClasses(new AssignableTypeFilter(interfaceName), packageName);
 
         if (beans.isEmpty()) {
             throw new BootStarterCxfException(WebServiceAutoDetector.NO_CLASS_FOUND);
@@ -47,14 +47,14 @@ public class WebServiceScanner {
         return scanningProvider.findCandidateComponents(basePackage);
     }
 
-    protected <T extends Annotation> Class scanForClassWithAnnotationAndPickTheFirstOneFound(Class<T> annotationName) throws BootStarterCxfException {
-        return classForName(scanForClassNamesWithAnnotation(annotationName).get(0));
+    protected <T extends Annotation> Class scanForClassWithAnnotationAndPickTheFirstOneFound(Class<T> annotationName, String packageName) throws BootStarterCxfException {
+        return classForName(scanForClassNamesWithAnnotation(annotationName, packageName).get(0));
     }
 
-    protected <T extends Annotation> List<String> scanForClassNamesWithAnnotation(Class<T> annotation) throws BootStarterCxfException {
+    protected <T extends Annotation> List<String> scanForClassNamesWithAnnotation(Class<T> annotation, String packageName) throws BootStarterCxfException {
         List<String> namesOfClassesWithAnnotation = new ArrayList<>();
 
-        Set<BeanDefinition> beans = scanForClasses(new AnnotationTypeFilter(annotation), "de.codecentric");
+        Set<BeanDefinition> beans = scanForClasses(new AnnotationTypeFilter(annotation), packageName);
 
         if(beans.isEmpty()) {
             throw new BootStarterCxfException(NO_CLASS_FOUND);
@@ -64,8 +64,8 @@ public class WebServiceScanner {
         return namesOfClassesWithAnnotation;
     }
 
-    protected  <T extends Annotation> Class scanForClassWithAnnotationAndIsAnInterface(Class<T> annotationName) throws BootStarterCxfException {
-        List<String> namesOfClassesWithAnnotation = scanForClassNamesWithAnnotation(annotationName);
+    protected  <T extends Annotation> Class scanForClassWithAnnotationAndIsAnInterface(Class<T> annotationName, String packageName) throws BootStarterCxfException {
+        List<String> namesOfClassesWithAnnotation = scanForClassNamesWithAnnotation(annotationName, packageName);
 
         if(namesOfClassesWithAnnotation.size() > 1) {
             return justPickTheClassThatIsAnInterface(namesOfClassesWithAnnotation);

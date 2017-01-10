@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
-public class WsdlScannerShould {
+public class WsdlScannerTest {
 
     @Value("classpath:wsdl/Weather1.0.wsdl")
     private Resource weatherServiceWsdl;

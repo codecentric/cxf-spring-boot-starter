@@ -33,9 +33,11 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class WebServiceAutoDetectorTest {
 
-    private static final Class WEATHER_SERVICE_ENDPOINT_INTERFACE = WeatherService.class;
-    private static final Class WEATHER_WEBSERVICE_CLIENT = Weather.class;
-    private static final Class WEATHER_SEI_IMPLEMENTING_CLASS = TestServiceEndpoint.class;
+    public static final String GENERATED_CLASSES_PACKAGE = "de.codecentric";
+
+    public static final Class WEATHER_SERVICE_ENDPOINT_INTERFACE = WeatherService.class;
+    public static final Class WEATHER_WEBSERVICE_CLIENT = Weather.class;
+    public static final Class WEATHER_SEI_IMPLEMENTING_CLASS = TestServiceEndpoint.class;
 
     private final BootStarterCxfException STARTER_EXCEPTION_NO_CLASS_FOUND = new BootStarterCxfException(WebServiceScanner.NO_CLASS_FOUND);
 
@@ -43,7 +45,7 @@ public class WebServiceAutoDetectorTest {
     is_SEI_Successfully_detected() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION)).thenReturn(WEATHER_SERVICE_ENDPOINT_INTERFACE);
+        when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenReturn(WEATHER_SERVICE_ENDPOINT_INTERFACE);
         WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector(scannerMock);
 
         Class serviceEndpointInterface = webServiceAutoDetector.searchServiceEndpointInterface();
@@ -56,7 +58,7 @@ public class WebServiceAutoDetectorTest {
     is_SEI_Implementation_successfully_found_and_instantiated() throws NoSuchFieldException, BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE)).thenReturn(WEATHER_SEI_IMPLEMENTING_CLASS);
+        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, GENERATED_CLASSES_PACKAGE)).thenReturn(WEATHER_SEI_IMPLEMENTING_CLASS);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         WeatherService weatherServiceEndpointImpl = autoDetector.searchAndInstantiateSeiImplementation(WEATHER_SERVICE_ENDPOINT_INTERFACE);
@@ -69,7 +71,7 @@ public class WebServiceAutoDetectorTest {
     is_WebServiceClient_successfully_found_and_instantiated() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION)).thenReturn(WEATHER_WEBSERVICE_CLIENT);
+        when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenReturn(WEATHER_WEBSERVICE_CLIENT);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         Service webServiceClient = autoDetector.searchAndInstantiateWebServiceClient();
@@ -84,7 +86,7 @@ public class WebServiceAutoDetectorTest {
     should_react_with_custom_startup_Failure_Message_console_if_SEI_implementing_class_is_missing() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
+        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, GENERATED_CLASSES_PACKAGE)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         autoDetector.searchAndInstantiateSeiImplementation(WEATHER_SERVICE_ENDPOINT_INTERFACE);
@@ -94,7 +96,7 @@ public class WebServiceAutoDetectorTest {
     should_react_with_custom_startup_Failure_Message_if_WebServiceClient_annotated_class_is_missing() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
+        when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         autoDetector.searchAndInstantiateWebServiceClient();
@@ -104,8 +106,8 @@ public class WebServiceAutoDetectorTest {
     should_react_with_custom_startup_Failure_Message_if_SEI_is_missing() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassNamesWithAnnotation(SEI_ANNOTATION)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
-        when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION)).thenCallRealMethod();
+        when(scannerMock.scanForClassNamesWithAnnotation(SEI_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
+        when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenCallRealMethod();
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         autoDetector.searchServiceEndpointInterface();

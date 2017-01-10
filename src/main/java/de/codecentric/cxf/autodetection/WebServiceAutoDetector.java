@@ -44,7 +44,7 @@ public class WebServiceAutoDetector {
     protected  <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
         Class<T> implementingClass = null;
         try {
-            implementingClass = webServiceScanner.scanForClassWhichImplementsAndPickFirst(seiName);
+            implementingClass = webServiceScanner.scanForClassWhichImplementsAndPickFirst(seiName, "de.codecentric");
             LOG.info("Found SEI implementing class: '{}'", implementingClass.getName());
         } catch (BootStarterCxfException exception) {
             throw SeiImplClassNotFoundException.build().setNotFoundClassName(seiName.getName());
@@ -54,7 +54,7 @@ public class WebServiceAutoDetector {
 
     public Class searchServiceEndpointInterface() throws BootStarterCxfException {
         try{
-            Class sei = webServiceScanner.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION);
+            Class sei = webServiceScanner.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, "de.codecentric");
             LOG.info("Found Service Endpoint Interface (SEI): '{}'", sei.getName());
             return sei;
         } catch (BootStarterCxfException exception) {
@@ -65,7 +65,7 @@ public class WebServiceAutoDetector {
     @SuppressWarnings("unchecked")
     public Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
         try{
-            Class<Service> webServiceClientClass = webServiceScanner.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION);
+            Class<Service> webServiceClientClass = webServiceScanner.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, "de.codecentric");
             LOG.info("Found WebServiceClient class: '{}'", webServiceClientClass.getName());
             return instantiateFromClass(webServiceClientClass);
         } catch (BootStarterCxfException exception) {
