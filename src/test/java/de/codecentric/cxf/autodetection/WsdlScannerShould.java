@@ -32,9 +32,15 @@ public class WsdlScannerShould {
 
     @Test public void
     find_Wsdl_in_classpath() throws IOException, BootStarterCxfException {
-        File wsdl = wsdlScanner.findWsdl();
+        File wsdl = wsdlScanner.findWsdl().getFile();
         assertThat(wsdl.getName(), is(equalTo(weatherServiceWsdl.getFile().getName())));
     }
 
+    @Test public void
+    read_target_namespace_from_Wsdl() throws BootStarterCxfException, IOException {
+        String targetNamespace = wsdlScanner.readTargetNamespaceFromWsdl();
+
+        assertThat(targetNamespace, is(equalTo("http://www.codecentric.de/namespace/weatherservice/")));
+    }
 
 }
