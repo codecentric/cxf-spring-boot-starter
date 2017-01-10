@@ -27,20 +27,32 @@ public class WsdlScannerTest {
     find_Wsdl_in_classpath_with_given_path() throws IOException {
 
         File wsdl = wsdlScanner.findWsdl("wsdl/Weather1.0.wsdl");
+
         assertThat(wsdl.getName(), is(equalTo(weatherServiceWsdl.getFile().getName())));
     }
 
     @Test public void
     find_Wsdl_in_classpath() throws IOException, BootStarterCxfException {
+
         File wsdl = wsdlScanner.findWsdl().getFile();
+
         assertThat(wsdl.getName(), is(equalTo(weatherServiceWsdl.getFile().getName())));
     }
 
     @Test public void
     read_target_namespace_from_Wsdl() throws BootStarterCxfException, IOException {
+
         String targetNamespace = wsdlScanner.readTargetNamespaceFromWsdl();
 
         assertThat(targetNamespace, is(equalTo("http://www.codecentric.de/namespace/weatherservice/")));
+    }
+
+    @Test public void
+    extract_correct_package_name_from_target_naemspace_in_Wsdl() throws IOException, BootStarterCxfException {
+
+        String packageName = wsdlScanner.generatePackageNameFrom(wsdlScanner.readTargetNamespaceFromWsdl());
+
+        assertThat(packageName, is(equalTo("de.codecentric.namespace.weatherservice")));
     }
 
 }

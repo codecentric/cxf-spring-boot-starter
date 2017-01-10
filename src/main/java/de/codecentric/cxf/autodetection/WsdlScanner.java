@@ -1,5 +1,6 @@
 package de.codecentric.cxf.autodetection;
 
+import com.sun.tools.xjc.api.XJC;
 import de.codecentric.cxf.common.BootStarterCxfException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -64,5 +65,9 @@ public class WsdlScanner {
     private static Matcher buildMatcher(String string2SearchIn, String regex) {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(string2SearchIn);
+    }
+
+    public String generatePackageNameFrom(String targetNamespace) {
+        return XJC.getDefaultPackageName(targetNamespace);
     }
 }
