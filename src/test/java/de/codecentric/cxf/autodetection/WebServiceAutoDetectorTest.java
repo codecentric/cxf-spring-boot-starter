@@ -33,7 +33,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class WebServiceAutoDetectorTest {
 
-    public static final String GENERATED_CLASSES_PACKAGE = "de.codecentric";
+    public static final String GENERATED_CLASSES_PACKAGE = "de.codecentric.namespace.weatherservice";
 
     public static final Class WEATHER_SERVICE_ENDPOINT_INTERFACE = WeatherService.class;
     public static final Class WEATHER_WEBSERVICE_CLIENT = Weather.class;
@@ -58,7 +58,8 @@ public class WebServiceAutoDetectorTest {
     is_SEI_Implementation_successfully_found_and_instantiated() throws NoSuchFieldException, BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, GENERATED_CLASSES_PACKAGE)).thenReturn(WEATHER_SEI_IMPLEMENTING_CLASS);
+        // TODO: read package dynamically
+        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, "de.codecentric.cxf")).thenReturn(WEATHER_SEI_IMPLEMENTING_CLASS);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         WeatherService weatherServiceEndpointImpl = autoDetector.searchAndInstantiateSeiImplementation(WEATHER_SERVICE_ENDPOINT_INTERFACE);
@@ -86,7 +87,8 @@ public class WebServiceAutoDetectorTest {
     should_react_with_custom_startup_Failure_Message_console_if_SEI_implementing_class_is_missing() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, GENERATED_CLASSES_PACKAGE)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
+        // TODO: read package dynamically
+        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, "de.codecentric.cxf")).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         autoDetector.searchAndInstantiateSeiImplementation(WEATHER_SERVICE_ENDPOINT_INTERFACE);

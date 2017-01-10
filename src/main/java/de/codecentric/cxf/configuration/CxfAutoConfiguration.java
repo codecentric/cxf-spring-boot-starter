@@ -56,7 +56,7 @@ public class CxfAutoConfiguration {
 
 
     @Bean
-    public WebServiceAutoDetector webServiceAutoDetector() {
+    public WebServiceAutoDetector webServiceAutoDetector() throws BootStarterCxfException {
         return new WebServiceAutoDetector(new WebServiceScanner());
     }
 

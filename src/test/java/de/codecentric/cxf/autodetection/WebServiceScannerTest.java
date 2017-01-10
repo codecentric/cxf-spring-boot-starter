@@ -51,7 +51,7 @@ public class WebServiceScannerTest {
 
     @Test public void
     is_Class_which_Implementes_another_Class_successfully_found() throws NoSuchFieldException, BootStarterCxfException {
-        Class weatherServiceEndpointImpl = webServiceScanner.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, GENERATED_CLASSES_PACKAGE);
+        Class weatherServiceEndpointImpl = webServiceScanner.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, "de.codecentric.cxf");
 
         assertThat(weatherServiceEndpointImpl, is(notNullValue()));
         assertThat(weatherServiceEndpointImpl.getSimpleName(), is(equalTo(WEATHER_SEI_IMPLEMENTING_CLASS.getSimpleName())));

@@ -40,7 +40,7 @@ public class WsdlScannerTest {
     }
 
     @Test public void
-    read_target_namespace_from_Wsdl() throws BootStarterCxfException, IOException {
+    read_target_namespace_from_Wsdl() throws BootStarterCxfException {
 
         String targetNamespace = wsdlScanner.readTargetNamespaceFromWsdl();
 
@@ -48,9 +48,9 @@ public class WsdlScannerTest {
     }
 
     @Test public void
-    extract_correct_package_name_from_target_naemspace_in_Wsdl() throws IOException, BootStarterCxfException {
+    extract_correct_package_name_from_target_naemspace_in_Wsdl() throws BootStarterCxfException {
 
-        String packageName = wsdlScanner.generatePackageNameFrom(wsdlScanner.readTargetNamespaceFromWsdl());
+        String packageName = wsdlScanner.generatePackageNameFromTargetNamespaceInWsdl();
 
         assertThat(packageName, is(equalTo("de.codecentric.namespace.weatherservice")));
     }

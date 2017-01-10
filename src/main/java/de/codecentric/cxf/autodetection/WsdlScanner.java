@@ -20,8 +20,15 @@ import java.util.stream.Collectors;
 
 public class WsdlScanner {
 
+    private static final String TARGET_NAMESPACE_COULDNT_BE_EXTRACTED = "targetNamespace could not be extracted from WSDL file.";
+    private static final String WSDL_FILE_NOT_FOUND = "WSDL file not Found.";
+
     // (?<=targetNamespace=")[:./a-zA-Z]+(?=")
     private static final String REGEX_FIND_TARGET_NAMESPACE_CONTENT = "(?<=targetNamespace=\")[:./a-zA-Z]+(?=\")";
+
+    public static WsdlScanner ready() {
+        return new WsdlScanner();
+    }
 
 
     public File findWsdl(String pathInClasspath) throws IOException {
@@ -43,19 +50,25 @@ public class WsdlScanner {
             } else {
                 throw new FileNotFoundException();
             }
-        } catch (IOException e) {
-            throw new BootStarterCxfException("WSDL file not Found.", e);
+        } catch (IOException ioExc) {
+            throw new BootStarterCxfException(WSDL_FILE_NOT_FOUND, ioExc);
         }
     }
 
-    public String readTargetNamespaceFromWsdl() throws BootStarterCxfException, IOException {
+    public String readTargetNamespaceFromWsdl() throws BootStarterCxfException {
         Resource wsdl = findWsdl();
 
-        Matcher matcher = buildMatcher(readResourceIntoString(wsdl), REGEX_FIND_TARGET_NAMESPACE_CONTENT);
-        if (matcher.find()) {
-            return matcher.group(0);
+        try {
+            Matcher matcher = buildMatcher(readResourceIntoString(wsdl), REGEX_FIND_TARGET_NAMESPACE_CONTENT);
+
+            if (matcher.find()) {
+                return matcher.group(0);
+            } else {
+                throw new BootStarterCxfException(TARGET_NAMESPACE_COULDNT_BE_EXTRACTED);
+            }
+        } catch (IOException ioExc) {
+            throw new BootStarterCxfException(TARGET_NAMESPACE_COULDNT_BE_EXTRACTED, ioExc);
         }
-        throw new BootStarterCxfException("targetNamespace could not be extracted from WSDL file.");
     }
 
     private String readResourceIntoString(Resource wsdl) throws IOException {
@@ -67,7 +80,8 @@ public class WsdlScanner {
         return pattern.matcher(string2SearchIn);
     }
 
-    public String generatePackageNameFrom(String targetNamespace) {
-        return XJC.getDefaultPackageName(targetNamespace);
+    public String generatePackageNameFromTargetNamespaceInWsdl() throws BootStarterCxfException {
+        String targetNamespaceFromWsdl = readTargetNamespaceFromWsdl();
+        return XJC.getDefaultPackageName(targetNamespaceFromWsdl);
     }
 }
