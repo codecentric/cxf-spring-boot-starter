@@ -22,6 +22,7 @@ public class WsdlScanner {
 
     private static final String TARGET_NAMESPACE_COULDNT_BE_EXTRACTED = "targetNamespace could not be extracted from WSDL file.";
     private static final String WSDL_FILE_NOT_FOUND = "WSDL file not Found.";
+    private static final String MANIFEST_FILE_NOT_FOUND = "MANIFEST.MF not Found.";
 
     // (?<=targetNamespace=")[:./a-zA-Z]+(?=")
     private static final String REGEX_FIND_TARGET_NAMESPACE_CONTENT = "(?<=targetNamespace=\")[:./a-zA-Z]+(?=\")";
@@ -39,19 +40,23 @@ public class WsdlScanner {
     public Resource findWsdl() throws BootStarterCxfException {
 
         try {
-            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-
-            Resource[] wsdls = resolver.getResources("**/*.wsdl");
-
-            Optional<Resource> wsdl = Arrays.stream(wsdls).findFirst();
-
-            if(wsdl.isPresent()) {
-                return wsdl.get();
-            } else {
-                throw new FileNotFoundException();
-            }
+            return findInClasspath("**/*.wsdl");
         } catch (IOException ioExc) {
             throw new BootStarterCxfException(WSDL_FILE_NOT_FOUND, ioExc);
+        }
+    }
+
+    private Resource findInClasspath(String pattern) throws IOException {
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+
+        Resource[] resources = resolver.getResources(pattern);
+
+        Optional<Resource> first = Arrays.stream(resources).findFirst();
+
+        if(first.isPresent()) {
+            return first.get();
+        } else {
+            throw new FileNotFoundException();
         }
     }
 
@@ -83,5 +88,13 @@ public class WsdlScanner {
     public String generatePackageNameFromTargetNamespaceInWsdl() throws BootStarterCxfException {
         String targetNamespaceFromWsdl = readTargetNamespaceFromWsdl();
         return XJC.getDefaultPackageName(targetNamespaceFromWsdl);
+    }
+
+    public Resource findManifest() throws BootStarterCxfException {
+        try {
+            return findInClasspath("**/MANIFEST.MF");
+        } catch (IOException ioExc) {
+            throw new BootStarterCxfException(WSDL_FILE_NOT_FOUND, ioExc);
+        }
     }
 }

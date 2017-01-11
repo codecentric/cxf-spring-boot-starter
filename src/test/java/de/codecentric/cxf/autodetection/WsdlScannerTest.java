@@ -55,4 +55,12 @@ public class WsdlScannerTest {
         assertThat(packageName, is(equalTo("de.codecentric.namespace.weatherservice")));
     }
 
+    @Test public void
+    find_MANIFEST_in_METAINF() throws IOException, BootStarterCxfException {
+
+        File manifest = wsdlScanner.findManifest().getFile();
+
+        assertThat(manifest.getName(), is(equalTo("MANIFEST.MF")));
+    }
+
 }
