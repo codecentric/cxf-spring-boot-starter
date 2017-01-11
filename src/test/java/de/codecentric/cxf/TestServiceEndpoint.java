@@ -1,5 +1,6 @@
 package de.codecentric.cxf;
 
+import de.codecentric.cxf.autodetection.WebServiceAutoDetector;
 import de.codecentric.namespace.weatherservice.WeatherException;
 import de.codecentric.namespace.weatherservice.WeatherService;
 import de.codecentric.namespace.weatherservice.datatypes.ArrayOfForecast;
@@ -10,6 +11,8 @@ import de.codecentric.namespace.weatherservice.general.ForecastRequest;
 import de.codecentric.namespace.weatherservice.general.ForecastReturn;
 import de.codecentric.namespace.weatherservice.general.WeatherInformationReturn;
 import de.codecentric.namespace.weatherservice.general.WeatherReturn;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jws.WebService;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -20,6 +23,7 @@ import java.util.GregorianCalendar;
 
 public class TestServiceEndpoint implements WeatherService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TestServiceEndpoint.class);
     private static de.codecentric.namespace.weatherservice.general.ObjectFactory objectFactoryGeneral = new de.codecentric.namespace.weatherservice.general.ObjectFactory();
     private static de.codecentric.namespace.weatherservice.datatypes.ObjectFactory objectFactoryDatatypes = new de.codecentric.namespace.weatherservice.datatypes.ObjectFactory();
 
@@ -27,14 +31,14 @@ public class TestServiceEndpoint implements WeatherService {
     @Override
     public WeatherInformationReturn getWeatherInformation(String zip)
             throws WeatherException {
-        System.out.println("Doing something useful :)");
+        LOG.info("Doing something useful :)");
         return null;
     }
 
     @Override
     public ForecastReturn getCityForecastByZIP(ForecastRequest forecastRequest)
             throws WeatherException {
-        
+        LOG.info("Returning a forecast.");
         ForecastReturn forecastReturn = objectFactoryGeneral.createForecastReturn();
         forecastReturn.setCity("Weimar");
         //TODO: Map more fields
@@ -50,7 +54,7 @@ public class TestServiceEndpoint implements WeatherService {
     @Override
     public WeatherReturn getCityWeatherByZIP(ForecastRequest forecastRequest)
             throws WeatherException {
-        System.out.println("Doing something useful :)");
+        LOG.info("Doing something useful :)");
         return null;
     }
     
