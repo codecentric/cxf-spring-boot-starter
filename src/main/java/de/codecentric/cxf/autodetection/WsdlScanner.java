@@ -9,10 +9,12 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -23,6 +25,7 @@ public class WsdlScanner {
     private static final String TARGET_NAMESPACE_COULDNT_BE_EXTRACTED = "targetNamespace could not be extracted from WSDL file.";
     private static final String WSDL_FILE_NOT_FOUND = "WSDL file not Found.";
     private static final String MANIFEST_FILE_NOT_FOUND = "MANIFEST.MF not Found.";
+    private static final String MANIFEST_NOT_CONTAINING_PACKAGENAME = "MANIFEST.MF doesn´ contain packageName.";
 
     // (?<=targetNamespace=")[:./a-zA-Z]+(?=")
     private static final String REGEX_FIND_TARGET_NAMESPACE_CONTENT = "(?<=targetNamespace=\")[:./a-zA-Z]+(?=\")";
@@ -94,7 +97,19 @@ public class WsdlScanner {
         try {
             return findInClasspath("**/MANIFEST.MF");
         } catch (IOException ioExc) {
-            throw new BootStarterCxfException(WSDL_FILE_NOT_FOUND, ioExc);
+            throw new BootStarterCxfException(MANIFEST_FILE_NOT_FOUND, ioExc);
         }
+    }
+
+    public String findManifestAndextractPackageName() throws BootStarterCxfException {
+        String packageName = "";
+
+        try {
+            Manifest manifest = new Manifest(findManifest().getInputStream());
+            packageName = manifest.getMainAttributes().getValue("Implementation-Vendor-Id");
+        } catch (IOException ioExc) {
+            throw new BootStarterCxfException(MANIFEST_NOT_CONTAINING_PACKAGENAME, ioExc);
+        }
+        return packageName;
     }
 }

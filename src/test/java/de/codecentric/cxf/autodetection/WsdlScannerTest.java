@@ -56,11 +56,19 @@ public class WsdlScannerTest {
     }
 
     @Test public void
-    find_MANIFEST_in_METAINF() throws IOException, BootStarterCxfException {
+    find_Manifest_in_Metainf() throws IOException, BootStarterCxfException {
 
         File manifest = wsdlScanner.findManifest().getFile();
 
         assertThat(manifest.getName(), is(equalTo("MANIFEST.MF")));
+    }
+
+    @Test public void
+    extract_package_Name_from_Manifest() throws BootStarterCxfException {
+
+        String packageName = wsdlScanner.findManifestAndextractPackageName();
+
+        assertThat("de.codecentric.examples", is(equalTo(packageName)));
     }
 
 }
