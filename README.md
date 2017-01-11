@@ -151,8 +151,10 @@ The cxf-spring-boot-starter brings some nice features, you can use with an ELK-S
 
 * Now some fields will become available in your kibana dashboard (in other words in your elasticsearch index), e.g. soap-message-inbound contains the Inbound Message
 * see all of them here [ElasticsearchField.java](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/logging/ElasticsearchField.java)
+* Additionally [Spring Cloud Sleuth](http://cloud.spring.io/spring-cloud-sleuth/) will provide detailed tracing information of your services. Sleuth will populate the Logback MDC automatically with the tracing information.
+* The default is to use the ELK stack for log analysis. With further configuration you can even extend the tracing infrastructure to use more tailored tracing tools like [Zipkin](http://zipkin.io/).
 
-### Custom SOAP faults for XML Schema Validation Errors 
+### Custom SOAP faults for XML Schema Validation Errors
 
 The standard behavior of Apache CXF with XML validation errors (non schema compliant XML or incorrect XML itself) is to return a SOAP fault including the corresponding exception in CXF:
 ```
