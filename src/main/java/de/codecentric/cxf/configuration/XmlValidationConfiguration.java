@@ -6,6 +6,7 @@ import javax.xml.ws.Endpoint;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ import de.codecentric.cxf.xmlvalidation.XmlValidationInterceptor;
  */
 @Configuration
 @ConditionalOnBean(CustomFaultBuilder.class)
+@AutoConfigureAfter(CxfAutoConfiguration.class)
 public class XmlValidationConfiguration {
 
     @Autowired

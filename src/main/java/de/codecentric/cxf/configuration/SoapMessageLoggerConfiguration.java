@@ -7,6 +7,7 @@ import de.codecentric.cxf.logging.soapmsg.SoapMessageLoggingOutInterceptor;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.interceptor.AbstractLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Conditional(SoapMessageLoggerConfiguration.SoapMessageLoggerPropertyCondition.class)
+@AutoConfigureAfter(CxfAutoConfiguration.class)
 public class SoapMessageLoggerConfiguration {
 
 	@Autowired

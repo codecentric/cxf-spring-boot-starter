@@ -156,14 +156,14 @@
 			<version>${fluent-hc.version}</version>
 		</dependency>
 
-		<!-- Autodetection of WebService and WebServiceClient classes for Endpoint Initialization -->
-		<dependency>
-			<groupId>io.github.lukehutch</groupId>
-			<artifactId>fast-classpath-scanner</artifactId>
-			<version>${fast-classpath-scanner.version}</version>
-		</dependency>
+        <!-- Autodetection of Endpoints -->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+            <version>2.2.11</version>
+        </dependency>
 
-		<!-- Test -->
+        <!-- Test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

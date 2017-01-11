@@ -6,6 +6,7 @@ import de.codecentric.cxf.diagnostics.SeiNotFoundException;
 import de.codecentric.cxf.diagnostics.WebServiceClientNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.jws.WebService;
 import javax.xml.ws.Service;
@@ -14,6 +15,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 
+@Component
 public class WebServiceAutoDetector {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebServiceAutoDetector.class);
@@ -23,15 +25,30 @@ public class WebServiceAutoDetector {
     public static final Class<WebService> SEI_ANNOTATION = WebService.class;
     public static final Class<WebServiceClient> WEB_SERVICE_CLIENT_ANNOTATION = WebServiceClient.class;
 
-    public WebServiceAutoDetector(WebServiceScanner webServiceScanner) {
+    private final String packageName;
+
+    public WebServiceAutoDetector(WebServiceScanner webServiceScanner) throws BootStarterCxfException {
         this.webServiceScanner = webServiceScanner;
+        packageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
+    }
+
+    /**
+     * Detects & instantiates the SEI-Implementation. Therefore it detects the SEI itself first.
+     *
+     * @param <T>
+     * @return
+     * @throws BootStarterCxfException
+     */
+    public <T> T searchAndInstantiateSeiImplementation() throws BootStarterCxfException {
+        return searchAndInstantiateSeiImplementation(searchServiceEndpointInterface());
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
+    protected  <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
         Class<T> implementingClass = null;
         try {
-            implementingClass = webServiceScanner.scanForClassWhichImplementsAndPickFirst(seiName);
+            // TODO: read package dynamically
+            implementingClass = webServiceScanner.scanForClassWhichImplementsAndPickFirst(seiName, "de.codecentric.cxf");
             LOG.info("Found SEI implementing class: '{}'", implementingClass.getName());
         } catch (BootStarterCxfException exception) {
             throw SeiImplClassNotFoundException.build().setNotFoundClassName(seiName.getName());
@@ -41,7 +58,7 @@ public class WebServiceAutoDetector {
 
     public Class searchServiceEndpointInterface() throws BootStarterCxfException {
         try{
-            Class sei = webServiceScanner.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION);
+            Class sei = webServiceScanner.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, packageName);
             LOG.info("Found Service Endpoint Interface (SEI): '{}'", sei.getName());
             return sei;
         } catch (BootStarterCxfException exception) {
@@ -52,7 +69,7 @@ public class WebServiceAutoDetector {
     @SuppressWarnings("unchecked")
     public Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
         try{
-            Class<Service> webServiceClientClass = webServiceScanner.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION);
+            Class<Service> webServiceClientClass = webServiceScanner.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, packageName);
             LOG.info("Found WebServiceClient class: '{}'", webServiceClientClass.getName());
             return instantiateFromClass(webServiceClientClass);
         } catch (BootStarterCxfException exception) {

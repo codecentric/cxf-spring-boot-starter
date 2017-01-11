@@ -13,7 +13,7 @@ public class WebServiceClientMissingFailureAnalyzer extends AbstractFailureAnaly
 
     @Override
     protected FailureAnalysis analyze(Throwable rootFailure, WebServiceClientNotFoundException cause) {
-        return new FailureAnalysis("There was no class found, that´s annotated with javax.xml.ws.WebServiceClient and implements javax.xml.ws.Service",
+        return new FailureAnalysis(WebServiceClientNotFoundException.MESSAGE,
                 "Use the cxf-spring-boot-starter-maven-plugin (https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin) " +
                         "to generate the needed class files from your WSDL & XSDs", cause);
     }
