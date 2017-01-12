@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 public class WebServiceScannerTest {
 
+    private static final String GENERATED_CLASSES_PACKAGE = "de.codecentric.namespace.weatherservice";
     private WebServiceScanner webServiceScanner = new WebServiceScanner();
 
     @Test public void

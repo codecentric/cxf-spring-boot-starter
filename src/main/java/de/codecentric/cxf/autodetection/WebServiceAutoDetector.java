@@ -25,11 +25,11 @@ public class WebServiceAutoDetector {
     public static final Class<WebService> SEI_ANNOTATION = WebService.class;
     public static final Class<WebServiceClient> WEB_SERVICE_CLIENT_ANNOTATION = WebServiceClient.class;
 
-    private final String packageName;
+    private final String seiAndWebServiceClientPackageName;
 
     public WebServiceAutoDetector(WebServiceScanner webServiceScanner) throws BootStarterCxfException {
         this.webServiceScanner = webServiceScanner;
-        packageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
+        seiAndWebServiceClientPackageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
     }
 
     /**
@@ -58,7 +58,7 @@ public class WebServiceAutoDetector {
 
     public Class searchServiceEndpointInterface() throws BootStarterCxfException {
         try{
-            Class sei = webServiceScanner.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, packageName);
+            Class sei = webServiceScanner.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, seiAndWebServiceClientPackageName);
             LOG.info("Found Service Endpoint Interface (SEI): '{}'", sei.getName());
             return sei;
         } catch (BootStarterCxfException exception) {
@@ -69,7 +69,7 @@ public class WebServiceAutoDetector {
     @SuppressWarnings("unchecked")
     public Service searchAndInstantiateWebServiceClient() throws BootStarterCxfException {
         try{
-            Class<Service> webServiceClientClass = webServiceScanner.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, packageName);
+            Class<Service> webServiceClientClass = webServiceScanner.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, seiAndWebServiceClientPackageName);
             LOG.info("Found WebServiceClient class: '{}'", webServiceClientClass.getName());
             return instantiateFromClass(webServiceClientClass);
         } catch (BootStarterCxfException exception) {

@@ -12,10 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
-import javax.xml.ws.WebServiceClient;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,19 +31,24 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class WebServiceAutoDetectorTest {
 
-    public static final String GENERATED_CLASSES_PACKAGE = "de.codecentric.namespace.weatherservice";
-
     public static final Class WEATHER_SERVICE_ENDPOINT_INTERFACE = WeatherService.class;
     public static final Class WEATHER_WEBSERVICE_CLIENT = Weather.class;
     public static final Class WEATHER_SEI_IMPLEMENTING_CLASS = TestServiceEndpoint.class;
 
     private final BootStarterCxfException STARTER_EXCEPTION_NO_CLASS_FOUND = new BootStarterCxfException(WebServiceScanner.NO_CLASS_FOUND);
 
+    private String seiAndWebServiceClientPackageName;
+
+    @Before public void
+    init() throws BootStarterCxfException {
+        seiAndWebServiceClientPackageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
+    }
+
     @Test public void
     is_SEI_Successfully_detected() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenReturn(WEATHER_SERVICE_ENDPOINT_INTERFACE);
+        when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, seiAndWebServiceClientPackageName)).thenReturn(WEATHER_SERVICE_ENDPOINT_INTERFACE);
         WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector(scannerMock);
 
         Class serviceEndpointInterface = webServiceAutoDetector.searchServiceEndpointInterface();
@@ -72,7 +75,7 @@ public class WebServiceAutoDetectorTest {
     is_WebServiceClient_successfully_found_and_instantiated() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenReturn(WEATHER_WEBSERVICE_CLIENT);
+        when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, seiAndWebServiceClientPackageName)).thenReturn(WEATHER_WEBSERVICE_CLIENT);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         Service webServiceClient = autoDetector.searchAndInstantiateWebServiceClient();
@@ -98,7 +101,7 @@ public class WebServiceAutoDetectorTest {
     should_react_with_custom_startup_Failure_Message_if_WebServiceClient_annotated_class_is_missing() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
+        when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, seiAndWebServiceClientPackageName)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         autoDetector.searchAndInstantiateWebServiceClient();
@@ -108,8 +111,8 @@ public class WebServiceAutoDetectorTest {
     should_react_with_custom_startup_Failure_Message_if_SEI_is_missing() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        when(scannerMock.scanForClassNamesWithAnnotation(SEI_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
-        when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, GENERATED_CLASSES_PACKAGE)).thenCallRealMethod();
+        when(scannerMock.scanForClassNamesWithAnnotation(SEI_ANNOTATION, seiAndWebServiceClientPackageName)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
+        when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, seiAndWebServiceClientPackageName)).thenCallRealMethod();
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         autoDetector.searchServiceEndpointInterface();
