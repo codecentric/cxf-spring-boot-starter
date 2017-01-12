@@ -26,10 +26,12 @@ public class WebServiceAutoDetector {
     public static final Class<WebServiceClient> WEB_SERVICE_CLIENT_ANNOTATION = WebServiceClient.class;
 
     private final String seiAndWebServiceClientPackageName;
+    private final String seiImplementationPackageName;
 
     public WebServiceAutoDetector(WebServiceScanner webServiceScanner) throws BootStarterCxfException {
         this.webServiceScanner = webServiceScanner;
         seiAndWebServiceClientPackageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
+        seiImplementationPackageName = WsdlScanner.ready().readPackageNameFromManifest();
     }
 
     /**
@@ -48,7 +50,7 @@ public class WebServiceAutoDetector {
         Class<T> implementingClass = null;
         try {
             // TODO: read package dynamically
-            implementingClass = webServiceScanner.scanForClassWhichImplementsAndPickFirst(seiName, "de.codecentric.cxf");
+            implementingClass = webServiceScanner.scanForClassWhichImplementsAndPickFirst(seiName, seiImplementationPackageName);
             LOG.info("Found SEI implementing class: '{}'", implementingClass.getName());
         } catch (BootStarterCxfException exception) {
             throw SeiImplClassNotFoundException.build().setNotFoundClassName(seiName.getName());

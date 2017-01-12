@@ -64,11 +64,11 @@ public class WsdlScannerTest {
     }
 
     @Test public void
-    extract_package_Name_from_Manifest() throws BootStarterCxfException {
+    read_package_Name_from_Manifest() throws BootStarterCxfException {
 
-        String packageName = wsdlScanner.findManifestAndextractPackageName();
+        String packageName = wsdlScanner.readPackageNameFromManifest();
 
-        assertThat("de.codecentric.examples", is(equalTo(packageName)));
+        assertThat("de.codecentric.cxf", is(equalTo(packageName)));
     }
 
 }

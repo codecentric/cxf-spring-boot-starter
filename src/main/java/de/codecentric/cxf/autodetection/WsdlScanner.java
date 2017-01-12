@@ -101,7 +101,7 @@ public class WsdlScanner {
         }
     }
 
-    public String findManifestAndextractPackageName() throws BootStarterCxfException {
+    public String readPackageNameFromManifest() throws BootStarterCxfException {
         String packageName = "";
 
         try {

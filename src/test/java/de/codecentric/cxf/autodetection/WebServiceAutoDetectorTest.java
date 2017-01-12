@@ -38,10 +38,12 @@ public class WebServiceAutoDetectorTest {
     private final BootStarterCxfException STARTER_EXCEPTION_NO_CLASS_FOUND = new BootStarterCxfException(WebServiceScanner.NO_CLASS_FOUND);
 
     private String seiAndWebServiceClientPackageName;
+    private String seiImplementationPackageName;
 
     @Before public void
     init() throws BootStarterCxfException {
         seiAndWebServiceClientPackageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
+        seiImplementationPackageName = WsdlScanner.ready().readPackageNameFromManifest();
     }
 
     @Test public void
@@ -62,7 +64,7 @@ public class WebServiceAutoDetectorTest {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
         // TODO: read package dynamically
-        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, "de.codecentric.cxf")).thenReturn(WEATHER_SEI_IMPLEMENTING_CLASS);
+        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, seiImplementationPackageName)).thenReturn(WEATHER_SEI_IMPLEMENTING_CLASS);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         WeatherService weatherServiceEndpointImpl = autoDetector.searchAndInstantiateSeiImplementation(WEATHER_SERVICE_ENDPOINT_INTERFACE);
@@ -91,7 +93,7 @@ public class WebServiceAutoDetectorTest {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
         // TODO: read package dynamically
-        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, "de.codecentric.cxf")).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
+        when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, seiImplementationPackageName)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
         autoDetector.searchAndInstantiateSeiImplementation(WEATHER_SERVICE_ENDPOINT_INTERFACE);
