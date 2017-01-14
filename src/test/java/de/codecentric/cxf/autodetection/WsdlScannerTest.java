@@ -56,19 +56,10 @@ public class WsdlScannerTest {
     }
 
     @Test public void
-    find_Manifest_in_Metainf() throws IOException, BootStarterCxfException {
+    read_Package_From_cxfSpringBootMavenProperties_file() throws BootStarterCxfException {
 
-        File manifest = wsdlScanner.findManifest().getFile();
+        String packageName = wsdlScanner.readPackageNameFromCxfSpringBootMavenProperties();
 
-        assertThat(manifest.getName(), is(equalTo("MANIFEST.MF")));
+        assertThat(packageName, is(equalTo("de.codecentric")));
     }
-
-    @Test public void
-    read_package_Name_from_Manifest() throws BootStarterCxfException {
-
-        String packageName = wsdlScanner.readPackageNameFromManifest();
-
-        assertThat("de.codecentric.cxf", is(equalTo(packageName)));
-    }
-
 }

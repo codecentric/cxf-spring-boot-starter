@@ -38,12 +38,12 @@ public class WebServiceAutoDetectorTest {
     private final BootStarterCxfException STARTER_EXCEPTION_NO_CLASS_FOUND = new BootStarterCxfException(WebServiceScanner.NO_CLASS_FOUND);
 
     private String seiAndWebServiceClientPackageName;
-    private String seiImplementationPackageName;
+    private String seiImplementationPackageName = "";
 
     @Before public void
     init() throws BootStarterCxfException {
         seiAndWebServiceClientPackageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
-        seiImplementationPackageName = WsdlScanner.ready().readPackageNameFromManifest();
+        seiImplementationPackageName = WsdlScanner.ready().readPackageNameFromCxfSpringBootMavenProperties();
     }
 
     @Test public void
@@ -63,7 +63,6 @@ public class WebServiceAutoDetectorTest {
     is_SEI_Implementation_successfully_found_and_instantiated() throws NoSuchFieldException, BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        // TODO: read package dynamically
         when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, seiImplementationPackageName)).thenReturn(WEATHER_SEI_IMPLEMENTING_CLASS);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 
@@ -92,7 +91,6 @@ public class WebServiceAutoDetectorTest {
     should_react_with_custom_startup_Failure_Message_console_if_SEI_implementing_class_is_missing() throws BootStarterCxfException {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
-        // TODO: read package dynamically
         when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, seiImplementationPackageName)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
         WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
 

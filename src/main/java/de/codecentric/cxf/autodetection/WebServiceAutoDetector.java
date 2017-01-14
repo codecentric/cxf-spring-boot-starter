@@ -31,7 +31,7 @@ public class WebServiceAutoDetector {
     public WebServiceAutoDetector(WebServiceScanner webServiceScanner) throws BootStarterCxfException {
         this.webServiceScanner = webServiceScanner;
         seiAndWebServiceClientPackageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
-        seiImplementationPackageName = WsdlScanner.ready().readPackageNameFromManifest();
+        seiImplementationPackageName = WsdlScanner.ready().readPackageNameFromCxfSpringBootMavenProperties();
     }
 
     /**
@@ -49,7 +49,6 @@ public class WebServiceAutoDetector {
     protected  <T> T searchAndInstantiateSeiImplementation(Class seiName) throws BootStarterCxfException {
         Class<T> implementingClass = null;
         try {
-            // TODO: read package dynamically
             implementingClass = webServiceScanner.scanForClassWhichImplementsAndPickFirst(seiName, seiImplementationPackageName);
             LOG.info("Found SEI implementing class: '{}'", implementingClass.getName());
         } catch (BootStarterCxfException exception) {

@@ -2,7 +2,6 @@ package de.codecentric.cxf.autodetection;
 
 import de.codecentric.cxf.common.BootStarterCxfException;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
@@ -11,7 +10,6 @@ import org.springframework.core.type.filter.TypeFilter;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class WebServiceScanner {
@@ -28,7 +26,6 @@ public class WebServiceScanner {
         }
 
         beans.forEach((BeanDefinition beanDef) -> namesOfClassesWithInterface.add(beanDef.getBeanClassName()));
-
         return justPickTheClassThatIsNotAnInterface(namesOfClassesWithInterface);
     }
 

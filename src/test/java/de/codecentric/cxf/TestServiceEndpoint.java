@@ -1,6 +1,5 @@
 package de.codecentric.cxf;
 
-import de.codecentric.cxf.autodetection.WebServiceAutoDetector;
 import de.codecentric.namespace.weatherservice.WeatherException;
 import de.codecentric.namespace.weatherservice.WeatherService;
 import de.codecentric.namespace.weatherservice.datatypes.ArrayOfForecast;
@@ -14,7 +13,6 @@ import de.codecentric.namespace.weatherservice.general.WeatherReturn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jws.WebService;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;

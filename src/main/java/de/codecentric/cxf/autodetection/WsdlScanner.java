@@ -1,20 +1,18 @@
 package de.codecentric.cxf.autodetection;
 
 import com.sun.tools.xjc.api.XJC;
+import de.codecentric.cxf.BootCxfMojo;
 import de.codecentric.cxf.common.BootStarterCxfException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.jar.Manifest;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -24,6 +22,7 @@ public class WsdlScanner {
 
     private static final String TARGET_NAMESPACE_COULDNT_BE_EXTRACTED = "targetNamespace could not be extracted from WSDL file.";
     private static final String WSDL_FILE_NOT_FOUND = "WSDL file not Found.";
+    private static final String CXF_SPRING_BOOT_MAVEN_PROPERTIES_FILE_NOT_FOUND = "cxf-spring-boot-maven.properties file not found.";
     private static final String MANIFEST_FILE_NOT_FOUND = "MANIFEST.MF not Found.";
     private static final String MANIFEST_NOT_CONTAINING_PACKAGENAME = "MANIFEST.MF doesn´ contain packageName.";
 
@@ -43,7 +42,7 @@ public class WsdlScanner {
     public Resource findWsdl() throws BootStarterCxfException {
 
         try {
-            return findInClasspath("**/*.wsdl");
+            return findInClasspath("classpath*:**/*.wsdl");
         } catch (IOException ioExc) {
             throw new BootStarterCxfException(WSDL_FILE_NOT_FOUND, ioExc);
         }
@@ -93,23 +92,19 @@ public class WsdlScanner {
         return XJC.getDefaultPackageName(targetNamespaceFromWsdl);
     }
 
-    public Resource findManifest() throws BootStarterCxfException {
+    public String readPackageNameFromCxfSpringBootMavenProperties() throws BootStarterCxfException {
+
         try {
-            return findInClasspath("**/MANIFEST.MF");
+            Properties cxfSpringBootMavenProperties = new Properties();
+            cxfSpringBootMavenProperties.load(cxfSpringBootMavenPropertiesAsInputStream());
+            return cxfSpringBootMavenProperties.getProperty(BootCxfMojo.PACKAGE_NAME_KEY);
         } catch (IOException ioExc) {
-            throw new BootStarterCxfException(MANIFEST_FILE_NOT_FOUND, ioExc);
+            //TODO: Failure Analyzer for not finding cxf-spring-boot-maven.propterties
+            throw new BootStarterCxfException(CXF_SPRING_BOOT_MAVEN_PROPERTIES_FILE_NOT_FOUND, ioExc);
         }
     }
 
-    public String readPackageNameFromManifest() throws BootStarterCxfException {
-        String packageName = "";
-
-        try {
-            Manifest manifest = new Manifest(findManifest().getInputStream());
-            packageName = manifest.getMainAttributes().getValue("Implementation-Vendor-Id");
-        } catch (IOException ioExc) {
-            throw new BootStarterCxfException(MANIFEST_NOT_CONTAINING_PACKAGENAME, ioExc);
-        }
-        return packageName;
+    private InputStream cxfSpringBootMavenPropertiesAsInputStream() throws IOException {
+        return findInClasspath("classpath*:**/" + BootCxfMojo.CXF_SPRING_BOOT_MAVEN_PROPERTIES_FILE_NAME).getInputStream();
     }
 }
