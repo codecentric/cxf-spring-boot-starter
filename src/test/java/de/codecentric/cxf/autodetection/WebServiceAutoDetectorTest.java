@@ -38,12 +38,12 @@ public class WebServiceAutoDetectorTest {
     private final BootStarterCxfException STARTER_EXCEPTION_NO_CLASS_FOUND = new BootStarterCxfException(WebServiceScanner.NO_CLASS_FOUND);
 
     private String seiAndWebServiceClientPackageName;
-    private String seiImplementationPackageName = "";
+    private String seiImplementationPackageName;
 
     @Before public void
     init() throws BootStarterCxfException {
-        seiAndWebServiceClientPackageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
-        seiImplementationPackageName = WsdlScanner.ready().readPackageNameFromCxfSpringBootMavenProperties();
+        seiAndWebServiceClientPackageName = PackageNameReader.ready().readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties();
+        seiImplementationPackageName = PackageNameReader.ready().readSeiImplementationPackageNameFromCxfSpringBootMavenProperties();
     }
 
     @Test public void

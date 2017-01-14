@@ -30,8 +30,8 @@ public class WebServiceAutoDetector {
 
     public WebServiceAutoDetector(WebServiceScanner webServiceScanner) throws BootStarterCxfException {
         this.webServiceScanner = webServiceScanner;
-        seiAndWebServiceClientPackageName = WsdlScanner.ready().generatePackageNameFromTargetNamespaceInWsdl();
-        seiImplementationPackageName = WsdlScanner.ready().readPackageNameFromCxfSpringBootMavenProperties();
+        seiAndWebServiceClientPackageName = PackageNameReader.ready().readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties();
+        seiImplementationPackageName = PackageNameReader.ready().readSeiImplementationPackageNameFromCxfSpringBootMavenProperties();
     }
 
     /**
