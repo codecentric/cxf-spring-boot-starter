@@ -1,13 +1,5 @@
 package de.codecentric.cxf.configuration;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.Filter;
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.Service;
-
 import de.codecentric.cxf.autodetection.WebServiceAutoDetector;
 import de.codecentric.cxf.autodetection.WebServiceScanner;
 import de.codecentric.cxf.common.BootStarterCxfException;
@@ -24,6 +16,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+
+import javax.annotation.PostConstruct;
+import javax.xml.ws.Endpoint;
+import javax.xml.ws.Service;
+import java.util.Map;
 
 /**
  * While booting up the CXF-Framework and Servlets, we don´t override the Bean "dispatcherServlet" here - because,
@@ -51,6 +48,8 @@ public class CxfAutoConfiguration {
     private String serviceListTitle;
 
     private String serviceUrlEnding = "";
+    private Object seiImplementation;
+    private Service webServiceClient;
 
 
     @Bean
@@ -60,6 +59,8 @@ public class CxfAutoConfiguration {
 
     @PostConstruct
     public void setUp() throws BootStarterCxfException {
+        webServiceClient = webServiceAutoDetector().searchAndInstantiateWebServiceClient();
+        seiImplementation = webServiceAutoDetector().searchAndInstantiateSeiImplementation();
         serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
     }
 
@@ -71,10 +72,10 @@ public class CxfAutoConfiguration {
         // Add custom Title to CXF´s ServiceList
         Map<String, String> initParameters = servletRegistrationBean.getInitParameters();
         initParameters.put("service-list-title", serviceListTitle);
-        
+
         return servletRegistrationBean;
     }
-    
+
     // If you don´t want to import the cxf.xml-Springbean-Config you have to setUp this Bus for yourself
     // <bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus" destroy-method="shutdown"/>
     @Bean(name = Bus.DEFAULT_BUS_ID)
@@ -84,7 +85,7 @@ public class CxfAutoConfiguration {
 
     @Bean
     public Object seiImplementation() throws BootStarterCxfException {
-        return webServiceAutoDetector().searchAndInstantiateSeiImplementation();
+        return seiImplementation;
     }
 
     @Bean
@@ -107,7 +108,7 @@ public class CxfAutoConfiguration {
     @Bean
     public Service webServiceClient() throws BootStarterCxfException {
         // Needed for correct ServiceName & WSDLLocation to publish contract first incl. original WSDL
-        return webServiceAutoDetector().searchAndInstantiateWebServiceClient();
+        return webServiceClient;
     }
     
     /**
