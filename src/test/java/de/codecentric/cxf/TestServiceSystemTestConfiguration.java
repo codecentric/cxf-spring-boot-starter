@@ -12,8 +12,7 @@ import de.codecentric.cxf.soaprawclient.SoapRawClient;
 import de.codecentric.namespace.weatherservice.WeatherService;
 
 @Configuration
-@Import(TestConfiguration.class)
-public class TestServiceIntegrationTestConfiguration {
+public class TestServiceSystemTestConfiguration {
 
     /*
      * CXF JaxWs Client
