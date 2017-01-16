@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Conditional(SoapMessageLoggerConfiguration.SoapMessageLoggerPropertyCondition.class)
-@AutoConfigureAfter(CxfAutoConfiguration.class)
 public class SoapMessageLoggerConfiguration {
 
 	@Autowired

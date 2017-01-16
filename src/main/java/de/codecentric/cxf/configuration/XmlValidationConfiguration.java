@@ -26,7 +26,6 @@ import de.codecentric.cxf.xmlvalidation.XmlValidationInterceptor;
  */
 @Configuration
 @ConditionalOnBean(CustomFaultBuilder.class)
-@AutoConfigureAfter(CxfAutoConfiguration.class)
 public class XmlValidationConfiguration {
 
     @Autowired
