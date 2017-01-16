@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,11 +61,24 @@ public class CxfAutoConfiguration {
     @PostConstruct
     public void setUp() throws BootStarterCxfException {
         webServiceClient = webServiceAutoDetector().searchAndInstantiateWebServiceClient();
-        seiImplementation = webServiceAutoDetector().searchAndInstantiateSeiImplementation();
         serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
     }
 
+    /*
+     * We mostly want to autoinitialize the Endpoint and the CXFServlet.
+     * But when in client mode, this isn´t always wanted (e.g. when you are in Client
+     * only mode and just want to test or call some SOAP services, but not provide
+     * services on your own.
+     *
+     * Because there is (& sadly will be) no @ConditionalOnMissingProperty in Spring Boot
+     * (https://github.com/spring-projects/spring-boot/issues/4938), we need to use a workaround.
+     *
+     * If endpoint.autoinit is NOT set, Endpoint autoinitialization will run.
+     * If endpoint.autoinit is set to some other value than false, autoinitialization will also run.
+     * Only if endpoint.autoinit = false, the autoinitialization isn´t running.
+     */
     @Bean
+    @ConditionalOnProperty(name = "endpoint.autoinit", matchIfMissing = true)
     public ServletRegistrationBean cxfDispatcherServlet() {
         CXFServlet cxfServlet = new CXFServlet();
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new CXFServlet(), baseUrl + "/*");
@@ -79,16 +93,22 @@ public class CxfAutoConfiguration {
     // If you don´t want to import the cxf.xml-Springbean-Config you have to setUp this Bus for yourself
     // <bean id="cxf" class="org.apache.cxf.bus.spring.SpringBus" destroy-method="shutdown"/>
     @Bean(name = Bus.DEFAULT_BUS_ID)
+    @ConditionalOnProperty(name = "endpoint.autoinit", matchIfMissing = true)
     public SpringBus springBus() {
         return new SpringBus();
     }
 
     @Bean
+    @ConditionalOnProperty(name = "endpoint.autoinit", matchIfMissing = true)
     public Object seiImplementation() throws BootStarterCxfException {
+        if(seiImplementation == null) {
+            seiImplementation = webServiceAutoDetector().searchAndInstantiateSeiImplementation();
+        }
         return seiImplementation;
     }
 
     @Bean
+    @ConditionalOnProperty(name = "endpoint.autoinit", matchIfMissing = true)
     public Endpoint endpoint() throws BootStarterCxfException {
 
         LOG.info("Autodetection successful. Initializing javax.xml.ws.Endpoint based on " + seiImplementation().getClass().getName());

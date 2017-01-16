@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 		webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
 		properties = { "server.port:8087" }
 )
-public class WeatherServiceEndpointIntegrationTest {
+public class WeatherServiceEndpointSystemTest {
 	
 	@Autowired
 	private WeatherService weatherServiceClient;

@@ -1,19 +1,18 @@
 package de.codecentric.cxf.configuration;
 
-import javax.annotation.PostConstruct;
-
 import de.codecentric.cxf.logging.soapmsg.SoapMessageLoggingInInterceptor;
 import de.codecentric.cxf.logging.soapmsg.SoapMessageLoggingOutInterceptor;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.interceptor.AbstractLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Logging of SoapMessages to e.g. Console. To activate, set property soap.messages.logging=true.
@@ -25,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Conditional(SoapMessageLoggerConfiguration.SoapMessageLoggerPropertyCondition.class)
+@ConditionalOnProperty(name = "endpoint.autoinit", matchIfMissing = true)
 public class SoapMessageLoggerConfiguration {
 
 	@Autowired
