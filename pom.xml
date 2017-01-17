@@ -51,7 +51,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring.boot.version>1.4.3.RELEASE</spring.boot.version>
-		<cxf.version>3.1.8</cxf.version>
+		<cxf.version>3.1.9</cxf.version>
 		<fluent-hc.version>4.5.2</fluent-hc.version>
 		<camunda.version>7.6.0</camunda.version>
 		<logstash-logback-encoder.version>4.8</logstash-logback-encoder.version>
@@ -62,7 +62,7 @@
                     is only fixed in the unreleased 1.1.8  -->
         <logback.version>1.1.6</logback.version>
 		<!-- Analysis Tools for CI -->
-		<build-plugin.jacoco.version>0.7.7.201606060606</build-plugin.jacoco.version>
+		<build-plugin.jacoco.version>0.7.8</build-plugin.jacoco.version>
 		<build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
 		<!-- Exclude generated JAXB-Java-Classes from Sonar-Analysis -->
 		<sonar.exclusions>**/target/generated-sources/wsdlimport/**</sonar.exclusions>
