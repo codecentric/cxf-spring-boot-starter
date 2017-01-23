@@ -102,7 +102,7 @@
   </wsdl:binding>
   <wsdl:service name="Weather">
     <wsdl:port name="WeatherService" binding="weather:WeatherService">
-      <soap:address location="http://localhost:8095/soap-api/WeatherSoapService_1.0"/>
+      <soap:address location="http://localhost:8095/soap-api/Weather"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

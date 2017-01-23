@@ -228,7 +228,61 @@ private CxfAutoConfiguration cxfAutoConfiguration;
 
 # Concepts
 
-### How does Complete automation of Endpoint initialization work?
+### Complete automation of Endpoint initialization
+
+###### 100% contract first approach
+
+Taking into account a __100% contract first development approach__ there shouldn´t be a single reason, why one has to manually configure Endpoints in Apache CXF - because pretty much every piece of information that is necessary to configure them should be available through the WSDL. Since the start of this spring-boot-starter project, this was a thought that didn´t let me go.
+
+To understand, how the complete automation of Endpoint initialization is implemented in the cxf-spring-boot-starter, let´s first have a look on how the initialization works without the help of the starter. To instantiate & publish a `org.apache.cxf.jaxws.EndpointImpl`, we need the SEI implementing class and the generated WebServiceClient annotated class. In a non-automated way to use Apache CXF to fire up JAX-WS endpoints, this is done with code like this:
+
+```
+    @Bean
+    public Endpoint endpoint() {
+        EndpointImpl endpoint = new EndpointImpl(springBus(), weatherService());
+        endpoint.setServiceName(weather().getServiceName());
+        endpoint.setWsdlLocation(weather().getWSDLDocumentLocation().toString());
+        endpoint.publish(serviceUrlEnding());
+        return endpoint;
+    }
+```
+
+The easier parts are the SpringBus, which we already have instantiated in our [CxfAutoConfiguration](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/configuration/CxfAutoConfiguration.java), and the serviceUrlEnding, which is constructed from the configurable base url and the WSDL tag´s `service name` content. To instantiate the EndpointImpl, set the service name and the WSDL location correctly, we need the __SEI implementing class__ (which you have to write yourself, because it´s the starting point for your implementation) and the generated __WebServiceClient annotated class__.
+
+###### Scanning...
+
+Because a spring-boot-starter is a generic thing everybody can use just via including it in the pom, these two classes are not fixed - they are always generated or derived from generated classes. Therefore we have to search for them - according to some things we know. The search is done with the help of Spring´s [ClassPathScanningCandidateComponentProvider](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/ClassPathScanningCandidateComponentProvider.html) (instead of using the really nice [fast-classpath-scanner](http://stackoverflow.com/questions/259140/scanning-java-annotations-at-runtime/1415338#comment70214187_1415338), which didn´t work well in this use case).
+
+Either scanning framework you use, self written or library - any of them will be much faster, if you have the package names of the searched classes. In some scenarios -escpecially with the ClassPathScanningCandidateComponentProvider used here - you __have to know__ the packages, otherwise scanning will fail (because it tries to double-scan [the package org.springframework itself](https://github.com/spring-projects/spring-boot/issues/3850)). So to search for the WebServiceClient annotated class and the SEI itself (which we need to scan for the SEI implementation, which is only characterized due to the fact of implementing the SEI), we need to somehow know their package beforehand.
+
+Here [cxf-spring-boot-starter-maven-plugin](https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin) comes to our rescue. With the new 1.0.8´s feature [Write the project´s packageName & the WSDL´s targetNamespace into a cxf-spring-boot-maven.properties ](https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin/issues/6) the package names are extracted into a __cxf-spring-boot-maven.properties__ file inside your `project.buildpath while a `mvn generate-sources` is ran. The package name of the WebServiceClient annotated class and the SEI are derived from the WSDL:
+
+> To get this 100% right, we need to use the same mechanism as the [jaxws-maven-plugin](https://github.com/mojohaus/jaxws-maven-plugin), which itself uses [WSimportTool](https://github.com/gf-metro/jaxws/blob/master/jaxws-ri/tools/wscompile/src/main/java/com/sun/tools/ws/wscompile/WsimportTool.java) of the [JAXWS-RI implementation](https://github.com/gf-metro/jaxws), to obtain the package-Name from the WSDL file, where the classes are generated to. The __WSDL´s targetNamespace__ is used to generate the package name. If you have targetNamespace="http://www.codecentric.de/namespace/weatherservice/" for example, your package will be de.codecentric.namespace.weatherservice. One can find the code used to generate the package name in the [WSDLModeler](https://github.com/gf-metro/jaxws/blob/master/jaxws-ri/tools/wscompile/src/main/java/com/sun/tools/ws/processor/modeler/wsdl/WSDLModeler.java) at line 2312 (This algorithm is specified in the JAXB spec. So we rely onto it):
+
+        String wsdlUri = document.getDefinitions().getTargetNamespaceURI();
+        return XJC.getDefaultPackageName(wsdlUri);
+
+The package name of the SEI implementing class is a bit more of a guesswork, because this class could literally reside everywhere. BUT: If you start a project to use a spring-boot-starter, the 99,9% case will be to start with a Maven pom - and even faster through the usage of the [Spring initializr](http://start.spring.io/). It should be safe to rely on that and just guess the package name from your project´s pom. This will in 99,9% of all cases contain your SEI implementing class, which is you´re entry point to develop a SOAP web service with this starter and CXF. 
+
+
+###### Auto initialize the Endpoint!
+
+![Complete automation of endpoint initialization](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/completeAutomationOfEndpointInitialization.png)
+
+Now having the package names of every needed class residing in the __cxf-spring-boot-maven.properties__ file after a run of `mvn generate-sources`, using Spring´s [ClassPathScanningCandidateComponentProvider](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/ClassPathScanningCandidateComponentProvider.html) to scan for the WebServiceClient annotated class is easy - just adding a new [AnnotationTypeFilter](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/type/filter/AnnotationTypeFilter.html) and voila we´ve got the class. Obtaining the class of an interface which has some annotation isn´t possible with the Spring scanner at first sight (and therefore we had a [long experimenting phase with the fast-classpath-scanner](https://github.com/codecentric/cxf-spring-boot-starter/issues/6)). But looking a bit deeper, this is also possible - just via a [really small hack :) ](http://stackoverflow.com/questions/17477255/component-scan-for-custom-annotation-on-interface/41504372#41504372), which only means to override the [ClassPathScanningCandidateComponentProvider](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/ClassPathScanningCandidateComponentProvider.html):
+
+```
+ClassPathScanningCandidateComponentProvider scanningProvider = new ClassPathScanningCandidateComponentProvider(false) {
+    @Override
+    protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
+        return true;
+    }
+};  
+```
+
+Now we´re able to scan for the SEI. And with that and adding the [AssignableTypeFilter](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/type/filter/AssignableTypeFilter.html) we also get the needed SEI implementing class.
+
+Having all the three necessary classes at hand, we can easiely and automatically fire up a `org.apache.cxf.jaxws.EndpointImpl`! 
 
 If you start your Spring Boot application and everything went fine, then you should see some of those log messages inside your console:
 
@@ -237,6 +291,7 @@ If you start your Spring Boot application and everything went fine, then you sho
 [...] INFO 83684 --- [  restartedMain] d.c.c.a.WebServiceAutoDetector           : Found Service Endpoint Interface (SEI): 'de.codecentric.namespace.weatherservice.WeatherService'
 [...] INFO 83684 --- [  restartedMain] d.c.c.a.WebServiceAutoDetector           : Found SEI implementing class: 'de.codecentric.soap.endpoint.WeatherServiceEndpoint'
 ```
+
 
 
 # Contribution
