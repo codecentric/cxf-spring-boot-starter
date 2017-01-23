@@ -226,6 +226,15 @@ public String buildUrl() {
 private CxfAutoConfiguration cxfAutoConfiguration;
 ```
 
+### Running Client-only mode
+
+If you´d like to run Apache CXF only to call other SOAP web services but don´t want to provide one for yourself, than booting up a complete server is a bit to much for you. Therefore you´re also able to deactivate the Complete automation of Endpoint initialization feature, which only makes sense if you have an Endpoint to fire up. You can deactivate it with the following propery in your application.propteries:
+
+```
+endpoint.autoinit=false
+```
+
+
 # Concepts
 
 ### Complete automation of Endpoint initialization
@@ -255,7 +264,7 @@ Because a spring-boot-starter is a generic thing everybody can use just via incl
 
 Either scanning framework you use, self written or library - any of them will be much faster, if you have the package names of the searched classes. In some scenarios -escpecially with the ClassPathScanningCandidateComponentProvider used here - you __have to know__ the packages, otherwise scanning will fail (because it tries to double-scan [the package org.springframework itself](https://github.com/spring-projects/spring-boot/issues/3850)). So to search for the WebServiceClient annotated class and the SEI itself (which we need to scan for the SEI implementation, which is only characterized due to the fact of implementing the SEI), we need to somehow know their package beforehand.
 
-Here [cxf-spring-boot-starter-maven-plugin](https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin) comes to our rescue. With the new 1.0.8´s feature [Write the project´s packageName & the WSDL´s targetNamespace into a cxf-spring-boot-maven.properties ](https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin/issues/6) the package names are extracted into a __cxf-spring-boot-maven.properties__ file inside your `project.buildpath while a `mvn generate-sources` is ran. The package name of the WebServiceClient annotated class and the SEI are derived from the WSDL:
+Here [cxf-spring-boot-starter-maven-plugin](https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin) comes to our rescue. With the new 1.0.8´s feature [Extract the targetNamespace from the WSDL, generate the SEI and WebServiceClient annotated classes´ package names from it & write it together with the project´s package name into a cxf-spring-boot-maven.properties](https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin/issues/6) the package names are extracted into a __cxf-spring-boot-maven.properties__ file inside your `project.buildpath while a `mvn generate-sources` is ran. The package name of the WebServiceClient annotated class and the SEI are derived from the WSDL:
 
 > To get this 100% right, we need to use the same mechanism as the [jaxws-maven-plugin](https://github.com/mojohaus/jaxws-maven-plugin), which itself uses [WSimportTool](https://github.com/gf-metro/jaxws/blob/master/jaxws-ri/tools/wscompile/src/main/java/com/sun/tools/ws/wscompile/WsimportTool.java) of the [JAXWS-RI implementation](https://github.com/gf-metro/jaxws), to obtain the package-Name from the WSDL file, where the classes are generated to. The __WSDL´s targetNamespace__ is used to generate the package name. If you have targetNamespace="http://www.codecentric.de/namespace/weatherservice/" for example, your package will be de.codecentric.namespace.weatherservice. One can find the code used to generate the package name in the [WSDLModeler](https://github.com/gf-metro/jaxws/blob/master/jaxws-ri/tools/wscompile/src/main/java/com/sun/tools/ws/processor/modeler/wsdl/WSDLModeler.java) at line 2312 (This algorithm is specified in the JAXB spec. So we rely onto it):
 
