@@ -246,6 +246,11 @@ Taking into account a __100% contract first development approach__ there shouldn
 To understand, how the complete automation of Endpoint initialization is implemented in the cxf-spring-boot-starter, let´s first have a look on how the initialization works without the help of the starter. To instantiate & publish a `org.apache.cxf.jaxws.EndpointImpl`, we need the SEI implementing class and the generated WebServiceClient annotated class. In a non-automated way to use Apache CXF to fire up JAX-WS endpoints, this is done with code like this:
 
 ```
+	@Bean
+	public WeatherService weatherService() {
+	    return new WeatherServiceEndpoint();
+	}
+
     @Bean
     public Endpoint endpoint() {
         EndpointImpl endpoint = new EndpointImpl(springBus(), weatherService());
@@ -254,6 +259,12 @@ To understand, how the complete automation of Endpoint initialization is impleme
         endpoint.publish(serviceUrlEnding());
         return endpoint;
     }
+
+	@Bean
+	public Weather weather() {
+	    // Needed for correct ServiceName & WSDLLocation to publish contract first incl. original WSDL
+	    return new Weather();
+	}
 ```
 
 The easier parts are the SpringBus, which we already have instantiated in our [CxfAutoConfiguration](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/configuration/CxfAutoConfiguration.java), and the serviceUrlEnding, which is constructed from the configurable base url and the WSDL tag´s `service name` content. To instantiate the EndpointImpl, set the service name and the WSDL location correctly, we need the __SEI implementing class__ (which you have to write yourself, because it´s the starting point for your implementation) and the generated __WebServiceClient annotated class__.
