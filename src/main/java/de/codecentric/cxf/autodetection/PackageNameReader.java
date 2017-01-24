@@ -1,7 +1,8 @@
 package de.codecentric.cxf.autodetection;
 
 import de.codecentric.cxf.BootCxfMojo;
-import de.codecentric.cxf.common.BootStarterCxfException;
+
+import de.codecentric.cxf.autodetection.diagnostics.*;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -15,21 +16,30 @@ import java.util.Properties;
 
 public class PackageNameReader {
 
-    private static final String CXF_SPRING_BOOT_MAVEN_PROPERTIES_FILE_NOT_FOUND = "Could not read packageNames from cxf-spring-boot-maven.properties.";
+    protected static final String CXF_SPRING_BOOT_MAVEN_PROPERTIES_FILE_NOT_FOUND = "Could not read packageNames from cxf-spring-boot-maven.properties.";
 
-    public static PackageNameReader ready() {
+    public static PackageNameReader build() {
         return new PackageNameReader();
     }
 
-    public String readSeiImplementationPackageNameFromCxfSpringBootMavenProperties() throws BootStarterCxfException {
 
+    public String readSeiImplementationPackageNameFromCxfSpringBootMavenProperties() throws CxfSpringBootMavenPropertiesNotFoundException {
+
+        return readPackageNameFromCxfSpringBootMavenProperties(BootCxfMojo.SEI_IMPLEMENTATION_PACKAGE_NAME_KEY);
+    }
+
+    public String readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties() throws CxfSpringBootMavenPropertiesNotFoundException {
+
+        return readPackageNameFromCxfSpringBootMavenProperties(BootCxfMojo.SEI_AND_WEB_SERVICE_CLIENT_PACKAGE_NAME_KEY);
+    }
+
+    private String readPackageNameFromCxfSpringBootMavenProperties(String seiImplementationPackageNameKey) throws CxfSpringBootMavenPropertiesNotFoundException {
         try {
             Properties cxfSpringBootMavenProperties = new Properties();
             cxfSpringBootMavenProperties.load(cxfSpringBootMavenPropertiesAsInputStream());
-            return cxfSpringBootMavenProperties.getProperty(BootCxfMojo.SEI_IMPLEMENTATION_PACKAGE_NAME_KEY);
+            return cxfSpringBootMavenProperties.getProperty(seiImplementationPackageNameKey);
         } catch (IOException ioExc) {
-            //TODO: Failure Analyzer for not finding cxf-spring-boot-maven.propterties
-            throw new BootStarterCxfException(CXF_SPRING_BOOT_MAVEN_PROPERTIES_FILE_NOT_FOUND, ioExc);
+            throw new CxfSpringBootMavenPropertiesNotFoundException(CXF_SPRING_BOOT_MAVEN_PROPERTIES_FILE_NOT_FOUND, ioExc);
         }
     }
 
@@ -48,18 +58,6 @@ public class PackageNameReader {
             return first.get();
         } else {
             throw new FileNotFoundException();
-        }
-    }
-
-    public String readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties() throws BootStarterCxfException {
-
-        try {
-            Properties cxfSpringBootMavenProperties = new Properties();
-            cxfSpringBootMavenProperties.load(cxfSpringBootMavenPropertiesAsInputStream());
-            return cxfSpringBootMavenProperties.getProperty(BootCxfMojo.SEI_AND_WEB_SERVICE_CLIENT_PACKAGE_NAME_KEY);
-        } catch (IOException ioExc) {
-            //TODO: Failure Analyzer for not finding cxf-spring-boot-maven.propterties
-            throw new BootStarterCxfException(CXF_SPRING_BOOT_MAVEN_PROPERTIES_FILE_NOT_FOUND, ioExc);
         }
     }
 }

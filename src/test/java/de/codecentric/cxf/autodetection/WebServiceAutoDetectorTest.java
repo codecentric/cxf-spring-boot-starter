@@ -2,9 +2,9 @@ package de.codecentric.cxf.autodetection;
 
 import de.codecentric.cxf.TestServiceEndpoint;
 import de.codecentric.cxf.common.BootStarterCxfException;
-import de.codecentric.cxf.diagnostics.SeiImplClassNotFoundException;
-import de.codecentric.cxf.diagnostics.SeiNotFoundException;
-import de.codecentric.cxf.diagnostics.WebServiceClientNotFoundException;
+import de.codecentric.cxf.autodetection.diagnostics.SeiImplClassNotFoundException;
+import de.codecentric.cxf.autodetection.diagnostics.SeiNotFoundException;
+import de.codecentric.cxf.autodetection.diagnostics.WebServiceClientNotFoundException;
 import de.codecentric.namespace.weatherservice.Weather;
 import de.codecentric.namespace.weatherservice.WeatherService;
 import org.junit.Before;
@@ -42,8 +42,8 @@ public class WebServiceAutoDetectorTest {
 
     @Before public void
     init() throws BootStarterCxfException {
-        seiAndWebServiceClientPackageName = PackageNameReader.ready().readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties();
-        seiImplementationPackageName = PackageNameReader.ready().readSeiImplementationPackageNameFromCxfSpringBootMavenProperties();
+        seiAndWebServiceClientPackageName = PackageNameReader.build().readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties();
+        seiImplementationPackageName = PackageNameReader.build().readSeiImplementationPackageNameFromCxfSpringBootMavenProperties();
     }
 
     @Test public void

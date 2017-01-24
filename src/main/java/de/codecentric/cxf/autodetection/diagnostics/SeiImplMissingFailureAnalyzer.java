@@ -1,4 +1,4 @@
-package de.codecentric.cxf.diagnostics;
+package de.codecentric.cxf.autodetection.diagnostics;
 
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;

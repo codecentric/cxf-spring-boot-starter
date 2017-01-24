@@ -1,9 +1,9 @@
 package de.codecentric.cxf.autodetection;
 
 import de.codecentric.cxf.common.BootStarterCxfException;
-import de.codecentric.cxf.diagnostics.SeiImplClassNotFoundException;
-import de.codecentric.cxf.diagnostics.SeiNotFoundException;
-import de.codecentric.cxf.diagnostics.WebServiceClientNotFoundException;
+import de.codecentric.cxf.autodetection.diagnostics.SeiImplClassNotFoundException;
+import de.codecentric.cxf.autodetection.diagnostics.SeiNotFoundException;
+import de.codecentric.cxf.autodetection.diagnostics.WebServiceClientNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,8 +30,8 @@ public class WebServiceAutoDetector {
 
     public WebServiceAutoDetector(WebServiceScanner webServiceScanner) throws BootStarterCxfException {
         this.webServiceScanner = webServiceScanner;
-        seiAndWebServiceClientPackageName = PackageNameReader.ready().readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties();
-        seiImplementationPackageName = PackageNameReader.ready().readSeiImplementationPackageNameFromCxfSpringBootMavenProperties();
+        seiAndWebServiceClientPackageName = PackageNameReader.build().readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties();
+        seiImplementationPackageName = PackageNameReader.build().readSeiImplementationPackageNameFromCxfSpringBootMavenProperties();
     }
 
     /**

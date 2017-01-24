@@ -3,6 +3,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=de.codecentric.cx
 
 #FailureAnalyzers
 org.springframework.boot.diagnostics.FailureAnalyzer=\
-de.codecentric.cxf.diagnostics.SeiImplMissingFailureAnalyzer,\
-de.codecentric.cxf.diagnostics.SeiMissingFailureAnalyzer,\
-de.codecentric.cxf.diagnostics.WebServiceClientMissingFailureAnalyzer
+de.codecentric.cxf.autodetection.diagnostics.SeiImplMissingFailureAnalyzer,\
+de.codecentric.cxf.autodetection.diagnostics.SeiMissingFailureAnalyzer,\
+de.codecentric.cxf.autodetection.diagnostics.WebServiceClientMissingFailureAnalyzer,\
+de.codecentric.cxf.autodetection.diagnostics.CxfSpringBootMavenPropertiesMissingFailureAnalyzer

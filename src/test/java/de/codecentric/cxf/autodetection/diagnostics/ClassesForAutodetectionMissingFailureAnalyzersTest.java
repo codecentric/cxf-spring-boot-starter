@@ -1,4 +1,5 @@
-package de.codecentric.cxf.diagnostics;
+package de.codecentric.cxf.autodetection.diagnostics;
+
 
 import de.codecentric.cxf.common.BootStarterCxfException;
 import de.codecentric.namespace.weatherservice.WeatherService;
