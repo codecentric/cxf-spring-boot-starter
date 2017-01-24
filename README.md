@@ -301,7 +301,19 @@ If you start your Spring Boot application and everything went fine, then you sho
 [...] INFO 83684 --- [  restartedMain] d.c.c.a.WebServiceAutoDetector           : Found SEI implementing class: 'de.codecentric.soap.endpoint.WeatherServiceEndpoint'
 ```
 
+###### Deactivate autoinitialization
 
+Although it should be a great feature to be able to work 100% contract first, there might be situations, where one wants to deactivate it. E.g. while running in [client-only mode](https://github.com/codecentric/cxf-spring-boot-starter#running-client-only-mode). 
+
+Because there is (& sadly will be) [no @ConditionalOnMissingProperty in Spring Boot](https://github.com/spring-projects/spring-boot/issues/4938), we need to use a workaround:
+
+```
+     @Bean
+     @ConditionalOnProperty(name = "endpoint.autoinit", matchIfMissing = true)
+     public Endpoint endpoint() throws BootStarterCxfException ...
+```
+
+To get the desired deactivation flag nevertheless, we need to use the [@ConditionalOnProperty](http://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/condition/ConditionalOnProperty.html) in an interesting way :) With the usage of `matchIfMissing = true` and `name = "endpoint.autoinit"` the autoinitialization feature is activated in situations, where the property is missing or is set to `true`. Only, if `endpoint.autoinit=false` the feature is disabled (which is quite ok in our use-case).
 
 # Contribution
 
