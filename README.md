@@ -326,6 +326,12 @@ Because there is (& sadly will be) [no @ConditionalOnMissingProperty in Spring B
 
 To get the desired deactivation flag nevertheless, we need to use the [@ConditionalOnProperty](http://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/condition/ConditionalOnProperty.html) in an interesting way :) With the usage of `matchIfMissing = true` and `name = "endpoint.autoinit"` the autoinitialization feature is activated in situations, where the property is missing or is set to `true`. Only, if `endpoint.autoinit=false` the feature is disabled (which is quite ok in our use-case).
 
+# Known limitations
+
+### Using devtools with mvn spring-boot:run
+
+If you want to use the well known [Spring Boot Developer Tools (devtools)](http://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-devtools.html) - no problem. As long as you don´t want to use `mvn spring-boot:run`. Because of the devtools make usage of the [2 separate classloaders](http://docs.spring.io/spring-boot/docs/1.4.2.RELEASE/reference/htmlsingle/#using-boot-devtools-restart) the scanned, found and instantiated classes aren´t valid inside the other classloader and you could get into [trouble](https://github.com/codecentric/cxf-spring-boot-starter/issues/6). This is only in combination with the [Complete automation of Endpoint initialization feature](https://github.com/codecentric/cxf-spring-boot-starter#complete-automation-of-endpoint-initialization) and the starting method `mvn spring-boot:run`. All the other starting mechanisms of Spring Boot will work as expected (`java -jar service.jar`, Starting inside the IDE via `Run as...` or in `mvn test`).
+
 # Contribution
 
 If you want to know more or even contribute to this Spring Boot Starter, maybe you need some information like:
