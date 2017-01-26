@@ -9,7 +9,7 @@ import de.codecentric.cxf.common.BootStarterCxfException;
  */
 public class SeiImplClassNotFoundException extends BootStarterCxfException {
 
-    protected static final String MESSAGE = "The Service Endpoint Interface (SEI) implementing class could´nt be found";
+    protected static final String MESSAGE = "The Service Endpoint Interface (SEI) implementing class couldn't be found";
 
     public SeiImplClassNotFoundException() {
         super(MESSAGE);
@@ -21,6 +21,8 @@ public class SeiImplClassNotFoundException extends BootStarterCxfException {
 
     private String notFoundClassName;
 
+    private String scannedBasePackage;
+
     public String getNotFoundClassName() {
         return notFoundClassName;
     }
@@ -28,5 +30,14 @@ public class SeiImplClassNotFoundException extends BootStarterCxfException {
     public SeiImplClassNotFoundException setNotFoundClassName(String notFoundClassName) {
         this.notFoundClassName = notFoundClassName;
         return this;
+    }
+
+    public SeiImplClassNotFoundException setScannedBasePackage(String scannedBasePackage) {
+        this.scannedBasePackage = scannedBasePackage;
+        return this;
+    }
+
+    public String getScannedBasePackage() {
+        return scannedBasePackage;
     }
 }
