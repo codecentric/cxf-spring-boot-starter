@@ -52,7 +52,7 @@ public class WebServiceAutoDetector {
             implementingClass = webServiceScanner.scanForClassWhichImplementsAndPickFirst(seiName, seiImplementationPackageName);
             LOG.info("Found SEI implementing class: '{}'", implementingClass.getName());
         } catch (BootStarterCxfException exception) {
-            throw SeiImplClassNotFoundException.build().setNotFoundClassName(seiName.getName());
+            throw SeiImplClassNotFoundException.build().setNotFoundClassName(seiName.getName()).setScannedBasePackage(seiImplementationPackageName);
         }
         return instantiateFromClass(implementingClass);
     }
@@ -88,14 +88,6 @@ public class WebServiceAutoDetector {
                 InstantiationException |
                 InvocationTargetException exception) {
             throw new BootStarterCxfException("Class couldn´t be instantiated", exception);
-        }
-    }
-
-    protected Class<?> classForName(String className) throws BootStarterCxfException {
-        try {
-            return Class.forName(className);
-        } catch (ClassNotFoundException exception) {
-            throw new BootStarterCxfException(NO_CLASS_FOUND, exception);
         }
     }
 
