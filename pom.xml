@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>de.codecentric</groupId>
 	<artifactId>cxf-spring-boot-starter</artifactId>
-	<version>1.0.8-SNAPSHOT</version>
+	<version>1.0.8.RELEASE</version>
 	<name>cxf-spring-boot-starter</name>
 	<description>Boot starter for SOAP-Webservices with Apache CXF using JAX-WS &amp; JAXB with Annotations only</description>
 	<packaging>jar</packaging>
