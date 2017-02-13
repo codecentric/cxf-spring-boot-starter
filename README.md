@@ -326,6 +326,10 @@ Because there is (& sadly will be) [no @ConditionalOnMissingProperty in Spring B
 
 To get the desired deactivation flag nevertheless, we need to use the [@ConditionalOnProperty](http://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/condition/ConditionalOnProperty.html) in an interesting way :) With the usage of `matchIfMissing = true` and `name = "endpoint.autoinit"` the autoinitialization feature is activated in situations, where the property is missing or is set to `true`. Only, if `endpoint.autoinit=false` the feature is disabled (which is quite ok in our use-case).
 
+###### Setting the URL of the endpoint
+
+You can manually specify the url of the Service Endpoint using the spring property: `soap.service.publishedEndpointUrl`. This can be handy if your application is behind a reverse proxy and the resulting WSDLs don't reflect that.
+
 # Known limitations
 
 ### Using devtools with mvn spring-boot:run

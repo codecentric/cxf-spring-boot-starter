@@ -45,6 +45,9 @@ public class CxfAutoConfiguration {
     @Value("${soap.service.base.url:/soap-api}")
     private String baseUrl;
 
+    @Value("${soap.service.publishedEndpointUrl:NOT_SET}")
+    private String publishedEndpointUrl;
+
     @Value("${cxf.servicelist.title:CXF SpringBoot Starter - service list}")
     private String serviceListTitle;
 
@@ -120,6 +123,9 @@ public class CxfAutoConfiguration {
         // Also the WSDLLocation must be set
         endpoint.setServiceName(webServiceClient().getServiceName());
         endpoint.setWsdlLocation(webServiceClient().getWSDLDocumentLocation().toString());
+        if(!publishedEndpointUrl.equals("NOT_SET")){
+            endpoint.setPublishedEndpointUrl(publishedEndpointUrl);
+        }
         // publish the Service under it´s name mentioned in the WSDL inside name attribute (example: <wsdl:service name="Weather">)
         endpoint.publish(serviceUrlEnding());
         return endpoint;
