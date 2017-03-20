@@ -83,7 +83,6 @@ public class CxfAutoConfiguration {
     @Bean
     @ConditionalOnProperty(name = "endpoint.autoinit", matchIfMissing = true)
     public ServletRegistrationBean cxfDispatcherServlet() {
-        CXFServlet cxfServlet = new CXFServlet();
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new CXFServlet(), baseUrl + "/*");
 
         // Add custom Title to CXF´s ServiceList
