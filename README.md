@@ -47,7 +47,7 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
         <plugin>
             <groupId>de.codecentric</groupId>
             <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
-            <version>1.0.8.RELEASE</version>
+            <version>1.1.1.RELEASE</version>
             <executions>
 				<execution>
 					<goals>
