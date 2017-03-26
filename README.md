@@ -7,7 +7,7 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 
 > !! This document applies to the next version under development.
 >
-> &nbsp; &nbsp; See [here for documentation on the latest released version](https://github.com/codecentric/cxf-spring-boot-starter/tree/1.0.7.RELEASE).
+> &nbsp; &nbsp; See [here for documentation on the latest released version](https://github.com/codecentric/cxf-spring-boot-starter/tree/1.1.1.RELEASE).
 
 # Features include:
 
