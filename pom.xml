@@ -51,7 +51,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring.boot.version>1.5.2.RELEASE</spring.boot.version>
-		<cxf.version>3.1.10</cxf.version>
+		<cxf.version>3.1.11</cxf.version>
 		<fluent-hc.version>4.5.3</fluent-hc.version>
 		<camunda.version>7.6.0</camunda.version>
 		<logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
