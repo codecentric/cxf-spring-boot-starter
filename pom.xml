@@ -50,10 +50,10 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<spring.boot.version>1.5.3.RELEASE</spring.boot.version>
+		<spring.boot.version>1.5.4.RELEASE</spring.boot.version>
 		<cxf.version>3.1.11</cxf.version>
 		<fluent-hc.version>4.5.3</fluent-hc.version>
-		<camunda.version>7.6.0</camunda.version>
+		<camunda.version>7.7.0</camunda.version>
 		<logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
 		<commons-io.version>2.5</commons-io.version>
 		<fast-classpath-scanner.version>2.0.9</fast-classpath-scanner.version>
