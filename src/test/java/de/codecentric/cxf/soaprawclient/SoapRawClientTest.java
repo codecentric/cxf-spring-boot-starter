@@ -43,13 +43,7 @@ public class SoapRawClientTest {
 
             Throwable unknownHostException = bootStarterException.getCause();
             assertThat(unknownHostException.getClass(), is(equalTo(UnknownHostException.class)));
-            assertThat(unknownHostException.getMessage(), containsString("foobar: nodename nor servname provided, or not known"));
+            assertThat(unknownHostException.getMessage(), containsString("foobar"));
         }
     }
-
-    private String buildUrl() {
-        // return something like http://localhost:8084/soap-api/WeatherSoapService
-        return "http://foobar:8087" + cxfAutoConfiguration.baseAndServiceEndingUrl();
-    }
-
 }
