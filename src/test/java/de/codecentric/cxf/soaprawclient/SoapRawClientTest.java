@@ -1,0 +1,55 @@
+package de.codecentric.cxf.soaprawclient;
+
+import de.codecentric.cxf.TestApplication;
+import de.codecentric.cxf.common.BootStarterCxfException;
+import de.codecentric.cxf.configuration.CxfAutoConfiguration;
+import de.codecentric.namespace.weatherservice.WeatherService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.net.UnknownHostException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.fail;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes=TestApplication.class)
+public class SoapRawClientTest {
+
+    @Autowired
+    private CxfAutoConfiguration cxfAutoConfiguration;
+
+    @Value(value="classpath:requests/GetCityForecastByZIPTest.xml")
+    private Resource GetCityForecastByZIPTestXml;
+
+    @Test
+    public void callSoapServiceFails() throws Exception {
+        String falseSoapServiceUrl = "http://foobar:8087" + cxfAutoConfiguration.baseAndServiceEndingUrl();
+        SoapRawClient soapRawClient = new SoapRawClient(falseSoapServiceUrl, WeatherService.class);
+        try {
+            soapRawClient.callSoapService(GetCityForecastByZIPTestXml.getInputStream());
+            fail();
+        } catch (BootStarterCxfException bootStarterException) {
+
+            assertThat(bootStarterException.getMessage(), containsString(SoapRawClient.ERROR_MESSAGE));
+
+            Throwable unknownHostException = bootStarterException.getCause();
+            assertThat(unknownHostException.getClass(), is(equalTo(UnknownHostException.class)));
+            assertThat(unknownHostException.getMessage(), containsString("foobar: nodename nor servname provided, or not known"));
+        }
+    }
+
+    private String buildUrl() {
+        // return something like http://localhost:8084/soap-api/WeatherSoapService
+        return "http://foobar:8087" + cxfAutoConfiguration.baseAndServiceEndingUrl();
+    }
+
+}

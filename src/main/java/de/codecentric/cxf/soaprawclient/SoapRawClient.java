@@ -25,9 +25,10 @@ import de.codecentric.cxf.common.XmlUtils;
 public class SoapRawClient {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SoapRawClient.class);
+	protected static final String ERROR_MESSAGE = "Some Error accured while trying to Call SoapService for test: ";
 	private String soapAction;
 	private String soapServiceUrl;
-	
+
 	public <T> SoapRawClient(String soapServiceUrl, Class<T> jaxWsServiceInterfaceClass) throws BootStarterCxfException {
 	    this.soapAction = XmlUtils.getSoapActionFromJaxWsServiceInterface(jaxWsServiceInterfaceClass);
 	    this.soapServiceUrl = soapServiceUrl;
@@ -53,7 +54,7 @@ public class SoapRawClient {
 			easyRawSoapResponse.setHttpResponseBody(XmlUtils.parseFileStream2Document(httpResponse.getEntity().getContent()));
 			
 		} catch (Exception exception) {
-			throw new BootStarterCxfException("Some Error accured while trying to Call SoapService for test: " + exception.getMessage());
+			throw new BootStarterCxfException(ERROR_MESSAGE + exception.getMessage(), exception);
 		}		
 		return easyRawSoapResponse;
 	}
