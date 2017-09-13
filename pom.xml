@@ -44,7 +44,7 @@
 	   </snapshotRepository>
 	</distributionManagement>
 	<properties>
-		<cxf-spring-boot-starter-maven-plugin.version>1.1.2.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
+		<cxf-spring-boot-starter-maven-plugin.version>1.1.3.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
 		<java.version>1.8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -58,9 +58,6 @@
 		<commons-io.version>2.5</commons-io.version>
 		<fast-classpath-scanner.version>2.0.9</fast-classpath-scanner.version>
 		<spring.cloud.sleuth.version>1.2.4.RELEASE</spring.cloud.sleuth.version>
-        <!-- Overriding SpringBoot 1.3.4ff´s logback 1.1.7, because of http://jira.qos.ch/browse/LOGBACK-1164 which
-                    is only fixed in the unreleased 1.1.8  -->
-        <logback.version>1.1.6</logback.version>
 		<!-- Analysis Tools for CI -->
 		<build-plugin.jacoco.version>0.7.9</build-plugin.jacoco.version>
 		<build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
@@ -130,13 +127,6 @@
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
 			<version>${logstash-logback-encoder.version}</version>
-			<!-- Exclude older version of logback-core for conflicting with newer in spring-boot, see https://github.com/logstash/logstash-logback-encoder/issues/153 -->
-            <exclusions>
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-core</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<!-- Fileconverting for PDF-reading -->
 		<dependency>
