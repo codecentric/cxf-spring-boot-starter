@@ -35,7 +35,7 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
 	<dependency>
 		<groupId>de.codecentric</groupId>
     	<artifactId>cxf-spring-boot-starter</artifactId>
-    	<version>1.1.2.RELEASE</version>
+    	<version>1.1.3.RELEASE</version>
 	</dependency>
 </dependencies>
 ```
@@ -47,7 +47,7 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
         <plugin>
             <groupId>de.codecentric</groupId>
             <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
-            <version>1.1.2.RELEASE</version>
+            <version>1.1.3.RELEASE</version>
             <executions>
 				<execution>
 					<goals>
@@ -58,17 +58,6 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
         </plugin>
     </plugins>
 </build>
-```
-
-> only temporarily!
-
-* due to logback / logstash-logback-encoder issue downgrade Spring Boot logback dependency (see [Extract the SoapMessages for processing in ELK-Stack](#extract-the-soapmessages-for-processing-in-elk-stack))
-
-```
- <properties>
-    <!-- Overriding SpringBoot 1.3.4ffÂ´s logback 1.1.7, because of http://jira.qos.ch/browse/LOGBACK-1164 which is only fixed in the unreleased 1.1.8  -->
-    <logback.version>1.1.6</logback.version>
-</properties>
 ```
 
 * place your .wsdl-File (and all the imported XSDs) into a folder somewhere under __src/main/resources__ (see [cxf-spring-boot-starter-maven-plugin] for details)
@@ -97,11 +86,6 @@ Activate SOAP-Message-Logging just via Property __soap.messages.logging=true__ i
 SOAP-Messages will be logged only and printed onto STOUT/Console for fast analysis in development.
 
 ### Extract the SoapMessages for processing in ELK-Stack
-
-> If you want to use this Logging feature to extract the SoapMessages for processing in ELK-Stack, there are two possible ways: stick to __Spring Boot 1.3.3.RELEASE__, due to [problems](https://github.com/logstash/logstash-logback-encoder/issues/160) in the [logstash-logback-encoder], which is itself a bug in [logback 1.1.7](http://jira.qos.ch/browse/LOGBACK-1164), which again is delivered with SpringBoot. This is only, till the SpringBoot guys [update to logback 1.1.8](https://github.com/spring-projects/spring-boot/issues/6214) - but this is not released [yet](https://mvnrepository.com/artifact/ch.qos.logback/logback-core).
-Or as an alternative way - and if you want to use __newer SpringBoot versions__ - you have to override the logback-version with a 
-```<logback.version>1.1.6</logback.version>``` in your MavenÂ´s properties-tag.
-
 
 The cxf-spring-boot-starter brings some nice features, you can use with an ELK-Stack to monitor your SOAP-Service-Calls:
 
