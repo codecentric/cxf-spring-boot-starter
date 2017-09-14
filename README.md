@@ -49,12 +49,12 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
             <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
             <version>1.1.3.RELEASE</version>
             <executions>
-				<execution>
-					<goals>
-						<goal>generate</goal>
-					</goals>
-				</execution>
-			</executions>
+                <execution>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
         </plugin>
     </plugins>
 </build>
