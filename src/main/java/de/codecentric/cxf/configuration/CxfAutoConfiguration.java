@@ -122,7 +122,9 @@ public class CxfAutoConfiguration {
         // Also the WSDLLocation must be set
         endpoint.setServiceName(webServiceClient().getServiceName());
         endpoint.setWsdlLocation(webServiceClient().getWSDLDocumentLocation().toString());
-        if(!publishedEndpointUrl.equals("NOT_SET")){
+        if (publishedEndpointUrl.equals("NOT_SET")) {
+            endpoint.setPublishedEndpointUrl(webServiceClient.getServiceName().getLocalPart());
+        } else {
             endpoint.setPublishedEndpointUrl(publishedEndpointUrl);
         }
         // publish the Service under it´s name mentioned in the WSDL inside name attribute (example: <wsdl:service name="Weather">)
