@@ -33,9 +33,9 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
 ```
 <dependencies>
 	<dependency>
-		<groupId>de.codecentric</groupId>
-    	<artifactId>cxf-spring-boot-starter</artifactId>
-    	<version>1.1.3.RELEASE</version>
+	    <groupId>de.codecentric</groupId>
+	    <artifactId>cxf-spring-boot-starter</artifactId>
+	    <version>1.1.3.RELEASE</version>
 	</dependency>
 </dependencies>
 ```
