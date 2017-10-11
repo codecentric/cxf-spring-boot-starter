@@ -12,12 +12,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.net.UnknownHostException;
+import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.typeCompatibleWith;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
@@ -42,7 +42,7 @@ public class SoapRawClientTest {
             assertThat(bootStarterException.getMessage(), containsString(SoapRawClient.ERROR_MESSAGE));
 
             Throwable unknownHostException = bootStarterException.getCause();
-            assertThat(unknownHostException.getClass(), is(equalTo(UnknownHostException.class)));
+            assertThat(unknownHostException.getClass(), is(typeCompatibleWith(IOException.class)));
             assertThat(unknownHostException.getMessage(), containsString("foobar"));
         }
     }
