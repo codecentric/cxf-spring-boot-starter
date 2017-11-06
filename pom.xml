@@ -55,9 +55,9 @@
 		<fluent-hc.version>4.5.3</fluent-hc.version>
 		<camunda.version>7.7.0</camunda.version>
 		<logstash-logback-encoder.version>4.11</logstash-logback-encoder.version>
-		<commons-io.version>2.5</commons-io.version>
+		<commons-io.version>2.6</commons-io.version>
 		<fast-classpath-scanner.version>2.0.9</fast-classpath-scanner.version>
-		<spring.cloud.sleuth.version>1.2.4.RELEASE</spring.cloud.sleuth.version>
+		<spring.cloud.sleuth.version>1.2.5.RELEASE</spring.cloud.sleuth.version>
 		<!-- Analysis Tools for CI -->
 		<build-plugin.jacoco.version>0.7.9</build-plugin.jacoco.version>
 		<build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
@@ -238,7 +238,7 @@
 				    <plugin>
 				        <groupId>org.codehaus.mojo</groupId>
 				        <artifactId>versions-maven-plugin</artifactId>
-				        <version>2.4</version>
+				        <version>2.5</version>
 				        <configuration>
 				          <generateBackupPoms>false</generateBackupPoms>
 				        </configuration>
