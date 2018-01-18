@@ -145,6 +145,7 @@
 			<groupId>de.codecentric</groupId>
 			<artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
 			<version>${cxf-spring-boot-starter-maven-plugin.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 
         <!-- Test -->
