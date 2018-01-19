@@ -1,8 +1,6 @@
 package de.codecentric.cxf.autodetection;
 
-import de.codecentric.cxf.BootCxfMojo;
-
-import de.codecentric.cxf.autodetection.diagnostics.*;
+import de.codecentric.cxf.autodetection.diagnostics.CxfSpringBootMavenPropertiesNotFoundException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -25,12 +23,12 @@ public class PackageNameReader {
 
     public String readSeiImplementationPackageNameFromCxfSpringBootMavenProperties() throws CxfSpringBootMavenPropertiesNotFoundException {
 
-        return readPackageNameFromCxfSpringBootMavenProperties(BootCxfMojo.SEI_IMPLEMENTATION_PACKAGE_NAME_KEY);
+        return readPackageNameFromCxfSpringBootMavenProperties("sei.implementation.package.name");
     }
 
     public String readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties() throws CxfSpringBootMavenPropertiesNotFoundException {
 
-        return readPackageNameFromCxfSpringBootMavenProperties(BootCxfMojo.SEI_AND_WEB_SERVICE_CLIENT_PACKAGE_NAME_KEY);
+        return readPackageNameFromCxfSpringBootMavenProperties("sei.and.webserviceclient.package.name");
     }
 
     private String readPackageNameFromCxfSpringBootMavenProperties(String seiImplementationPackageNameKey) throws CxfSpringBootMavenPropertiesNotFoundException {
@@ -44,7 +42,7 @@ public class PackageNameReader {
     }
 
     private InputStream cxfSpringBootMavenPropertiesAsInputStream() throws IOException {
-        return findInClasspath("classpath*:**/" + BootCxfMojo.CXF_SPRING_BOOT_MAVEN_PROPERTIES_FILE_NAME).getInputStream();
+        return findInClasspath("classpath*:**/" + "cxf-spring-boot-maven.properties").getInputStream();
     }
 
     private Resource findInClasspath(String pattern) throws IOException {
