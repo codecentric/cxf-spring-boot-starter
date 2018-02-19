@@ -83,7 +83,7 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
 
 Activate SOAP-Message-Logging just via Property __soap.messages.logging=true__ in application.properties (no more configuration on the Endpoint needed) 
 
-SOAP-Messages will be logged only and printed onto STOUT/Console for fast analysis in development.
+SOAP-Messages will be logged only and printed onto STDOUT/Console for fast analysis in development.
 
 ### Extract the SoapMessages for processing in ELK-Stack
 
@@ -135,7 +135,7 @@ The cxf-spring-boot-starter brings some nice features, you can use with an ELK-S
 
 * Now some fields will become available in your kibana dashboard (in other words in your elasticsearch index), e.g. soap-message-inbound contains the Inbound Message
 * see all of them here [ElasticsearchField.java](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/src/main/java/de/codecentric/cxf/logging/ElasticsearchField.java)
-* Additionally [Spring Cloud Sleuth](http://cloud.spring.io/spring-cloud-sleuth/) will provide detailed tracing information of your services. Sleuth will populate the Logback MDC automatically with the tracing information.
+* Additionally [Spring Cloud Sleuth](http://cloud.spring.io/spring-cloud-sleuth/) will provide detailed tracing information of your services. Sleuth will populate the Logback MDC automatically with the tracing information. You can for example retrieve the Trace-Id of the current call via `MDC.get("X-B3-TraceId")`.
 * The default is to use the ELK stack for log analysis. With further configuration you can even extend the tracing infrastructure to use more tailored tracing tools like [Zipkin](http://zipkin.io/).
 
 ### Custom SOAP faults for XML Schema Validation Errors
