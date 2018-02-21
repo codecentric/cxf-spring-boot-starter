@@ -36,7 +36,8 @@ import java.util.Map;
 @PropertySource("classpath:spring-boot-starter-cxf.properties")
 @Import({
     XmlValidationConfiguration.class,
-    SoapMessageLoggerConfiguration.class
+    SoapMessageLoggerConfiguration.class,
+    TimeLoggingConfiguration.class
 })
 public class CxfAutoConfiguration {
 

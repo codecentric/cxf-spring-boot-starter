@@ -4,7 +4,6 @@ import de.codecentric.cxf.TestApplication;
 import de.codecentric.cxf.common.XmlUtils;
 import de.codecentric.namespace.weatherservice.WeatherService;
 import de.codecentric.namespace.weatherservice.general.GetCityForecastByZIP;
-import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
@@ -18,9 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isEmptyString;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -49,6 +47,7 @@ public class SleuthLogMessagesTest {
 
         Matcher foundLoglineMatcher = SLEUTH_LOG_LINE_PATTERN.matcher(systemOutRule.getLog());
         assertThat(foundLoglineMatcher.find(),is(true));
+        assertThat(systemOutRule.getLog(),containsString("Call time"));
     }
 
 }
