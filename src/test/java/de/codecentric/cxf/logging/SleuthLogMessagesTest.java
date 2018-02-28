@@ -45,9 +45,11 @@ public class SleuthLogMessagesTest {
                 GetCityForecastByZIPTestXml.getInputStream(), GetCityForecastByZIP.class);
         weatherServiceClient.getCityForecastByZIP(getCityForecastByZIP.getForecastRequest());
 
-        Matcher foundLoglineMatcher = SLEUTH_LOG_LINE_PATTERN.matcher(systemOutRule.getLog());
+        String log = systemOutRule.getLog();
+        System.out.println("The systemOutRuleLog has the following value: '" + log + "'");
+        Matcher foundLoglineMatcher = SLEUTH_LOG_LINE_PATTERN.matcher(log);
         assertThat(foundLoglineMatcher.find(),is(true));
-        assertThat(systemOutRule.getLog(),containsString("Call time"));
+        assertThat(log,containsString("Call time"));
     }
 
 }
