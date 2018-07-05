@@ -50,16 +50,16 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<spring.boot.version>1.5.9.RELEASE</spring.boot.version>
-		<cxf.version>3.2.1</cxf.version>
-		<fluent-hc.version>4.5.4</fluent-hc.version>
-		<camunda.version>7.8.0</camunda.version>
-		<logstash-logback-encoder.version>4.11</logstash-logback-encoder.version>
+		<spring.boot.version>1.5.14.RELEASE</spring.boot.version>
+		<cxf.version>3.2.5</cxf.version>
+		<fluent-hc.version>4.5.5</fluent-hc.version>
+		<camunda.version>7.9.0</camunda.version>
+		<logstash-logback-encoder.version>5.1</logstash-logback-encoder.version>
 		<commons-io.version>2.6</commons-io.version>
-		<spring.cloud.sleuth.version>1.3.0.RELEASE</spring.cloud.sleuth.version>
-		<system-rules.version>1.17.1</system-rules.version>
+		<spring.cloud.sleuth.version>1.3.4.RELEASE</spring.cloud.sleuth.version>
+		<system-rules.version>1.18.0</system-rules.version>
 		<!-- Analysis Tools for CI -->
-		<build-plugin.jacoco.version>0.7.9</build-plugin.jacoco.version>
+		<build-plugin.jacoco.version>0.8.1</build-plugin.jacoco.version>
 		<build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
 		<!-- Exclude generated JAXB-Java-Classes from Sonar-Analysis -->
 		<sonar.exclusions>**/target/generated-sources/wsdlimport/**</sonar.exclusions>
