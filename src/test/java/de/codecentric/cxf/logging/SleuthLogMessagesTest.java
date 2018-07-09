@@ -2,6 +2,7 @@ package de.codecentric.cxf.logging;
 
 import de.codecentric.cxf.TestApplication;
 import de.codecentric.cxf.common.XmlUtils;
+import de.codecentric.namespace.weatherservice.WeatherException;
 import de.codecentric.namespace.weatherservice.WeatherService;
 import de.codecentric.namespace.weatherservice.general.GetCityForecastByZIP;
 import org.junit.Rule;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,8 +30,6 @@ import static org.junit.Assert.assertThat;
         properties = {"server.port:8087"})
 public class SleuthLogMessagesTest {
 
-    private static final Pattern SLEUTH_LOG_LINE_PATTERN = Pattern.compile("(INFO \\[-,\\w+,\\w+,false].*: Returning a forecast.)");
-
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
 
@@ -41,14 +41,31 @@ public class SleuthLogMessagesTest {
 
     @Test public void
     sleuth_meta_data_should_be_print_out() throws Exception {
-        GetCityForecastByZIP getCityForecastByZIP = XmlUtils.readSoapMessageFromStreamAndUnmarshallBody2Object(
-                GetCityForecastByZIPTestXml.getInputStream(), GetCityForecastByZIP.class);
-        weatherServiceClient.getCityForecastByZIP(getCityForecastByZIP.getForecastRequest());
+        callSoapService();
 
         String log = systemOutRule.getLog();
-        Matcher foundLoglineMatcher = SLEUTH_LOG_LINE_PATTERN.matcher(log);
-        assertThat(foundLoglineMatcher.find(),is(true));
+        assertThat(isSleuthLogLineSomewhereIn(log),is(true));
+    }
+
+    private boolean isSleuthLogLineSomewhereIn(String log) {
+        Pattern sleuth_log_line_pattern = Pattern.compile("(INFO \\[-,\\w+,\\w+,false].*: Returning a forecast.)");
+        Matcher loglineMatcher = sleuth_log_line_pattern.matcher(log);
+        return loglineMatcher.find();
+    }
+
+    @Test public void
+    call_time_should_be_print_out() throws Exception {
+        callSoapService();
+
+        String log = systemOutRule.getLog();
         assertThat(log,containsString("Call time"));
+    }
+
+    private void callSoapService() throws de.codecentric.cxf.common.BootStarterCxfException, IOException, WeatherException {
+        GetCityForecastByZIP getCityForecastByZIP = XmlUtils.readSoapMessageFromStreamAndUnmarshallBody2Object(
+                GetCityForecastByZIPTestXml.getInputStream(), GetCityForecastByZIP.class);
+
+        weatherServiceClient.getCityForecastByZIP(getCityForecastByZIP.getForecastRequest());
     }
 
 }
