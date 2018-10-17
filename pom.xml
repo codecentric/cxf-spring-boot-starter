@@ -51,9 +51,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Project dependencies -->
-
 		<spring.boot.version>2.0.6.RELEASE</spring.boot.version>
-		<cxf-spring-boot-starter-maven-plugin.version>1.1.5.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
+		<cxf-spring-boot-starter-maven-plugin.version>2.0.0.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
 		<cxf.version>3.2.6</cxf.version>
 		<fluent-hc.version>4.5.6</fluent-hc.version>
 		<camunda.version>7.9.0</camunda.version>
