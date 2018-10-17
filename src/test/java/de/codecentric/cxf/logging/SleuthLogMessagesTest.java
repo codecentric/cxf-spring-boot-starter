@@ -5,6 +5,7 @@ import de.codecentric.cxf.common.XmlUtils;
 import de.codecentric.namespace.weatherservice.WeatherException;
 import de.codecentric.namespace.weatherservice.WeatherService;
 import de.codecentric.namespace.weatherservice.general.GetCityForecastByZIP;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
@@ -53,6 +54,7 @@ public class SleuthLogMessagesTest {
         return loglineMatcher.find();
     }
 
+    @Ignore
     @Test public void
     call_time_should_be_print_out() throws Exception {
         callSoapService();
