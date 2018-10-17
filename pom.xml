@@ -44,23 +44,35 @@
 	   </snapshotRepository>
 	</distributionManagement>
 	<properties>
-		<cxf-spring-boot-starter-maven-plugin.version>1.1.5.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
 		<java.version>1.8</java.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<spring.boot.version>1.5.14.RELEASE</spring.boot.version>
-		<cxf.version>3.2.5</cxf.version>
-		<fluent-hc.version>4.5.5</fluent-hc.version>
+
+		<!-- Project dependencies -->
+
+		<spring.boot.version>2.0.6.RELEASE</spring.boot.version>
+		<cxf-spring-boot-starter-maven-plugin.version>1.1.5.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
+		<cxf.version>3.2.6</cxf.version>
+		<fluent-hc.version>4.5.6</fluent-hc.version>
 		<camunda.version>7.9.0</camunda.version>
-		<logstash-logback-encoder.version>5.1</logstash-logback-encoder.version>
+		<logstash-logback-encoder.version>5.2</logstash-logback-encoder.version>
 		<commons-io.version>2.6</commons-io.version>
-		<spring.cloud.sleuth.version>1.3.4.RELEASE</spring.cloud.sleuth.version>
+		<spring.cloud.sleuth.version>2.0.1.RELEASE</spring.cloud.sleuth.version>
 		<system-rules.version>1.18.0</system-rules.version>
+
 		<!-- Analysis Tools for CI -->
-		<build-plugin.jacoco.version>0.8.1</build-plugin.jacoco.version>
+		<build-plugin.jacoco.version>0.8.2</build-plugin.jacoco.version>
 		<build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
+
+		<!-- Maven Central Release tools -->
+		<versions-maven-plugin.version>2.7</versions-maven-plugin.version>
+		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+		<maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
+		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+
 		<!-- Exclude generated JAXB-Java-Classes from Sonar-Analysis -->
 		<sonar.exclusions>**/target/generated-sources/wsdlimport/**</sonar.exclusions>
 	</properties>
@@ -225,7 +237,7 @@
 				<plugins>
 					<plugin>
 				        <artifactId>maven-gpg-plugin</artifactId>
-				        <version>1.6</version>
+				        <version>${maven-gpg-plugin.version}</version>
 				        <executions>
 				          <execution>
 				            <id>sign-artifacts</id>
@@ -246,7 +258,7 @@
 				    <plugin>
 				        <groupId>org.codehaus.mojo</groupId>
 				        <artifactId>versions-maven-plugin</artifactId>
-				        <version>2.5</version>
+				        <version>${versions-maven-plugin.version}</version>
 				        <configuration>
 				          <generateBackupPoms>false</generateBackupPoms>
 				        </configuration>
@@ -260,7 +272,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>3.0.1</version>
+						<version>${maven-source-plugin.version}</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
@@ -273,7 +285,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.0.0</version>
+						<version>${maven-javadoc-plugin.version}</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>
@@ -286,7 +298,7 @@
 					<plugin>
 				        <groupId>org.sonatype.plugins</groupId>
 				        <artifactId>nexus-staging-maven-plugin</artifactId>
-				        <version>1.6.8</version>
+				        <version>${nexus-staging-maven-plugin.version}</version>
 				        <extensions>true</extensions>
 				        <configuration>
 				          <serverId>oss.sonatype.org</serverId>

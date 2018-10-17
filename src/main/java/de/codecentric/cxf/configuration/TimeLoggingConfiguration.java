@@ -13,9 +13,6 @@ import javax.servlet.Filter;
 @Configuration
 public class TimeLoggingConfiguration {
 
-    @Autowired
-    private BeanFactory beanFactory;
-
     @Bean
     @ConditionalOnProperty(name = "endpoint.autoinit", matchIfMissing = true)
     public FilterRegistrationBean filterRegistrationBean(){
@@ -27,6 +24,6 @@ public class TimeLoggingConfiguration {
     }
 
     private Filter timeLoggingFilter() {
-        return new TimeLoggingFilter(beanFactory);
+        return new TimeLoggingFilter();
     }
 }
