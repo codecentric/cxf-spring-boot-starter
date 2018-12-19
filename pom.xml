@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>de.codecentric</groupId>
 	<artifactId>cxf-spring-boot-starter</artifactId>
-	<version>2.0.0-SNAPSHOT</version>
+	<version>2.1.0-SNAPSHOT</version>
 	<name>cxf-spring-boot-starter</name>
 	<description>Boot starter for SOAP-Webservices with Apache CXF using JAX-WS &amp; JAXB with Annotations only</description>
 	<packaging>jar</packaging>
@@ -51,15 +51,15 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Project dependencies -->
-		<spring.boot.version>2.0.6.RELEASE</spring.boot.version>
+		<spring.boot.version>2.1.1.RELEASE</spring.boot.version>
 		<cxf-spring-boot-starter-maven-plugin.version>2.0.0.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
-		<cxf.version>3.2.6</cxf.version>
+		<cxf.version>3.2.7</cxf.version>
 		<fluent-hc.version>4.5.6</fluent-hc.version>
-		<camunda.version>7.9.0</camunda.version>
+		<camunda.version>7.10.0</camunda.version>
 		<logstash-logback-encoder.version>5.2</logstash-logback-encoder.version>
 		<commons-io.version>2.6</commons-io.version>
-		<spring.cloud.sleuth.version>2.0.1.RELEASE</spring.cloud.sleuth.version>
-		<system-rules.version>1.18.0</system-rules.version>
+		<spring.cloud.sleuth.version>2.0.2.RELEASE</spring.cloud.sleuth.version>
+		<system-rules.version>1.19.0</system-rules.version>
 
 		<!-- Analysis Tools for CI -->
 		<build-plugin.jacoco.version>0.8.2</build-plugin.jacoco.version>
