@@ -4,9 +4,9 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![versionspringboot](https://img.shields.io/badge/springboot-2.1.2_RELEASE-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
-[![versionapachecxf](https://img.shields.io/badge/apache-cxf-3.3.0-brightgreen.svg)](http://cxf.apache.org/)
-[![versionlogstashlogbackencoder](https://img.shields.io/badge/logstash-logback-encoder-5.3-brightgreen.svg)](https://github.com/logstash/logstash-logback-encoder)
-[![versionspringcloudsleuth](https://img.shields.io/badge/spring-cloud-sleuth-2.1.0_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
+[![versionapachecxf](https://img.shields.io/badge/apache.cxf-3.3.0-brightgreen.svg)](http://cxf.apache.org/)
+[![versionspringcloudsleuth](https://img.shields.io/badge/spring.cloud.sleuth-2.1.0_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
+[![versionlogstashlogbackencoder](https://img.shields.io/badge/logstash.logback.encoder-5.3-brightgreen.svg)](https://github.com/logstash/logstash-logback-encoder)
 
 
 > !! This document applies to the next version under development.
