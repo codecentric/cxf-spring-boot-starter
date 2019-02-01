@@ -27,7 +27,7 @@ public class BaseLogger {
 	 * Puts the String it into the Slf4j MDC (Mapped Diagnostic Context, see <a href="http://logback.qos.ch/manual/mdc.html">http://logback.qos.ch/manual/mdc.html</a>} for more details)
 	 * with the Key {@link ElasticsearchField#SOAP_MESSAGE_INBOUND} you can find in your Elasticsearch, when processed via logstash. 
      *
-	 * @param inboundSoapMessage
+	 * @param inboundSoapMessage the inbound SOAP message to log
 	 */
 	public void logInboundSoapMessage(String inboundSoapMessage) {
 	    // see https://github.com/logstash/logstash-logback-encoder/tree/logstash-logback-encoder-4.5#event-specific-custom-fields
@@ -39,7 +39,7 @@ public class BaseLogger {
      * Puts the String it into the Slf4j MDC (Mapped Diagnostic Context, see <a href="http://logback.qos.ch/manual/mdc.html">http://logback.qos.ch/manual/mdc.html</a>} for more details)
      * with the Key {@link ElasticsearchField#SOAP_MESSAGE_OUTBOUND} you can find in your Elasticsearch, when processed via logstash.
      * 
-     * @param outboundSoapMessage
+     * @param outboundSoapMessage the outbound SOAP message to log
      */
     public void logOutboundSoapMessage(String outboundSoapMessage) {
         log2Elasticsearch(ElasticsearchField.SOAP_MESSAGE_OUTBOUND, outboundSoapMessage, "<]=== Outbound-SoapMessage <]=== stored in ElasticsearchField '{}'");
@@ -49,7 +49,7 @@ public class BaseLogger {
      * Puts the String it into the Slf4j MDC (Mapped Diagnostic Context, see <a href="http://logback.qos.ch/manual/mdc.html">http://logback.qos.ch/manual/mdc.html</a>} for more details)
      * with the Key {@link ElasticsearchField#HTTP_HEADER_INBOUND} you can find in your Elasticsearch, when processed via logstash. 
      *
-	 * @param headers
+	 * @param headers the HTTP headers to log
 	 */
 	public void logHttpHeader(String headers) {
 		log2Elasticsearch(ElasticsearchField.HTTP_HEADER_INBOUND, headers, "001 >>> Header in Inbound-HTTP-Message stored in Elasticsearch-Field '{}'");

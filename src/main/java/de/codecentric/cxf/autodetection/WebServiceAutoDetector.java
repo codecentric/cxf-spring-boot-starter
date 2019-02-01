@@ -35,11 +35,11 @@ public class WebServiceAutoDetector {
     }
 
     /**
-     * Detects & instantiates the SEI-Implementation. Therefore it detects the SEI itself first.
+     * Detects and instantiates the SEI-Implementation. Therefore it detects the SEI itself first.
      *
-     * @param <T>
-     * @return
-     * @throws BootStarterCxfException
+     * @param <T> returns the instantiated Service Endpoint Interface (SEI) implementation
+     * @return    returns the instantiated Service Endpoint Interface (SEI) implementation
+     * @throws BootStarterCxfException if the the SEI or it's implementation class wasn't found
      */
     public <T> T searchAndInstantiateSeiImplementation() throws BootStarterCxfException {
         return searchAndInstantiateSeiImplementation(searchServiceEndpointInterface());
