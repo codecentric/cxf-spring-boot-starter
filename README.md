@@ -1,4 +1,4 @@
-Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apache CXF
+Enterprise & production ready SOAP webservices powered by Spring Boot & Apache CXF
 ======================================================================================
 [![Build Status](https://travis-ci.org/codecentric/cxf-spring-boot-starter.svg?branch=master)](https://travis-ci.org/codecentric/cxf-spring-boot-starter)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/)
@@ -8,10 +8,7 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 [![versionspringcloudsleuth](https://img.shields.io/badge/spring.cloud.sleuth-2.1.0_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
 [![versionlogstashlogbackencoder](https://img.shields.io/badge/logstash.logback.encoder-5.3-brightgreen.svg)](https://github.com/logstash/logstash-logback-encoder)
 
-
-> !! This document applies to the next version under development.
->
-> &nbsp; &nbsp; See [here for documentation on the latest released version](https://github.com/codecentric/cxf-spring-boot-starter/tree/1.1.1.RELEASE).
+![spring-boot-starter-cxf-logo](spring-boot-starter-cxf-logo.png)
 
 # Features include:
 
@@ -20,7 +17,7 @@ Enterprise-ready production-ready SOAP-Webservices powered by Spring Boot & Apac
 * __Complete automation of Endpoint initialization__ - no need to configure Apache CXF Endpoints, that´s all done for you automatically based upon the WSDL and the generated Java-Classes (bringing up a nice [Spring Boot 1.4.x Failure Message](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-spring-application.html#_startup_failure) if you missed something :) )
 * Customize SOAP service URL and the title of the CXF generated Service site
 * __Configures CXF to use slf4j__ and serve Logging-Interceptors, to log only the SOAP-Messages onto console
-* __Extract the SoapMessages__ for processing in __ELK-Stack__, like [docker-elk](https://github.com/jonashackt/docker-elk)
+* __Extract the SoapMessages__ for processing in __Elastic-Stack (ELK)__, like [docker-elk](https://github.com/jonashackt/docker-elk)
 * Tailor your own __custom SOAP faults__, that comply with the exceptions defined inside your XML schema
 * SOAP Testing-Framework: With __XmlUtils__ to easy your work with JAX-B class handling & a __SOAP Raw Client__ to Test malformed XML against your Endpoints
 
