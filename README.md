@@ -24,6 +24,8 @@ Enterprise & production ready SOAP webservices powered by Spring Boot & Apache C
 
 # Documentation
 
+This starter is part of the __Community Contributions__ list of the official Spring Boot Starters: https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-starters (see `SOAP Web Services support with Apache CXF`)
+
 There´s also an blog post describing this project: [Spring Boot & Apache CXF – SOAP on steroids fueled by cxf-spring-boot-starter](https://blog.codecentric.de/en/2016/10/spring-boot-apache-cxf-spring-boot-starter/)
 
 ### Initial Setup
