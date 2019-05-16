@@ -38,7 +38,7 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
 	<dependency>
 	    <groupId>de.codecentric</groupId>
 	    <artifactId>cxf-spring-boot-starter</artifactId>
-	    <version>2.1.2.RELEASE</version>
+	    <version>2.1.5.RELEASE</version>
 	</dependency>
 </dependencies>
 ```
