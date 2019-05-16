@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>de.codecentric</groupId>
 	<artifactId>cxf-spring-boot-starter</artifactId>
-	<version>2.1.5-SNAPSHOT</version>
+	<version>2.1.6-SNAPSHOT</version>
 	<name>cxf-spring-boot-starter</name>
 	<description>Boot starter for SOAP-Webservices with Apache CXF using JAX-WS &amp; JAXB with Annotations only</description>
 	<packaging>jar</packaging>
@@ -52,7 +52,7 @@
 
 		<!-- Project dependencies -->
 		<spring.boot.version>2.1.5.RELEASE</spring.boot.version>
-		<cxf-spring-boot-starter-maven-plugin.version>2.0.0.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
+		<cxf-spring-boot-starter-maven-plugin.version>2.1.5.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
 		<cxf.version>3.3.1</cxf.version>
 		<fluent-hc.version>4.5.8</fluent-hc.version>
 		<camunda.version>7.10.0</camunda.version>
