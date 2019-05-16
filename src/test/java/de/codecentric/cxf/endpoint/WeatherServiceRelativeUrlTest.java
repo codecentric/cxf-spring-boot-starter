@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @SpringBootTest(
         classes=TestApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
-        properties = { "server.port:8088"}
+        properties = { "server.port:8098"}
         )
 public class WeatherServiceRelativeUrlTest {
 
@@ -26,7 +26,7 @@ public class WeatherServiceRelativeUrlTest {
     @Test
     public void should_return_a_relative_url() throws Exception {
         final String response = Request
-                .Get("http://localhost:8088/soap-api/Weather?wsdl")
+                .Get("http://localhost:8098/soap-api/Weather?wsdl")
                 .execute()
                 .returnContent()
                 .asString();

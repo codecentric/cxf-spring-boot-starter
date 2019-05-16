@@ -3,9 +3,9 @@ Enterprise & production ready SOAP webservices powered by Spring Boot & Apache C
 [![Build Status](https://travis-ci.org/codecentric/cxf-spring-boot-starter.svg?branch=master)](https://travis-ci.org/codecentric/cxf-spring-boot-starter)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![versionspringboot](https://img.shields.io/badge/springboot-2.1.2_RELEASE-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
-[![versionapachecxf](https://img.shields.io/badge/apache.cxf-3.3.0-brightgreen.svg)](http://cxf.apache.org/)
-[![versionspringcloudsleuth](https://img.shields.io/badge/spring.cloud.sleuth-2.1.0_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
+[![versionspringboot](https://img.shields.io/badge/springboot-2.1.5_RELEASE-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
+[![versionapachecxf](https://img.shields.io/badge/apache.cxf-3.3.1-brightgreen.svg)](http://cxf.apache.org/)
+[![versionspringcloudsleuth](https://img.shields.io/badge/spring.cloud.sleuth-2.1.1_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
 [![versionlogstashlogbackencoder](https://img.shields.io/badge/logstash.logback.encoder-5.3-brightgreen.svg)](https://github.com/logstash/logstash-logback-encoder)
 
 ![spring-boot-starter-cxf-logo](spring-boot-starter-cxf-logo.png)
@@ -296,7 +296,7 @@ If you start your Spring Boot application and everything went fine, then you sho
 ```
 [...] INFO 83684 --- [ost-startStop-1] d.c.c.a.WebServiceAutoDetector           : Found WebServiceClient class: 'de.codecentric.namespace.weatherservice.Weather'
 [...] INFO 83684 --- [  restartedMain] d.c.c.a.WebServiceAutoDetector           : Found Service Endpoint Interface (SEI): 'de.codecentric.namespace.weatherservice.WeatherService'
-[...] INFO 83684 --- [  restartedMain] d.c.c.a.WebServiceAutoDetector           : Found SEI implementing class: 'de.codecentric.soap.endpoint.WeatherServiceEndpoint'
+[...] INFO 83684 --- [  restartedMain] d.c.c.a.WebServiceAutoDetector           : Found SEI implementing class: 'WeatherServiceEndpoint'
 ```
 
 ###### Deactivate autoinitialization
