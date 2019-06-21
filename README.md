@@ -3,10 +3,11 @@ Enterprise & production ready SOAP webservices powered by Spring Boot & Apache C
 [![Build Status](https://travis-ci.org/codecentric/cxf-spring-boot-starter.svg?branch=master)](https://travis-ci.org/codecentric/cxf-spring-boot-starter)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![versionspringboot](https://img.shields.io/badge/springboot-2.1.5_RELEASE-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
-[![versionapachecxf](https://img.shields.io/badge/apache.cxf-3.3.1-brightgreen.svg)](http://cxf.apache.org/)
+[![versionspringboot](https://img.shields.io/badge/springboot-2.1.6_RELEASE-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
+[![versionjava](https://img.shields.io/badge/jdk-8,_9,_11-brightgreen.svg?logo=java)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
+[![versionapachecxf](https://img.shields.io/badge/apache.cxf-3.3.2-brightgreen.svg?logo=apache)](http://cxf.apache.org/)
 [![versionspringcloudsleuth](https://img.shields.io/badge/spring.cloud.sleuth-2.1.1_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
-[![versionlogstashlogbackencoder](https://img.shields.io/badge/logstash.logback.encoder-5.3-brightgreen.svg)](https://github.com/logstash/logstash-logback-encoder)
+[![versionlogstashlogbackencoder](https://img.shields.io/badge/logstash.logback.encoder-6.1-brightgreen.svg?logo=logstash)](https://github.com/logstash/logstash-logback-encoder)
 
 ![spring-boot-starter-cxf-logo](spring-boot-starter-cxf-logo.png)
 
@@ -38,7 +39,7 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
 	<dependency>
 	    <groupId>de.codecentric</groupId>
 	    <artifactId>cxf-spring-boot-starter</artifactId>
-	    <version>2.1.5.RELEASE</version>
+	    <version>2.1.6.RELEASE</version>
 	</dependency>
 </dependencies>
 ```
@@ -50,7 +51,7 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
         <plugin>
             <groupId>de.codecentric</groupId>
             <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
-            <version>2.1.5.RELEASE</version>
+            <version>2.1.6.RELEASE</version>
             <executions>
                 <execution>
                     <goals>
