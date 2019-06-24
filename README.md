@@ -21,6 +21,7 @@ Enterprise & production ready SOAP webservices powered by Spring Boot & Apache C
 * __Extract the SoapMessages__ for processing in __Elastic-Stack (ELK)__, like [docker-elk](https://github.com/jonashackt/docker-elk)
 * Tailor your own __custom SOAP faults__, that comply with the exceptions defined inside your XML schema
 * SOAP Testing-Framework: With __XmlUtils__ to easy your work with JAX-B class handling & a __SOAP Raw Client__ to Test malformed XML against your Endpoints
+* Works with JDK 8, 9 & 11ff
 
 
 # Documentation
