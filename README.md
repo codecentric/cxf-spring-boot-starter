@@ -331,6 +331,79 @@ You can manually specify the url of the Service Endpoint using the spring proper
 
 If you want to use the well known [Spring Boot Developer Tools (devtools)](http://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-devtools.html) - no problem. As long as you don´t want to use `mvn spring-boot:run`. Because of the devtools make usage of the [2 separate classloaders](http://docs.spring.io/spring-boot/docs/1.4.2.RELEASE/reference/htmlsingle/#using-boot-devtools-restart) the scanned, found and instantiated classes aren´t valid inside the other classloader and you could get into [trouble](https://github.com/codecentric/cxf-spring-boot-starter/issues/6). This is only in combination with the [Complete automation of Endpoint initialization feature](https://github.com/codecentric/cxf-spring-boot-starter#complete-automation-of-endpoint-initialization) and the starting method `mvn spring-boot:run`. All the other starting mechanisms of Spring Boot will work as expected (`java -jar service.jar`, Starting inside the IDE via `Run as...` or in `mvn test`).
 
+
+# Sample projects
+
+For better documentation and usability overview of the cxf-spring-boot-starter, this project now also provides sample projects.
+
+* [cxf-boot-simple](cxf-spring-boot-starter-samples/cxf-boot-simple): Full example incl. Endpoint implementation, Tests, WSDL files with XSD includes, Custom Faults etc. 
+* [cxf-boot-simple-client](cxf-spring-boot-starter-samples/cxf-boot-simple-client): Client example, using the cxf-spring-boot-starter in Client only mode
+
+That we are able to test the second project in client-only mode, we should somehow run the first sample project on a Cloud provider like Heroku. 
+
+### Deploying cxf-boot-simple on Heroku
+
+On Heroku the current Java environment supports JDKs newer than JDK8, which is needed to successfully build our cxf-spring-boot-starter (which now has [build in JDK8, 9, 11 & 12 support](https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin#jdk-11-support)).
+
+The default JDK in Heroku is currently version 8, [according to the docs](https://devcenter.heroku.com/articles/java-support#specifying-a-java-version) we have to create a `system.properties` file inside the root of our application to configure this:
+
+```
+# Heroku configuration file
+# by default, Heroku uses JDK8, which isn't able to build our cxf-spring-boot-starter (although it can be used with JDK8)
+# see https://devcenter.heroku.com/articles/java-support#specifying-a-java-version
+java.runtime.version=12
+# we also need to specify the Maven version (see https://github.com/codecentric/cxf-spring-boot-starter/issues/48)
+# maven.version=3.6.0
+# but as there is no support for Maven >3.3.9 on Heroku, we need to switch to https://github.com/takari/maven-wrapper
+# which is also the recommended way to use Maven on Heroku https://devcenter.heroku.com/articles/java-support#specifying-a-maven-version
+```
+
+But then we'll soon find ourselfs in the hell of an old Maven version! [Currently Heroku only supports Maven <=3.3.9](https://devcenter.heroku.com/articles/java-support#specifying-a-maven-version), which leads to the following build exception on Heroku (see https://github.com/codecentric/cxf-spring-boot-starter/issues/48 also):
+
+```
+Error injecting: org.jvnet.jax_ws_commons.jaxws.MainWsImportMojocom.google.inject.ProvisionException: Unable to provision
+```
+
+Changing the Maven version inside the `system.properties` file doesn't help much, since Heroku doesn't support newer versions. Also a provided mvnw maven-wrapper configuration isn't picked up successfully (which should have helped us get out of this help):
+
+```
+-----> Java app detected
+
+-----> Installing JDK 12... done
+
+-----> Installing Maven 3.3.9... done
+
+-----> Executing: mvn -DskipTests clean dependency:list install
+
+       [INFO] Scanning for projects...
+```
+
+
+### Deploying cxf-boot-simple on Heroku with Docker
+
+Now that we don't have a current Maven version, we need to have a look for alternatives. But hey, there's also this alternative way of deploying to Heroku: Docker!
+
+[According to the docs](https://devcenter.heroku.com/articles/build-docker-images-heroku-yml), we only need a `Dockerfile` inside our sample project - and a [heroku.yml](heroku.yml) inside the root of our project:
+
+```
+build:
+  docker:
+    web: /cxf-spring-boot-starter-samples/cxf-boot-simple/Dockerfile
+```
+
+Now we need to set the Heroku stack to `container` (we should do that maybe better inside a app.yml?!):
+
+```
+heroku stack:set container
+```
+
+
+[cxf-boot-simple](cxf-spring-boot-starter-samples/cxf-boot-simple)
+
+Therefore the sample project is live-deployed on Heroku: https://cxf-boot-simple.herokuapp.com/,
+
+Therefore the  is 
+
 # Contribution
 
 If you want to know more or even contribute to this Spring Boot Starter, maybe you need some information like:
