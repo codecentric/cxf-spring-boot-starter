@@ -8,6 +8,7 @@ Enterprise & production ready SOAP webservices powered by Spring Boot & Apache C
 [![versionapachecxf](https://img.shields.io/badge/apache.cxf-3.3.2-brightgreen.svg?logo=apache)](http://cxf.apache.org/)
 [![versionspringcloudsleuth](https://img.shields.io/badge/spring.cloud.sleuth-2.1.1_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
 [![versionlogstashlogbackencoder](https://img.shields.io/badge/logstash.logback.encoder-6.1-brightgreen.svg?logo=logstash)](https://github.com/logstash/logstash-logback-encoder)
+[![Deployed on Heroku](https://img.shields.io/badge/heroku-deployed-blueviolet.svg?logo=heroku&)](https://cxf-boot-simple.herokuapp.com/)
 
 ![spring-boot-starter-cxf-logo](spring-boot-starter-cxf-logo.png)
 
@@ -29,6 +30,11 @@ Enterprise & production ready SOAP webservices powered by Spring Boot & Apache C
 This starter is part of the __Community Contributions__ list of the official Spring Boot Starters: https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-starters (see `SOAP Web Services support with Apache CXF`)
 
 There´s also an blog post describing this project: [Spring Boot & Apache CXF – SOAP on steroids fueled by cxf-spring-boot-starter](https://blog.codecentric.de/en/2016/10/spring-boot-apache-cxf-spring-boot-starter/)
+
+The following documentation tries to get you started fast. There are also sample projects, if you'd like to see some code instead:
+
+* [cxf-boot-simple](cxf-spring-boot-starter-samples/cxf-boot-simple): Full example incl. Endpoint implementation, Tests, WSDL files with XSD includes, Custom Faults etc. This sample project is also live-deployed on Heroku: https://cxf-boot-simple.herokuapp.com/
+* [cxf-boot-simple-client](cxf-spring-boot-starter-samples/cxf-boot-simple-client): Client example, using the cxf-spring-boot-starter in Client only mode
 
 ### Initial Setup
 
@@ -168,7 +174,7 @@ Many SOAP based standards demand a custom SOAP-Fault, that should be delivered i
 
 ##### Create a WebService Client
 
-* If you instantiate a JaxWsProxyFactoryBean, you need to set an Adress containing your configured (or the standard) soap.service.base.url. To get the correct path, just autowire the CxfAutoConfiguration like:
+* If you instantiate a JaxWsProxyFactoryBean, you need to set an Address containing your configured (or the standard) soap.service.base.url. To get the correct path, just autowire the CxfAutoConfiguration like:
 
 ``` 
 @Autowired

@@ -1,0 +1,1 @@
+web: java -Dserver.port=$PORT -jar cxf-spring-boot-starter-samples/cxf-boot-simple/target/cxf-boot-simple-*-SNAPSHOT.jar
