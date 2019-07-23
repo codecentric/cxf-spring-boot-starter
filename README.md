@@ -397,13 +397,6 @@ Now we need to set the Heroku stack to `container` (we should do that maybe bett
 heroku stack:set container
 ```
 
-
-[cxf-boot-simple](cxf-spring-boot-starter-samples/cxf-boot-simple)
-
-Therefore the sample project is live-deployed on Heroku: https://cxf-boot-simple.herokuapp.com/,
-
-Therefore the  is 
-
 # Contribution
 
 If you want to know more or even contribute to this Spring Boot Starter, maybe you need some information like:
