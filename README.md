@@ -411,8 +411,6 @@ VOLUME /tmp
 # Add Spring Boot app.jar to Container
 COPY --from=0 "/cxfbootsimple/target/cxf-boot-simple-*-SNAPSHOT.jar" app.jar
 
-ENV JAVA_OPTS=""
-
 # Fire up our Spring Boot app by default
 CMD [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
 ``` 
@@ -506,6 +504,34 @@ CMD [ "sh", "-c", "java -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=
 ```
 
 Now we should have configured our Java app running inside Docker according to the standard `web` Heroku stack (see https://devcenter.heroku.com/articles/java-memory-issues#heroku-memory-limits).
+
+
+##### Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 60 seconds of launch
+
+Our original Heroku `Procfile` did contain the setting of the `$PORT` variable so that Spring Boot is able to launch it's internal Tomcat accordingly:
+
+```
+web: java -Dserver.port=$PORT -jar cxf-spring-boot-starter-samples/cxf-boot-simple/target/cxf-boot-simple-*-SNAPSHOT.jar
+```
+
+And this configuration is also needed inside our Dockerfile! So let's tweak our cxf-boot-simple [Dockerfile](cxf-spring-boot-starter-samples/cxf-boot-simple/Dockerfile) again:
+
+```
+# Fire up our Spring Boot app by default
+CMD [ "sh", "-c", "java -Dserver.port=$PORT -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8 -XX:+UseContainerSupport -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
+```
+
+Now the `$PORT` environment variable should be used to fire up our Spring Boot app. To verify this, execute the Docker container locally:
+
+```
+docker build . --tag cxfbootsimple
+docker run -e "PORT=8095" cxfbootsimple
+# look for container id
+docker ps 
+docker exec -it containerId bash
+curl localhost:8095/my-foo-api -v
+```
+
 
 # Contribution
 
