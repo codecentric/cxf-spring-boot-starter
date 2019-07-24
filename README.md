@@ -8,7 +8,7 @@ Enterprise & production ready SOAP webservices powered by Spring Boot & Apache C
 [![versionapachecxf](https://img.shields.io/badge/apache.cxf-3.3.2-brightgreen.svg?logo=apache)](http://cxf.apache.org/)
 [![versionspringcloudsleuth](https://img.shields.io/badge/spring.cloud.sleuth-2.1.1_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
 [![versionlogstashlogbackencoder](https://img.shields.io/badge/logstash.logback.encoder-6.1-brightgreen.svg?logo=logstash)](https://github.com/logstash/logstash-logback-encoder)
-[![Deployed on Heroku](https://img.shields.io/badge/heroku-deployed-blueviolet.svg?logo=heroku&)](https://cxf-boot-simple.herokuapp.com/)
+[![Deployed on Heroku](https://img.shields.io/badge/heroku-deployed-blueviolet.svg?logo=heroku&)](https://cxf-boot-simple.herokuapp.com/my-foo-api)
 
 ![spring-boot-starter-cxf-logo](spring-boot-starter-cxf-logo.png)
 
@@ -33,7 +33,7 @@ ThereÂ´s also an blog post describing this project: [Spring Boot & Apache CXF â€
 
 The following documentation tries to get you started fast. There are also sample projects, if you'd like to see some code instead:
 
-* [cxf-boot-simple](cxf-spring-boot-starter-samples/cxf-boot-simple): Full example incl. Endpoint implementation, Tests, WSDL files with XSD includes, Custom Faults etc. This sample project is also live-deployed on Heroku: https://cxf-boot-simple.herokuapp.com/
+* [cxf-boot-simple](cxf-spring-boot-starter-samples/cxf-boot-simple): Full example incl. Endpoint implementation, Tests, WSDL files with XSD includes, Custom Faults etc. This sample project is also live-deployed on Heroku: https://cxf-boot-simple.herokuapp.com/my-foo-api
 * [cxf-boot-simple-client](cxf-spring-boot-starter-samples/cxf-boot-simple-client): Client example, using the cxf-spring-boot-starter in Client only mode
 
 ### Initial Setup
@@ -531,6 +531,8 @@ docker ps
 docker exec -it containerId bash
 curl localhost:8095/my-foo-api -v
 ```
+
+Finally our cxf-boot-simple app is accessible at https://cxf-boot-simple.herokuapp.com/my-foo-api
 
 
 # Contribution
