@@ -514,7 +514,11 @@ Our original Heroku `Procfile` did contain the setting of the `$PORT` variable s
 web: java -Dserver.port=$PORT -jar cxf-spring-boot-starter-samples/cxf-boot-simple/target/cxf-boot-simple-*-SNAPSHOT.jar
 ```
 
-And this configuration is also needed inside our Dockerfile! So let's tweak our cxf-boot-simple [Dockerfile](cxf-spring-boot-starter-samples/cxf-boot-simple/Dockerfile) again:
+And this configuration is also needed inside our Dockerfile! Because https://devcenter.heroku.com/articles/container-registry-and-runtime#dockerfile-commands-and-runtime states:
+                                                             
+> The web process must listen for HTTP traffic on $PORT, which is set by Heroku. EXPOSE in Dockerfile is not respected, but can be used for local testing. Only HTTP requests are supported.
+
+So let's tweak our cxf-boot-simple [Dockerfile](cxf-spring-boot-starter-samples/cxf-boot-simple/Dockerfile) again:
 
 ```
 # Fire up our Spring Boot app by default
