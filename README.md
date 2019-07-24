@@ -492,6 +492,21 @@ DYNO=run.7988
 
 And THERE WE ARE: `JAVA_OPTS` is empty! 
 
+If you have a look at the default `web` stack configuration on Heroku, this variable should have the following configuration:
+
+```
+JAVA_OPTS=-Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8
+```
+
+So let's tweak our cxf-boot-simple [Dockerfile](cxf-spring-boot-starter-samples/cxf-boot-simple/Dockerfile):
+
+```
+# Fire up our Spring Boot app by default
+CMD [ "sh", "-c", "java -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8 -XX:+UseContainerSupport -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
+```
+
+Now we should have configured our Java app running inside Docker according to the standard `web` Heroku stack (see https://devcenter.heroku.com/articles/java-memory-issues#heroku-memory-limits).
+
 # Contribution
 
 If you want to know more or even contribute to this Spring Boot Starter, maybe you need some information like:
