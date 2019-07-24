@@ -447,22 +447,50 @@ To prevent a Memory quota exceeded error:
 2019-07-24T02:58:55.217642+00:00 heroku[web.1]: Process exited with status 137
 ```
 
-we should configure our JVM running inside the Docker container to not base it's memory allocation on the OS reports, since we do run inside a container now!
+we should configure our JVM running inside the Docker container to not base it's memory allocation on the OS reports, since we do run inside a container now! See https://devcenter.heroku.com/articles/java-memory-issues#configuring-java-to-run-in-a-container
 
-See
+But as https://aboullaite.me/docker-java-10/ points out, the Java 9 configuration with `-XX:+UseContainerSupport` is now defaulting to true. 
 
-https://github.com/heroku/heroku-buildpack-gradle/issues/41
-
-https://devcenter.heroku.com/articles/java-memory-issues#configuring-java-to-run-in-a-container
-
-From Java 9 on, we can do this by tweaking our `java -jar` command:
+If we would run on Java 9 on, we would have to tweak our `java -jar` command:
 
 ```
 # Fire up our Spring Boot app by default
 CMD [ "sh", "-c", "java $JAVA_OPTS -XX:+UseContainerSupport -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
 ``` 
+
+As I like explicitely setting things we rely on, let's also leave this option set for JDK 10+.
+
+
+But hey, we switched our Heroku environment from web! The web stack type automatically detects Java apps - and provides the correct Xms `JAVA_OPTS` configuration - see https://devcenter.heroku.com/articles/java-memory-issues#heroku-memory-limits:
+
+> The default support for most JVM-based languages sets -Xss512k and sets Xmx dynamically based on dyno type. These defaults enable most applications to avoid R14 errors.
+
+But as we are using Heroku stack type `container` now, these options might not be provided anymore?!
+
+Let's double check the configuration of our Heroku container dyno! Execute `heroku run printenv` to see all environment variables inside:
+
+```
+$ heroku run printenv
+Running printenv on ⬢ cxf-boot-simple... up, run.7988 (Free)
+JAVA_URL_VERSION=11.0.4_11
+HEROKU_EXEC_URL=https://exec-manager.heroku.com/a3ea58e6-d7b3-4fa8-8148-5567be41e46f
+PORT=13303
+JAVA_BASE_URL=https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-11.0.4%2B11/OpenJDK11U-jdk_
+HOME=/
+PS1=\[\033[01;34m\]\w\[\033[00m\] \[\033[01;32m\]$ \[\033[00m\]
+JAVA_VERSION=11.0.4
+TERM=xterm-256color
+COLUMNS=160
+PATH=/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+JAVA_OPTS=
+LANG=C.UTF-8
+JAVA_HOME=/usr/local/openjdk-11
+PWD=/
+LINES=32
+DYNO=run.7988
 ```
 
+And THERE WE ARE: `JAVA_OPTS` is empty! 
 
 # Contribution
 
