@@ -431,6 +431,39 @@ Now we need to set the Heroku stack to `container` (we should do that maybe bett
 heroku stack:set container
 ```
 
+The next push should start our sample app inside a Docker container running on Heroku :)
+
+
+##### Error R14 (Memory quota exceeded)
+
+To prevent a Memory quota exceeded error:
+
+```
+2019-07-24T02:58:48.253177+00:00 heroku[web.1]: Process running mem=836M(163.4%)
+2019-07-24T02:58:48.253243+00:00 heroku[web.1]: Error R14 (Memory quota exceeded)
+2019-07-24T02:58:55.236933+00:00 heroku[web.1]: State changed from starting to crashed
+2019-07-24T02:58:55.111947+00:00 heroku[web.1]: Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 60 seconds of launch
+2019-07-24T02:58:55.111947+00:00 heroku[web.1]: Stopping process with SIGKILL
+2019-07-24T02:58:55.217642+00:00 heroku[web.1]: Process exited with status 137
+```
+
+we should configure our JVM running inside the Docker container to not base it's memory allocation on the OS reports, since we do run inside a container now!
+
+See
+
+https://github.com/heroku/heroku-buildpack-gradle/issues/41
+
+https://devcenter.heroku.com/articles/java-memory-issues#configuring-java-to-run-in-a-container
+
+From Java 9 on, we can do this by tweaking our `java -jar` command:
+
+```
+# Fire up our Spring Boot app by default
+CMD [ "sh", "-c", "java $JAVA_OPTS -XX:+UseContainerSupport -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
+``` 
+```
+
+
 # Contribution
 
 If you want to know more or even contribute to this Spring Boot Starter, maybe you need some information like:
