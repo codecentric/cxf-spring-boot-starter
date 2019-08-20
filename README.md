@@ -73,7 +73,7 @@ The following documentation tries to get you started fast. There are also sample
 
 * place your .wsdl-File (and all the imported XSDs) into a folder somewhere under __src/main/resources__ (see [cxf-spring-boot-starter-maven-plugin] for details)
 * run __mvn generate-sources__ to generate all necessary Java-Classes from your WSDL/XSD 
-* Implement the [javax.jws.WebService](http://docs.oracle.com/javaee/7/api/javax/jws/WebService.html) annotated Interface (your generated __Service Endpoint Interface (SEI)__ ) - it is the starting point for your development and is needed to autoconfigure your Endpoints. See the [WeatherServiceEndpoint](https://github.com/codecentric/spring-samples/blob/master/cxf-boot-simple/src/main/java/de/codecentric/soap/endpoint/WeatherServiceEndpoint.java) class inside the [cxf-boot-simple] project. 
+* Implement the [javax.jws.WebService](http://docs.oracle.com/javaee/7/api/javax/jws/WebService.html) annotated Interface (your generated __Service Endpoint Interface (SEI)__ ) - it is the starting point for your development and is needed to autoconfigure your Endpoints. See the [WeatherServiceEndpoint](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/cxf-spring-boot-starter-samples/cxf-boot-simple/src/main/java/de/codecentric/soap/endpoint/WeatherServiceEndpoint.java) class inside the [cxf-boot-simple] project. 
 * That´s it
 
 
