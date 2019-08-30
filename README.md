@@ -3,10 +3,10 @@ Enterprise & production ready SOAP webservices powered by Spring Boot & Apache C
 [![Build Status](https://travis-ci.org/codecentric/cxf-spring-boot-starter.svg?branch=master)](https://travis-ci.org/codecentric/cxf-spring-boot-starter)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![versionspringboot](https://img.shields.io/badge/springboot-2.1.6_RELEASE-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
+[![versionspringboot](https://img.shields.io/badge/springboot-2.1.7_RELEASE-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
 [![versionjava](https://img.shields.io/badge/jdk-8,_9,_11-brightgreen.svg?logo=java)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
-[![versionapachecxf](https://img.shields.io/badge/apache.cxf-3.3.2-brightgreen.svg?logo=apache)](http://cxf.apache.org/)
-[![versionspringcloudsleuth](https://img.shields.io/badge/spring.cloud.sleuth-2.1.1_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
+[![versionapachecxf](https://img.shields.io/badge/apache.cxf-3.3.3-brightgreen.svg?logo=apache)](http://cxf.apache.org/)
+[![versionspringcloudsleuth](https://img.shields.io/badge/spring.cloud.sleuth-2.1.2_RELEASE-brightgreen.svg)](https://spring.io/projects/spring-cloud-sleuth)
 [![versionlogstashlogbackencoder](https://img.shields.io/badge/logstash.logback.encoder-6.1-brightgreen.svg?logo=logstash)](https://github.com/logstash/logstash-logback-encoder)
 [![Deployed on Heroku](https://img.shields.io/badge/heroku-deployed-blueviolet.svg?logo=heroku&)](https://cxf-boot-simple.herokuapp.com/my-foo-api)
 
@@ -46,7 +46,7 @@ The following documentation tries to get you started fast. There are also sample
 	<dependency>
 	    <groupId>de.codecentric</groupId>
 	    <artifactId>cxf-spring-boot-starter</artifactId>
-	    <version>2.1.6.RELEASE</version>
+	    <version>2.1.7.RELEASE</version>
 	</dependency>
 </dependencies>
 ```
