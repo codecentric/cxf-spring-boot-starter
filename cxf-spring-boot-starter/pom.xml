@@ -23,6 +23,8 @@
 		<spring.boot.version>2.1.6.RELEASE</spring.boot.version>
 		<cxf-spring-boot-starter-maven-plugin.version>2.1.7.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
 		<cxf.version>3.3.2</cxf.version>
+		<jakarta.activation.version>1.2.1</jakarta.activation.version>
+
 		<fluent-hc.version>4.5.9</fluent-hc.version>
 		<camunda.version>7.11.0</camunda.version>
 		<logstash-logback-encoder.version>6.1</logstash-logback-encoder.version>
@@ -71,6 +73,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
+
 		<!-- Apache CXF -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -82,6 +85,13 @@
 			<artifactId>cxf-rt-transports-http</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
+		<!-- Apache CXF from Java 11 on - see https://stackoverflow.com/questions/55476331/tomcat8-5-and-openjdk11-noclassdeffounderror-could-not-initialize-class-org-apa -->
+		<dependency>
+			<groupId>com.sun.activation</groupId>
+			<artifactId>jakarta.activation</artifactId>
+			<version>${jakarta.activation.version}</version>
+		</dependency>
+
 		<!-- camunda DMN Engine -->
 		<dependency>
 			<groupId>org.camunda.bpm.dmn</groupId>

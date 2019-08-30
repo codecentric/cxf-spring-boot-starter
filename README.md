@@ -77,7 +77,6 @@ The following documentation tries to get you started fast. There are also sample
 * That´s it
 
 
-
 # Additional Configuration Options
 
 ### Customize URL, where your SOAP services are published
@@ -169,6 +168,61 @@ Many SOAP based standards demand a custom SOAP-Fault, that should be delivered i
 * Override Method createCustomFaultDetail(String originalFaultMessage, FaultType faultContent) and return the JAX-B generated Object, that represents your WebService´ Fault-Details (be really careful to take the right one!!, often the term 'Exception' is used twice... - e.g. with the [BiPro]-Services)
 * Configure your Implementation as @Bean - only then, XML Schema Validation will be activated
 
+
+
+### Apache CXF & JAX-WS with JDK11+ together with the JavaEE/JakartaEE chaos
+
+Since JDK8 isn't the way to go anymore, the underlying cxf-spring-boot-starter-maven-plugin had to be rebuild to support JDK11+ (but also 8, 9, 10, ...) - have a look at [JDK 11 support](https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin#jdk-11-support) in the docs there.
+
+Also the JavaEE libraries were mostly deprecated in the JDK - and also moved from Oracle to JakartaEE projects on GitHub/MavenCentral. This has also already been adressed in [Moved from "OLD" jaxb to "NEW" jaxb](https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin#moved-from-old-jaxb-to-new-jaxb).
+
+But there's a third point so far: Apache CXF isn't going to work fully without another dependency. I stumbled upon it, while completing the [cxf-boot-simple](https://github.com/codecentric/cxf-spring-boot-starter/blob/master/cxf-spring-boot-starter-samples/cxf-boot-simple-client) - a sample project, which should show the usage of this cxf-spring-boot-starter in client-only mode much much better than before (see [#8](https://github.com/codecentric/cxf-spring-boot-starter/issues/8)).
+
+The problem is, ApacheCXF uses classes from `com.sun.activation` package (see [new Jakarta sources on GitHub here](https://github.com/eclipse-ee4j/jaf) or on [Maven Central](https://mvnrepository.com/artifact/com.sun.activation/jakarta.activation)), which lead to errors when the dependecy isn't provided (see [stackoverflow](https://stackoverflow.com/questions/55476331/tomcat8-5-and-openjdk11-noclassdeffounderror-could-not-initialize-class-org-apa)):
+
+```
+Caused by: java.lang.NoClassDefFoundError: com/sun/activation/registries/LogSupport
+	at javax.activation.MailcapCommandMap.<init>(MailcapCommandMap.java:179) ~[javax.activation-api-1.2.0.jar:1.2.0]
+	at javax.activation.CommandMap.getDefaultCommandMap(CommandMap.java:85) ~[javax.activation-api-1.2.0.jar:1.2.0]
+	at org.apache.cxf.attachment.AttachmentUtil.<clinit>(AttachmentUtil.java:70) ~[cxf-core-3.3.2.jar:3.3.2]
+	at org.apache.cxf.interceptor.AttachmentOutInterceptor.handleMessage(AttachmentOutInterceptor.java:53) ~[cxf-core-3.3.2.jar:3.3.2]
+	at org.apache.cxf.phase.PhaseInterceptorChain.doIntercept(PhaseInterceptorChain.java:308) ~[cxf-core-3.3.2.jar:3.3.2]
+	at org.apache.cxf.endpoint.ClientImpl.doInvoke(ClientImpl.java:531) ~[cxf-core-3.3.2.jar:3.3.2]
+	at org.apache.cxf.endpoint.ClientImpl.invoke(ClientImpl.java:440) ~[cxf-core-3.3.2.jar:3.3.2]
+	at org.apache.cxf.endpoint.ClientImpl.invoke(ClientImpl.java:355) ~[cxf-core-3.3.2.jar:3.3.2]
+	at org.apache.cxf.endpoint.ClientImpl.invoke(ClientImpl.java:313) ~[cxf-core-3.3.2.jar:3.3.2]
+	at org.apache.cxf.frontend.ClientProxy.invokeSync(ClientProxy.java:96) ~[cxf-rt-frontend-simple-3.3.2.jar:3.3.2]
+	at org.apache.cxf.jaxws.JaxWsClientProxy.invoke(JaxWsClientProxy.java:140) ~[cxf-rt-frontend-jaxws-3.3.2.jar:3.3.2]
+	at com.sun.proxy.$Proxy155.getCityForecastByZIP(Unknown Source) ~[na:na]
+	at de.codecentric.soap.endpoint.WeatherServiceSoapClient.getCityForecastByZIP(WeatherServiceSoapClient.java:36) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190) ~[spring-web-5.1.8.RELEASE.jar:5.1.8.RELEASE]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138) ~[spring-web-5.1.8.RELEASE.jar:5.1.8.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:104) ~[spring-webmvc-5.1.8.RELEASE.jar:5.1.8.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:892) ~[spring-webmvc-5.1.8.RELEASE.jar:5.1.8.RELEASE]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797) ~[spring-webmvc-5.1.8.RELEASE.jar:5.1.8.RELEASE]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.1.8.RELEASE.jar:5.1.8.RELEASE]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1039) ~[spring-webmvc-5.1.8.RELEASE.jar:5.1.8.RELEASE]
+	... 58 common frames omitted
+Caused by: java.lang.ClassNotFoundException: com.sun.activation.registries.LogSupport
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583) ~[na:na]
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521) ~[na:na]
+	... 82 common frames omitted
+```
+
+As we provide the correct dependency with this starter here, you don't need to bother about that:
+
+```
+    <dependency>
+        <groupId>com.sun.activation</groupId>
+        <artifactId>jakarta.activation</artifactId>
+        <version>${jakarta.activation.version}</version>
+    </dependency>
+```
 
 ### Testing SOAP web services
 
