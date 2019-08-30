@@ -12,14 +12,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@PropertySource("classpath:dev-test.properties")
-public class CxfBootSimpleTestConfiguration {
+@PropertySource("classpath:application.properties")
+public class CxfBootSimpleClientConfiguration {
 
-    @Value("${webservice.client.port}")
-    private String clientPort;
-    
-    @Value("${webservice.client.host}")
-    private String clientHost;
+    @Value("${webservice.client.url}")
+    private String clientUrl;
     
     // Mind the "static"
     @Bean
@@ -34,7 +31,7 @@ public class CxfBootSimpleTestConfiguration {
     public WeatherService weatherServiceClient() {
         JaxWsProxyFactoryBean jaxWsFactory = new JaxWsProxyFactoryBean();
         jaxWsFactory.setServiceClass(WeatherService.class);
-        jaxWsFactory.setAddress(buildUrl());
+        jaxWsFactory.setAddress(clientUrl);
         jaxWsFactory.getInInterceptors().add(logInInterceptorClientSoapMsgLogger());
         jaxWsFactory.getOutInterceptors().add(logOutInterceptorClientSoapMsgLogger());
         return (WeatherService) jaxWsFactory.create();
@@ -54,11 +51,6 @@ public class CxfBootSimpleTestConfiguration {
         logOutInterceptor.logSoapMessage(true);
         logOutInterceptor.setPrettyLogging(true);
         return logOutInterceptor;
-    }
-    
-    public String buildUrl() {
-        // return something like http://localhost:8084/soap-api/WeatherSoapService
-        return "http://" + clientHost + ":" + clientPort + "/my-foo-api";
     }
 
 }
