@@ -65,6 +65,13 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Skip sample project in Maven release https://stackoverflow.com/a/14297315/4964553 -->
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

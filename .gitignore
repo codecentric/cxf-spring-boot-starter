@@ -22,3 +22,6 @@ target
 
 # logback
 logback.out.xml
+
+# Maven
+*.versionsBackup
