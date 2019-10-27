@@ -25,7 +25,7 @@
 		<cxf.version>3.3.4</cxf.version>
 		<jakarta.activation.version>1.2.1</jakarta.activation.version>
 
-		<fluent-hc.version>4.5.9</fluent-hc.version>
+		<fluent-hc.version>4.5.10</fluent-hc.version>
 		<camunda.version>7.11.0</camunda.version>
 		<logstash-logback-encoder.version>6.2</logstash-logback-encoder.version>
 		<commons-io.version>2.6</commons-io.version>
