@@ -21,7 +21,7 @@
 		<spring.boot.version>2.2.4.RELEASE</spring.boot.version>
 		<cxf-spring-boot-starter-maven-plugin.version>2.1.7.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
 		<cxf.version>3.3.5</cxf.version>
-		<jakarta.activation.version>1.2.1</jakarta.activation.version>
+		<jakarta.activation.version>1.2.2</jakarta.activation.version>
 
 		<fluent-hc.version>4.5.11</fluent-hc.version>
 		<camunda.version>7.12.0</camunda.version>
