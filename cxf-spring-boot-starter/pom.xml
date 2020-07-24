@@ -18,7 +18,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Project dependencies -->
-		<spring.boot.version>2.3.1.RELEASE</spring.boot.version>
+		<spring.boot.version>2.3.2.RELEASE</spring.boot.version>
 		<cxf-spring-boot-starter-maven-plugin.version>2.1.7.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
 		<cxf.version>3.3.7</cxf.version>
 		<jakarta.activation.version>1.2.2</jakarta.activation.version>
