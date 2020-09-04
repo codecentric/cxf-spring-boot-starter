@@ -1,6 +1,6 @@
 Enterprise & production ready SOAP webservices powered by Spring Boot & Apache CXF
 ======================================================================================
-[![Build Status](https://travis-ci.org/codecentric/cxf-spring-boot-starter.svg?branch=master)](https://travis-ci.org/codecentric/cxf-spring-boot-starter)
+[![Build Status](https://travis-ci.com/codecentric/cxf-spring-boot-starter.svg?branch=master)](https://travis-ci.com/codecentric/cxf-spring-boot-starter)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.codecentric/cxf-spring-boot-starter/)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![renovateenabled](https://img.shields.io/badge/renovate-enabled-yellow)](https://renovatebot.com)
