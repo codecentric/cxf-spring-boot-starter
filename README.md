@@ -47,7 +47,7 @@ The following documentation tries to get you started fast. There are also sample
 	<dependency>
 	    <groupId>de.codecentric</groupId>
 	    <artifactId>cxf-spring-boot-starter</artifactId>
-	    <version>2.2.1.RELEASE</version>
+	    <version>2.3.0.RELEASE</version>
 	</dependency>
 </dependencies>
 ```
@@ -59,7 +59,7 @@ The following documentation tries to get you started fast. There are also sample
         <plugin>
             <groupId>de.codecentric</groupId>
             <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
-            <version>2.1.7.RELEASE</version>
+            <version>2.3.0.RELEASE</version>
             <executions>
                 <execution>
                     <goals>

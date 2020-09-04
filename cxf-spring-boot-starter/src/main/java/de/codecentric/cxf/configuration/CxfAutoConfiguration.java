@@ -73,13 +73,13 @@ public class CxfAutoConfiguration {
      * But when in client mode, this isn´t always wanted (e.g. when you are in Client
      * only mode and just want to test or call some SOAP services, but not provide
      * services on your own.
-     * <p></p>
-     * Because there is (& sadly will be) no @ConditionalOnMissingProperty in Spring Boot
+     * <br><br>
+     * Because there is (&amp; sadly will be) no @ConditionalOnMissingProperty in Spring Boot
      * (https://github.com/spring-projects/spring-boot/issues/4938), we need to use a workaround:
-     * <p></p>
+     * <br><br>
      * If endpoint.autoinit is NOT set, Endpoint autoinitialization will run.
      * If endpoint.autoinit is set to some other value than false, autoinitialization will also run.
-     * <p></p>
+     * <br><br>
      * Only if endpoint.autoinit = false, the autoinitialization isn´t running.
      */
     @Bean
