@@ -49,7 +49,7 @@ public class SleuthLogMessagesTest {
     }
 
     private boolean isSleuthLogLineSomewhereIn(String log) {
-        Pattern sleuth_log_line_pattern = Pattern.compile("(INFO \\[,\\w+,\\w+,true].*: Returning a forecast.)");
+        Pattern sleuth_log_line_pattern = Pattern.compile("(INFO \\[,\\w+,\\w+,.*: Returning a forecast.)");
         Matcher loglineMatcher = sleuth_log_line_pattern.matcher(log);
         return loglineMatcher.find();
     }
