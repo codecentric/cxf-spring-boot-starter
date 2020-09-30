@@ -2,6 +2,7 @@ package de.codecentric.cxf.endpoint;
 
 
 import de.codecentric.cxf.TestApplication;
+import de.codecentric.cxf.TestServiceEndpoint;
 import de.codecentric.cxf.common.BootStarterCxfException;
 import de.codecentric.cxf.common.XmlUtils;
 import de.codecentric.namespace.weatherservice.WeatherException;
@@ -33,6 +34,9 @@ public class WeatherServiceEndpointSystemTest {
 	@Autowired
 	private WeatherService weatherServiceClient;
 
+	@Autowired
+	private TestServiceEndpoint testServiceEndpoint;
+
 	@Value(value="classpath:requests/GetCityForecastByZIPTest.xml")
 	private Resource GetCityForecastByZIPTestXml;
 	
@@ -49,5 +53,10 @@ public class WeatherServiceEndpointSystemTest {
 		assertNotNull(forecastReturn);
 		assertEquals("Weimar", forecastReturn.getCity());
 		assertEquals("22%", forecastReturn.getForecastResult().getForecast().get(0).getProbabilityOfPrecipiation().getDaytime());
+	}
+
+	@Test
+	public void isEndpointCorrectlyAutowired() {
+		assertNotNull(testServiceEndpoint.getInjectedBean());
 	}
 }

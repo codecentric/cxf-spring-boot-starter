@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -51,7 +53,8 @@ public class WebServiceAutoDetectorTest {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
         when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, seiAndWebServiceClientPackageName)).thenReturn(WEATHER_SERVICE_ENDPOINT_INTERFACE);
-        WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector(scannerMock);
+        ApplicationContext applicationContext = mock(ApplicationContext.class);
+        WebServiceAutoDetector webServiceAutoDetector = new WebServiceAutoDetector(scannerMock, applicationContext);
 
         Class serviceEndpointInterface = webServiceAutoDetector.searchServiceEndpointInterface();
 
@@ -64,7 +67,11 @@ public class WebServiceAutoDetectorTest {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
         when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, seiImplementationPackageName)).thenReturn(WEATHER_SEI_IMPLEMENTING_CLASS);
-        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
+        ApplicationContext applicationContext = mock(ApplicationContext.class);
+        AutowireCapableBeanFactory beanFactory = mock(AutowireCapableBeanFactory.class);
+        when(applicationContext.getAutowireCapableBeanFactory()).thenReturn(beanFactory);
+        when(beanFactory.createBean(TestServiceEndpoint.class)).thenReturn(new TestServiceEndpoint(null));
+        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock, applicationContext);
 
         WeatherService weatherServiceEndpointImpl = autoDetector.searchAndInstantiateSeiImplementation(WEATHER_SERVICE_ENDPOINT_INTERFACE);
 
@@ -77,7 +84,11 @@ public class WebServiceAutoDetectorTest {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
         when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, seiAndWebServiceClientPackageName)).thenReturn(WEATHER_WEBSERVICE_CLIENT);
-        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
+        ApplicationContext applicationContext = mock(ApplicationContext.class);
+        AutowireCapableBeanFactory beanFactory = mock(AutowireCapableBeanFactory.class);
+        when(applicationContext.getAutowireCapableBeanFactory()).thenReturn(beanFactory);
+        when(beanFactory.createBean(Weather.class)).thenReturn(new Weather());
+        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock, applicationContext);
 
         Service webServiceClient = autoDetector.searchAndInstantiateWebServiceClient();
 
@@ -92,7 +103,8 @@ public class WebServiceAutoDetectorTest {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
         when(scannerMock.scanForClassWhichImplementsAndPickFirst(WEATHER_SERVICE_ENDPOINT_INTERFACE, seiImplementationPackageName)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
-        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
+        ApplicationContext applicationContext = mock(ApplicationContext.class);
+        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock, applicationContext);
 
         autoDetector.searchAndInstantiateSeiImplementation(WEATHER_SERVICE_ENDPOINT_INTERFACE);
     }
@@ -102,7 +114,8 @@ public class WebServiceAutoDetectorTest {
 
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
         when(scannerMock.scanForClassWithAnnotationAndPickTheFirstOneFound(WEB_SERVICE_CLIENT_ANNOTATION, seiAndWebServiceClientPackageName)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
-        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
+        ApplicationContext applicationContext = mock(ApplicationContext.class);
+        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock, applicationContext);
 
         autoDetector.searchAndInstantiateWebServiceClient();
     }
@@ -113,7 +126,8 @@ public class WebServiceAutoDetectorTest {
         WebServiceScanner scannerMock = mock(WebServiceScanner.class);
         when(scannerMock.scanForClassNamesWithAnnotation(SEI_ANNOTATION, seiAndWebServiceClientPackageName)).thenThrow(STARTER_EXCEPTION_NO_CLASS_FOUND);
         when(scannerMock.scanForClassWithAnnotationAndIsAnInterface(SEI_ANNOTATION, seiAndWebServiceClientPackageName)).thenCallRealMethod();
-        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock);
+        ApplicationContext applicationContext = mock(ApplicationContext.class);
+        WebServiceAutoDetector autoDetector = new WebServiceAutoDetector(scannerMock, applicationContext);
 
         autoDetector.searchServiceEndpointInterface();
     }

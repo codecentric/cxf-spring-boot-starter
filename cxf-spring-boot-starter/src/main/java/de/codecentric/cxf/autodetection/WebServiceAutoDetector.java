@@ -1,18 +1,18 @@
 package de.codecentric.cxf.autodetection;
 
-import de.codecentric.cxf.common.BootStarterCxfException;
 import de.codecentric.cxf.autodetection.diagnostics.SeiImplClassNotFoundException;
 import de.codecentric.cxf.autodetection.diagnostics.SeiNotFoundException;
 import de.codecentric.cxf.autodetection.diagnostics.WebServiceClientNotFoundException;
+import de.codecentric.cxf.common.BootStarterCxfException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.jws.WebService;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebServiceClient;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 
 @Component
@@ -21,6 +21,7 @@ public class WebServiceAutoDetector {
     private static final Logger LOG = LoggerFactory.getLogger(WebServiceAutoDetector.class);
     protected static final String NO_CLASS_FOUND = "No class found";
     private final WebServiceScanner webServiceScanner;
+    private final ApplicationContext applicationContext;
 
     public static final Class<WebService> SEI_ANNOTATION = WebService.class;
     public static final Class<WebServiceClient> WEB_SERVICE_CLIENT_ANNOTATION = WebServiceClient.class;
@@ -28,8 +29,9 @@ public class WebServiceAutoDetector {
     private final String seiAndWebServiceClientPackageName;
     private final String seiImplementationPackageName;
 
-    public WebServiceAutoDetector(WebServiceScanner webServiceScanner) throws BootStarterCxfException {
+    public WebServiceAutoDetector(WebServiceScanner webServiceScanner, ApplicationContext applicationContext) throws BootStarterCxfException {
         this.webServiceScanner = webServiceScanner;
+        this.applicationContext = applicationContext;
         seiAndWebServiceClientPackageName = PackageNameReader.build().readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties();
         seiImplementationPackageName = PackageNameReader.build().readSeiImplementationPackageNameFromCxfSpringBootMavenProperties();
     }
@@ -80,13 +82,8 @@ public class WebServiceAutoDetector {
 
     private <T> T instantiateFromClass(Class<T> clazz) throws BootStarterCxfException {
         try {
-            Constructor<T> constructor = clazz.getConstructor();
-            return constructor.newInstance();
-
-        } catch (NoSuchMethodException |
-                IllegalAccessException |
-                InstantiationException |
-                InvocationTargetException exception) {
+            return applicationContext.getAutowireCapableBeanFactory().createBean(clazz);
+        } catch (BeansException exception) {
             throw new BootStarterCxfException("Class couldn´t be instantiated", exception);
         }
     }

@@ -12,6 +12,8 @@ import de.codecentric.namespace.weatherservice.general.WeatherInformationReturn;
 import de.codecentric.namespace.weatherservice.general.WeatherReturn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -24,8 +26,17 @@ public class TestServiceEndpoint implements WeatherService {
     private static final Logger LOG = LoggerFactory.getLogger(TestServiceEndpoint.class);
     private static de.codecentric.namespace.weatherservice.general.ObjectFactory objectFactoryGeneral = new de.codecentric.namespace.weatherservice.general.ObjectFactory();
     private static de.codecentric.namespace.weatherservice.datatypes.ObjectFactory objectFactoryDatatypes = new de.codecentric.namespace.weatherservice.datatypes.ObjectFactory();
+    private final Object injectedBean;
 
-    
+    @Autowired
+    public TestServiceEndpoint(ApplicationContext context) {
+        this.injectedBean = context;
+    }
+
+    public Object getInjectedBean() {
+        return injectedBean;
+    }
+
     @Override
     public WeatherInformationReturn getWeatherInformation(String zip)
             throws WeatherException {
