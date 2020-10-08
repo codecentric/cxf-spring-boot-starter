@@ -24,7 +24,7 @@
 		<jakarta.activation.version>1.2.2</jakarta.activation.version>
 
 		<fluent-hc.version>4.5.13</fluent-hc.version>
-		<camunda.version>7.13.0</camunda.version>
+		<camunda.version>7.14.0</camunda.version>
 		<logstash-logback-encoder.version>6.4</logstash-logback-encoder.version>
 		<commons-io.version>2.8.0</commons-io.version>
 		<spring.cloud.sleuth.version>2.2.5.RELEASE</spring.cloud.sleuth.version>
