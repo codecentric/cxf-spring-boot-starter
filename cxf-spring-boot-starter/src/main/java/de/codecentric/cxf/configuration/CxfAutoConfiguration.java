@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -58,13 +59,13 @@ public class CxfAutoConfiguration {
 
 
     @Bean
-    public WebServiceAutoDetector webServiceAutoDetector() throws BootStarterCxfException {
-        return new WebServiceAutoDetector(new WebServiceScanner());
+    public WebServiceAutoDetector webServiceAutoDetector(ApplicationContext applicationContext) throws BootStarterCxfException {
+        return new WebServiceAutoDetector(new WebServiceScanner(), applicationContext);
     }
 
     @PostConstruct
     public void setUp() throws BootStarterCxfException {
-        webServiceClient = webServiceAutoDetector().searchAndInstantiateWebServiceClient();
+        webServiceClient = webServiceAutoDetector(null).searchAndInstantiateWebServiceClient();
         serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
     }
 
@@ -106,7 +107,7 @@ public class CxfAutoConfiguration {
     @ConditionalOnProperty(name = "endpoint.autoinit", matchIfMissing = true)
     public Object seiImplementation() throws BootStarterCxfException {
         if(seiImplementation == null) {
-            seiImplementation = webServiceAutoDetector().searchAndInstantiateSeiImplementation();
+            seiImplementation = webServiceAutoDetector(null).searchAndInstantiateSeiImplementation();
         }
         return seiImplementation;
     }
