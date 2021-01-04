@@ -4,13 +4,11 @@ import de.codecentric.cxf.TestApplication;
 import de.codecentric.cxf.common.BootStarterCxfException;
 import de.codecentric.cxf.configuration.CxfAutoConfiguration;
 import de.codecentric.namespace.weatherservice.WeatherService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 
@@ -18,9 +16,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.typeCompatibleWith;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes=TestApplication.class)
 public class SoapRawClientTest {
 
