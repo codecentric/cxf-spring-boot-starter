@@ -2,27 +2,25 @@ package de.codecentric.cxf.autodetection;
 
 
 import de.codecentric.cxf.autodetection.diagnostics.CxfSpringBootMavenPropertiesNotFoundException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class PackageNameReaderTest {
 
-    @Test public void
-    read_Sei_Implementation_Package_From_cxfSpringBootMavenProperties_file() throws CxfSpringBootMavenPropertiesNotFoundException {
+    @Test
+    public void read_Sei_Implementation_Package_From_cxfSpringBootMavenProperties_file() throws CxfSpringBootMavenPropertiesNotFoundException {
 
         String packageName = PackageNameReader.build().readSeiImplementationPackageNameFromCxfSpringBootMavenProperties();
 
-        assertThat(packageName, is(equalTo("de.codecentric")));
+        assertEquals(packageName, "de.codecentric");
     }
 
-    @Test public void
-    read_Sei_And_WebServiceClient_Package_From_cxfSpringBootMavenProperties_file() throws CxfSpringBootMavenPropertiesNotFoundException {
+    @Test public void read_Sei_And_WebServiceClient_Package_From_cxfSpringBootMavenProperties_file() throws CxfSpringBootMavenPropertiesNotFoundException {
 
         String packageName = PackageNameReader.build().readSeiAndWebServiceClientPackageNameFromCxfSpringBootMavenProperties();
 
-        assertThat(packageName, is(equalTo("de.codecentric.namespace.weatherservice")));
+        assertEquals(packageName, "de.codecentric.namespace.weatherservice");
     }
 }
