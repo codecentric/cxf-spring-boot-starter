@@ -3,6 +3,8 @@ package de.codecentric.cxf.configuration;
 import de.codecentric.cxf.autodetection.WebServiceAutoDetector;
 import de.codecentric.cxf.autodetection.WebServiceScanner;
 import de.codecentric.cxf.common.BootStarterCxfException;
+import jakarta.xml.ws.Endpoint;
+import jakarta.xml.ws.Service;
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.jaxws.EndpointImpl;
@@ -20,8 +22,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 import javax.annotation.PostConstruct;
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.Service;
 import java.util.Map;
 
 /**

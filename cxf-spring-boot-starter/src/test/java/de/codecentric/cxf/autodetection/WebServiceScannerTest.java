@@ -3,9 +3,10 @@ package de.codecentric.cxf.autodetection;
 
 import de.codecentric.cxf.common.BootStarterCxfException;
 import de.codecentric.namespace.weatherservice.WeatherService;
+import jakarta.jws.WebService;
 import org.junit.jupiter.api.Test;
 
-import javax.jws.WebService;
+
 import java.util.List;
 
 import static de.codecentric.cxf.autodetection.WebServiceAutoDetector.SEI_ANNOTATION;

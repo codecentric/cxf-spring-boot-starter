@@ -22,6 +22,9 @@
 		<cxf-spring-boot-starter-maven-plugin.version>2.3.0.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
 		<cxf.version>3.4.2</cxf.version>
 		<jakarta.activation.version>2.0.0</jakarta.activation.version>
+		<jakarta.xml.version>3.0.0</jakarta.xml.version>
+		<jakarta.jws.version>2.1.0</jakarta.jws.version>
+		<jakarta.jws-api.version>3.0.0</jakarta.jws-api.version>
 
 		<fluent-hc.version>4.5.13</fluent-hc.version>
 		<camunda.version>7.14.0</camunda.version>
@@ -37,6 +40,7 @@
 		<!-- Exclude generated JAXB-Java-Classes from Sonar-Analysis -->
 		<sonar.exclusions>**/target/generated-sources/wsdlimport/**</sonar.exclusions>
 	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -57,6 +61,7 @@
 
         </dependencies>
 	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -66,6 +71,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+
 		<!-- Distributed tracing - http://cloud.spring.io/spring-cloud-sleuth/ -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -83,12 +89,32 @@
 			<artifactId>cxf-rt-transports-http</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
+
 		<!-- Apache CXF from Java 11 on - see https://stackoverflow.com/questions/55476331/tomcat8-5-and-openjdk11-noclassdeffounderror-could-not-initialize-class-org-apa -->
 		<dependency>
 			<groupId>com.sun.activation</groupId>
 			<artifactId>jakarta.activation</artifactId>
 			<version>${jakarta.activation.version}</version>
 		</dependency>
+
+		<!-- Needed from JAXB 3.0.0 on, otherwise the generated classes can't find their basic types
+			like e.g. jakarta.xml.bind.annotation.XmlType -->
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>${jakarta.xml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.ws</groupId>
+			<artifactId>jakarta.xml.ws-api</artifactId>
+			<version>${jakarta.xml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.jws</groupId>
+			<artifactId>jakarta.jws-api</artifactId>
+			<version>${jakarta.jws-api.version}</version>
+		</dependency>
+
 
 		<!-- camunda DMN Engine -->
 		<dependency>
@@ -103,18 +129,21 @@
 			<artifactId>camunda-engine-dmn</artifactId>
 			<version>${camunda.version}</version>
 		</dependency>
+
 		<!-- Logging with ELK -->
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
 			<version>${logstash-logback-encoder.version}</version>
 		</dependency>
+
 		<!-- Fileconverting for PDF-reading -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io.version}</version>
 		</dependency>
+
 		<!-- SoapRawClient -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>

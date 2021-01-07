@@ -1,8 +1,8 @@
 package de.codecentric.cxf.xmlvalidation;
 
 
-import javax.xml.bind.UnmarshalException;
 
+import jakarta.xml.bind.UnmarshalException;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.binding.soap.interceptor.AbstractSoapInterceptor;
 import org.apache.cxf.interceptor.Fault;

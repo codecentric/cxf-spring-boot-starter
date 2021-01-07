@@ -7,13 +7,14 @@ import de.codecentric.cxf.autodetection.diagnostics.WebServiceClientNotFoundExce
 import de.codecentric.cxf.common.BootStarterCxfException;
 import de.codecentric.namespace.weatherservice.Weather;
 import de.codecentric.namespace.weatherservice.WeatherService;
+import jakarta.xml.ws.Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
 import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
+
 import java.util.Arrays;
 import java.util.List;
 

@@ -1,8 +1,6 @@
 package de.codecentric.cxf.configuration;
 
 import de.codecentric.cxf.logging.TimeLoggingFilter;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

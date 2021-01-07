@@ -4,15 +4,16 @@ import de.codecentric.cxf.autodetection.diagnostics.SeiImplClassNotFoundExceptio
 import de.codecentric.cxf.autodetection.diagnostics.SeiNotFoundException;
 import de.codecentric.cxf.autodetection.diagnostics.WebServiceClientNotFoundException;
 import de.codecentric.cxf.common.BootStarterCxfException;
+import jakarta.jws.WebService;
+import jakarta.xml.ws.Service;
+import jakarta.xml.ws.WebServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import javax.jws.WebService;
-import javax.xml.ws.Service;
-import javax.xml.ws.WebServiceClient;
+
 
 
 @Component
