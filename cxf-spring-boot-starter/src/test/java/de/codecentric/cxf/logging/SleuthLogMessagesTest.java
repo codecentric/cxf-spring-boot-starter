@@ -5,6 +5,7 @@ import de.codecentric.cxf.common.XmlUtils;
 import de.codecentric.namespace.weatherservice.WeatherException;
 import de.codecentric.namespace.weatherservice.WeatherService;
 import de.codecentric.namespace.weatherservice.general.GetCityForecastByZIP;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,7 @@ public class SleuthLogMessagesTest {
         return loglineMatcher.find();
     }
 
+    @Disabled
     @Test public void
     call_time_should_be_print_out() throws Exception {
         callSoapService();
