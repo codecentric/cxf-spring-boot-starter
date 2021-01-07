@@ -19,7 +19,7 @@
 
 		<!-- Project dependencies -->
 		<spring.boot.version>2.4.1</spring.boot.version>
-		<cxf-spring-boot-starter-maven-plugin.version>2.3.0.RELEASE</cxf-spring-boot-starter-maven-plugin.version>
+		<cxf-spring-boot-starter-maven-plugin.version>2.4.0-SNAPSHOT</cxf-spring-boot-starter-maven-plugin.version>
 		<cxf.version>3.4.2</cxf.version>
 		<jakarta.activation.version>2.0.0</jakarta.activation.version>
 
@@ -151,6 +151,13 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring.boot.version}</version>
+			</plugin>
+			<!-- With JUnit 5 explicitely needed to let our tests run with Maven & as there seems to be a transitively
+			 added older surefire-plugin, that doesnt support JUnit 5 as described in https://stackoverflow.com/a/49019437/4964553 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
 			</plugin>
 			<!-- Used for testing purposes. -->
 			<plugin>
