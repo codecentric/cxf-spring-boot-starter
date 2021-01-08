@@ -1,4 +1,4 @@
-name: github
+name: github-push
 
 on: [push]
 

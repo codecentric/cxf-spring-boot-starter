@@ -1,0 +1,14 @@
+name: github-release
+on:
+  workflow_dispatch:
+    inputs:
+      releaseversion:
+        description: 'Release version'
+        required: true
+        default: '2.4.0'
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Release version ${{ github.event.inputs.releaseversion }}!"
