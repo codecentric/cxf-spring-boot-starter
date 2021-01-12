@@ -13,11 +13,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup Java for publishing to GitHub Packages
+
+    - name: Set up settings.xml for GitHub Packages
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Publish SNAPSHOT version to GitHub Packages
-      run: mvn -B --no-transfer-progress deploy --projects cxf-spring-boot-starter
+        server-id: github
+
+    - name: Publish SNAPSHOT version to GitHub Packages (we can skip tests, since we only deploy, if the build workflow succeeded)
+      run: mvn -B --no-transfer-progress deploy -DskipTests --projects cxf-spring-boot-starter
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,11 +1,12 @@
 name: github-release
-on:
-  workflow_dispatch:
-    inputs:
-      releaseversion:
-        description: 'Release version'
-        required: true
-        default: '2.4.0'
+#on:
+#  workflow_dispatch:
+#    inputs:
+#      releaseversion:
+#        description: 'Release version'
+#        required: true
+#        default: '2.4.0'
+on: [push]
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -14,7 +15,7 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Set up Maven Central Repository
+      - name: Set up settings.xml for Maven Central Repository
         uses: actions/setup-java@v1
         with:
           java-version: 11
