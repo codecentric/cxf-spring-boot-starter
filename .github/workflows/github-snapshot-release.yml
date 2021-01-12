@@ -13,11 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup Java for publishing to GitHub Packages (only with Java 8)
+    - name: Setup Java for publishing to GitHub Packages
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
     - name: Publish SNAPSHOT version to GitHub Packages
-      run: mvn -B --no-transfer-progress deploy
+      run: mvn -B --no-transfer-progress deploy --projects cxf-spring-boot-starter
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
