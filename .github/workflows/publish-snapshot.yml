@@ -3,7 +3,7 @@ name: publish-snapshot
 # Only trigger a SNAPSHOT release to GitHub Packages, when the build workflow succeeded
 on:
   workflow_run:
-    workflows: ["build-on-push"]
+    workflows: ["build"]
     types:
       - completed
 
