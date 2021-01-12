@@ -1,12 +1,12 @@
 name: github-snapshot-release
 
 # Only trigger a SNAPSHOT release to GitHub Packages, when the build workflow succeeded
-on:
-  workflow_run:
-    workflows: ["github-push"]
-    types:
-      - completed
-
+#on:
+#  workflow_run:
+#    workflows: ["github-push"]
+#    types:
+#      - completed
+on: [push]
 jobs:
   publish-snapshot:
     runs-on: ubuntu-latest
