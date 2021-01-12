@@ -62,6 +62,6 @@ jobs:
             ```
 
             ### Things that changed in this release
-            "${{ steps.changelog.outputs.changelog }}"
+            ${{ steps.changelog.outputs.changelog }}
           draft: false
           prerelease: false
