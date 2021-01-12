@@ -27,12 +27,12 @@ jobs:
       - name: Set projects Maven version to GitHub Action GUI set version
         run: mvn versions:set "-DnewVersion=${{ github.event.inputs.releaseversion }}" --no-transfer-progress
 
-#      - name: Publish package
-#        run: mvn --batch-mode clean deploy --no-transfer-progress -P central-deploy -DskipTests=true
-#        env:
-#          MAVEN_USERNAME: ${{ secrets.OSS_SONATYPE_USERNAME }}
-#          MAVEN_PASSWORD: ${{ secrets.OSS_SONATYPE_PASSWORD }}
-#          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      - name: Publish package
+        run: mvn --batch-mode clean deploy --no-transfer-progress -P central-deploy -DskipTests=true
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSS_SONATYPE_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSS_SONATYPE_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
       - name: Generate changelog
         id: changelog
