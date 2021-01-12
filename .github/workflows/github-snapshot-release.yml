@@ -18,9 +18,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-        server-id: github
-        server-username: jonashackt
-        server-password: GITHUB_TOKEN
 
     - name: Publish SNAPSHOT version to GitHub Packages (we can skip tests, since we only deploy, if the build workflow succeeded)
       run: mvn -B --no-transfer-progress deploy -DskipTests --projects cxf-spring-boot-starter

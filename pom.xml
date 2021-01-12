@@ -38,7 +38,7 @@
         <snapshotRepository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/jonashackt/cxf-spring-boot-starter</url>
+            <url>https://maven.pkg.github.com/codecentric/cxf-spring-boot-starter</url>
         </snapshotRepository>
     </distributionManagement>
 
