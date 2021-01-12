@@ -34,8 +34,11 @@ jobs:
 #          MAVEN_PASSWORD: ${{ secrets.OSS_SONATYPE_PASSWORD }}
 #          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
-      - name: Publish package
-        run: mvn --batch-mode clean package --no-transfer-progress -DskipTests=true
+      - name: Generate changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v0.4.4
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         id: create_release
@@ -56,23 +59,9 @@ jobs:
             	    <version>${{ github.event.inputs.releaseversion }}</version>
             	</dependency>
             </dependencies>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>de.codecentric</groupId>
-                        <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
-                        <version>2.3.0.RELEASE</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
             ```
+
+            ### Things that changed in this release
+            "${{ steps.changelog.outputs.changelog }}"
           draft: false
           prerelease: false
