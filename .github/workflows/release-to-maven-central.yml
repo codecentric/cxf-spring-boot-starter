@@ -45,16 +45,34 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.releaseversion }}
           release_name: ${{ github.event.inputs.releaseversion }}
+          body: |
+            Grab the new version from Maven central https://repo1.maven.org/maven2/de/codecentric/cxf-spring-boot-starter/${{ github.event.inputs.releaseversion }}/ by using it in your deps (also use the newest cxf-spring-boot-starter-maven-plugin https://github.com/codecentric/cxf-spring-boot-starter-maven-plugin):
+
+            ```
+            <dependencies>
+            	<dependency>
+            	    <groupId>de.codecentric</groupId>
+            	    <artifactId>cxf-spring-boot-starter</artifactId>
+            	    <version>${{ github.event.inputs.releaseversion }}</version>
+            	</dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>de.codecentric</groupId>
+                        <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
+                        <version>2.3.0.RELEASE</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            ```
           draft: false
           prerelease: false
-
-      - name: Upload jar to GitHub Release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
-          asset_path: "./cxf-spring-boot-starter/target/cxf-spring-boot-starter-${{ github.event.inputs.releaseversion }}.jar"
-          asset_name: "cxf-spring-boot-starter-${{ github.event.inputs.releaseversion }}.jar"
-          asset_content_type: application/java-archive
