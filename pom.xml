@@ -35,14 +35,10 @@
             <id>oss.sonatype.org</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
-        <repository>
+        <snapshotRepository>
             <id>github</id>
             <name>GitHub Packages</name>
             <url>https://maven.pkg.github.com/octocat/hello-world</url>
-        </repository>
-        <snapshotRepository>
-            <id>oss.sonatype.org</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 

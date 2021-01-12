@@ -1,0 +1,22 @@
+name: github-snapshot-release
+
+# Only trigger a SNAPSHOT release to GitHub Packages, when the build workflow succeeded
+on:
+  workflow_run:
+    workflows: ["github-push"]
+    types:
+      - completed
+
+jobs:
+  publish-snapshot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup Java for publishing to GitHub Packages (only with Java 8)
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Publish SNAPSHOT version to GitHub Packages
+      run: mvn -B --no-transfer-progress deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
