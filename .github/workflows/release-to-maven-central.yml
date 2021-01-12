@@ -1,4 +1,4 @@
-name: github-release
+name: release-to-maven-central
 on:
   workflow_dispatch:
     inputs:
