@@ -27,9 +27,34 @@ jobs:
       - name: Set projects Maven version to GitHub Action GUI set version
         run: mvn versions:set "-DnewVersion=${{ github.event.inputs.releaseversion }}" --no-transfer-progress
 
+#      - name: Publish package
+#        run: mvn --batch-mode clean deploy --no-transfer-progress -P central-deploy -DskipTests=true
+#        env:
+#          MAVEN_USERNAME: ${{ secrets.OSS_SONATYPE_USERNAME }}
+#          MAVEN_PASSWORD: ${{ secrets.OSS_SONATYPE_PASSWORD }}
+#          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
       - name: Publish package
-        run: mvn --batch-mode clean deploy --no-transfer-progress -P central-deploy -DskipTests=true
+        run: mvn --batch-mode clean package --no-transfer-progress -DskipTests=true
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          MAVEN_USERNAME: ${{ secrets.OSS_SONATYPE_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSS_SONATYPE_PASSWORD }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.releaseversion }}
+          release_name: ${{ github.event.inputs.releaseversion }}
+          draft: false
+          prerelease: true
+
+#      - name: Upload jar to GitHub Release
+#        id: upload-release-asset
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
+#          asset_path: ./cxf-spring-boot-starter/target/*.jar
+#          asset_name: my-artifact.zip
+#          asset_content_type: application/zip
