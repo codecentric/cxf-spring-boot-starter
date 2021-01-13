@@ -47,7 +47,7 @@ The following documentation tries to get you started fast. There are also sample
 	<dependency>
 	    <groupId>de.codecentric</groupId>
 	    <artifactId>cxf-spring-boot-starter</artifactId>
-	    <version>2.3.0.RELEASE</version>
+	    <version>2.4.1</version>
 	</dependency>
 </dependencies>
 ```
