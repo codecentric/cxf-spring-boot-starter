@@ -17,6 +17,10 @@ jobs:
         java-version: ${{ matrix.java-version }}
     - run: mvn -B install --no-transfer-progress --file pom.xml
 
+    - uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
   publish-snapshot:
     needs: build
     runs-on: ubuntu-latest
