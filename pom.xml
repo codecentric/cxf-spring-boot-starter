@@ -63,7 +63,6 @@
 
         <!-- Testcoverage analysis -->
         <build-plugin.jacoco.version>0.8.6</build-plugin.jacoco.version>
-        <build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
     </properties>
 
     <profiles>
@@ -184,11 +183,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.eluder.coveralls</groupId>
-                        <artifactId>coveralls-maven-plugin</artifactId>
-                        <version>${build-plugin.coveralls.version}</version>
                     </plugin>
                 </plugins>
             </build>
