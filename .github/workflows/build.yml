@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 15
-      - run: mvn -B test -P coverage --no-transfer-progress
+      - run: mvn -B verify -P coverage --no-transfer-progress
 
       - uses: codecov/codecov-action@v1
         with:
