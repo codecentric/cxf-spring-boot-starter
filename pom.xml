@@ -62,7 +62,7 @@
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 
         <!-- Testcoverage analysis -->
-        <build-plugin.jacoco.version>0.8.6</build-plugin.jacoco.version>
+        <build-plugin.jacoco.version>0.8.7</build-plugin.jacoco.version>
     </properties>
 
     <profiles>
