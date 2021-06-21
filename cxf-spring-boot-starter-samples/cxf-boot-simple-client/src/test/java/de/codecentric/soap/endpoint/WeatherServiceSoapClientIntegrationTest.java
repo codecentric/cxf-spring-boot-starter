@@ -6,6 +6,7 @@ import de.codecentric.soap.internalmodel.WeatherResponse;
 import io.restassured.RestAssured;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -28,6 +29,7 @@ public class WeatherServiceSoapClientIntegrationTest {
 		RestAssured.port = port;
 	}
 
+	@Disabled
 	@Test
 	public void callWeatherServiceSoapClient() {
 		WeatherResponse weatherResponse =
