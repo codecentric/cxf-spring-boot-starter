@@ -29,7 +29,6 @@ public class WeatherServiceSoapClientIntegrationTest {
 		RestAssured.port = port;
 	}
 
-	@Disabled
 	@Test
 	public void callWeatherServiceSoapClient() {
 		WeatherResponse weatherResponse =
