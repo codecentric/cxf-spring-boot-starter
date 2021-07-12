@@ -7,15 +7,18 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest(
         classes=TestApplication.class,
-        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
-        properties = { "server.port:8098"}
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
         )
 public class WeatherServiceRelativeUrlTest {
+
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private SoapRawClient soapRawClient;
@@ -23,7 +26,7 @@ public class WeatherServiceRelativeUrlTest {
     @Test
     public void should_return_a_relative_url() throws Exception {
         final String response = Request
-                .Get("http://localhost:8098/soap-api/Weather?wsdl")
+                .Get("http://localhost:" + port + "/soap-api/Weather?wsdl")
                 .execute()
                 .returnContent()
                 .asString();
