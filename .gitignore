@@ -12,6 +12,8 @@
 .studio
 target
 
+.gradle
+
 # Apple # 
 .DS_Store
 
