@@ -59,7 +59,7 @@
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.3.2</maven-javadoc-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.10</nexus-staging-maven-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.11</nexus-staging-maven-plugin.version>
 
         <!-- Testcoverage analysis -->
         <build-plugin.jacoco.version>0.8.7</build-plugin.jacoco.version>
