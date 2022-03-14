@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-java@v2
+    - uses: actions/setup-java@v3
       with:
         distribution: 'adopt'
         java-version: ${{ matrix.java-version }}
@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: 15
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up settings.xml for GitHub Packages
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: 15
