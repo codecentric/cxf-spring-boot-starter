@@ -30,13 +30,7 @@ public class XmlValidationConfiguration {
 
     @Autowired
     public Endpoint endpoint;
-    
-    @PostConstruct
-    public void configureInterceptor2Endpoint() {    
-        EndpointImpl endpointImpl = (EndpointImpl)endpoint; // we need the implementation here, to configure our Interceptor
-        endpointImpl.getOutFaultInterceptors().add(soapInterceptor());
-    }
-    
+
     @Bean
     public SoapFaultBuilder soapFaultBuilder() {
         return new SoapFaultBuilder();
@@ -46,6 +40,8 @@ public class XmlValidationConfiguration {
     public AbstractSoapInterceptor soapInterceptor() {
         XmlValidationInterceptor xmlValidationInterceptor = new XmlValidationInterceptor();
         xmlValidationInterceptor.setSoapFaultBuilder(soapFaultBuilder());
+        EndpointImpl endpointImpl = (EndpointImpl)endpoint; // we need the implementation here, to configure our Interceptor
+        endpointImpl.getOutFaultInterceptors().add(xmlValidationInterceptor);
         return xmlValidationInterceptor;
     }
 }

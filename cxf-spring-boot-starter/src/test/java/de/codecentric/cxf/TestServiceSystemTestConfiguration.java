@@ -18,7 +18,7 @@ public class TestServiceSystemTestConfiguration {
      * CXF JaxWs Client
      */
     @Bean
-    public WeatherService weatherServiceClient() {
+    public WeatherService weatherServiceClient() throws BootStarterCxfException {
         JaxWsProxyFactoryBean jaxWsFactory = new JaxWsProxyFactoryBean();
         jaxWsFactory.setServiceClass(WeatherService.class);
         jaxWsFactory.setAddress(buildUrl());
@@ -31,7 +31,7 @@ public class TestServiceSystemTestConfiguration {
         return new SoapRawClient(buildUrl(), WeatherService.class);
     }
     
-    private String buildUrl() {
+    private String buildUrl() throws BootStarterCxfException {
         // return something like http://localhost:8084/soap-api/WeatherSoapService
         return "http://localhost:8087" + cxfAutoConfiguration.baseAndServiceEndingUrl();
     }

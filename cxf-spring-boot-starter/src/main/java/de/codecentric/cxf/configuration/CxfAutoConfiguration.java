@@ -53,20 +53,12 @@ public class CxfAutoConfiguration {
     @Value("${cxf.servicelist.title:CXF SpringBoot Starter - service list}")
     private String serviceListTitle;
 
-    private String serviceUrlEnding = "";
+    private String serviceUrlEnding = null;
     private Object seiImplementation;
-    private Service webServiceClient;
-
 
     @Bean
     public WebServiceAutoDetector webServiceAutoDetector(ApplicationContext applicationContext) throws BootStarterCxfException {
         return new WebServiceAutoDetector(new WebServiceScanner(), applicationContext);
-    }
-
-    @PostConstruct
-    public void setUp() throws BootStarterCxfException {
-        webServiceClient = webServiceAutoDetector(null).searchAndInstantiateWebServiceClient();
-        serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
     }
 
     /**
@@ -126,7 +118,7 @@ public class CxfAutoConfiguration {
         endpoint.setServiceName(webServiceClient().getServiceName());
         endpoint.setWsdlLocation(webServiceClient().getWSDLDocumentLocation().toString());
         if (publishedEndpointUrl.equals("NOT_SET")) {
-            endpoint.setPublishedEndpointUrl(webServiceClient.getServiceName().getLocalPart());
+            endpoint.setPublishedEndpointUrl(webServiceClient().getServiceName().getLocalPart());
         } else {
             endpoint.setPublishedEndpointUrl(publishedEndpointUrl);
         }
@@ -138,7 +130,7 @@ public class CxfAutoConfiguration {
     @Bean
     public Service webServiceClient() throws BootStarterCxfException {
         // Needed for correct ServiceName & WSDLLocation to publish contract first incl. original WSDL
-        return webServiceClient;
+        return webServiceAutoDetector(null).searchAndInstantiateWebServiceClient();
     }
     
     /**
@@ -152,7 +144,10 @@ public class CxfAutoConfiguration {
      * @return the concrete Service URL-ending, where the WebService is configured according to your WSDL´s Service Name
      * (e.g. &quot;/Weather&quot; when there is this inside your WSDL: &lt;wsdl:service name=&quot;Weather&quot;&gt;)
      */
-    public String serviceUrlEnding() {
+    public String serviceUrlEnding() throws BootStarterCxfException {
+        if (serviceUrlEnding == null) {
+            serviceUrlEnding = "/" + webServiceClient().getServiceName().getLocalPart();
+        }
         return serviceUrlEnding;
     }
 
@@ -161,7 +156,7 @@ public class CxfAutoConfiguration {
      * the concrete Service URL-ending, where the WebService is configured according to your WSDL´s Service Name
      * (e.g. &quot;/Weather&quot; when there is this inside your WSDL: &lt;wsdl:service name=&quot;Weather&quot;&gt;)
      */
-    public String baseAndServiceEndingUrl() {
+    public String baseAndServiceEndingUrl() throws BootStarterCxfException {
         return baseUrl() + serviceUrlEnding();
     }
     
