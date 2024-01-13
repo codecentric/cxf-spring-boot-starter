@@ -28,7 +28,7 @@
 		<logstash-logback-encoder.version>7.2</logstash-logback-encoder.version>
 		<commons-io.version>2.11.0</commons-io.version>
 		<spring.cloud.sleuth.version>3.1.5</spring.cloud.sleuth.version>
-		<system-stubs-jupiter.version>2.0.1</system-stubs-jupiter.version>
+		<system-stubs-jupiter.version>2.1.6</system-stubs-jupiter.version>
 
 		<!-- Analysis Tools for CI -->
 		<build-plugin.jacoco.version>0.8.8</build-plugin.jacoco.version>
